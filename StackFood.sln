@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.API", "src\StackFood.API\StackFood.API.csproj", "{8710A64E-5E39-443F-89BD-13F647166EBA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{7272490A-EE36-43D6-BA29-13D71271D81C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driven", "Driven", "{4BEEE82F-5C90-46CB-9A06-4C481367D6E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driving", "Driving", "{42574E15-C281-4DEC-8928-90A67144DFEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F4A32842-065E-4FD6-ADB9-2F56D2A22D85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Domain", "src\StackFood.Domain\StackFood.Domain.csproj", "{20BF1CEE-C63F-4BF5-BF2C-16BABBF2041D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Application", "src\StackFood.Application\StackFood.Application.csproj", "{27311687-E017-440D-B0B5-D14132CFED95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Infra", "src\StackFood.Infra\StackFood.Infra.csproj", "{08F87864-31C7-4B77-BC61-CEE812A15D8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{35B03661-CF05-4F2E-87A0-D5B3D2B9B8CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8710A64E-5E39-443F-89BD-13F647166EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8710A64E-5E39-443F-89BD-13F647166EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8710A64E-5E39-443F-89BD-13F647166EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8710A64E-5E39-443F-89BD-13F647166EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20BF1CEE-C63F-4BF5-BF2C-16BABBF2041D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20BF1CEE-C63F-4BF5-BF2C-16BABBF2041D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20BF1CEE-C63F-4BF5-BF2C-16BABBF2041D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20BF1CEE-C63F-4BF5-BF2C-16BABBF2041D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27311687-E017-440D-B0B5-D14132CFED95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27311687-E017-440D-B0B5-D14132CFED95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27311687-E017-440D-B0B5-D14132CFED95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27311687-E017-440D-B0B5-D14132CFED95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08F87864-31C7-4B77-BC61-CEE812A15D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08F87864-31C7-4B77-BC61-CEE812A15D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08F87864-31C7-4B77-BC61-CEE812A15D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08F87864-31C7-4B77-BC61-CEE812A15D8E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8710A64E-5E39-443F-89BD-13F647166EBA} = {42574E15-C281-4DEC-8928-90A67144DFEC}
+		{4BEEE82F-5C90-46CB-9A06-4C481367D6E8} = {7272490A-EE36-43D6-BA29-13D71271D81C}
+		{42574E15-C281-4DEC-8928-90A67144DFEC} = {7272490A-EE36-43D6-BA29-13D71271D81C}
+		{20BF1CEE-C63F-4BF5-BF2C-16BABBF2041D} = {F4A32842-065E-4FD6-ADB9-2F56D2A22D85}
+		{27311687-E017-440D-B0B5-D14132CFED95} = {F4A32842-065E-4FD6-ADB9-2F56D2A22D85}
+		{08F87864-31C7-4B77-BC61-CEE812A15D8E} = {4BEEE82F-5C90-46CB-9A06-4C481367D6E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8F43801-19F8-4626-A248-9FC41904E02F}
+	EndGlobalSection
+EndGlobal

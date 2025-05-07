@@ -5,7 +5,7 @@ namespace StackFood.Infra.Persistence
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Cliente> Clientes => Set<Cliente>();
+        public DbSet<Customer> Customers => Set<Customer>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

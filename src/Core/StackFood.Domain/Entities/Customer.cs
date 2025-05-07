@@ -1,18 +1,18 @@
 ﻿namespace StackFood.Domain.Entities
 {
-    public class Cliente
+    public class Customer
     {
         public Guid Id { get; private set; }
-        public string Nome { get; private set; }
+        public string Name { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }
 
-        protected Cliente() { }
+        protected Customer() { }
 
-        public Cliente(string nome, string email, string cpf)
+        public Customer(string name, string email, string cpf)
         {
             Id = Guid.NewGuid();
-            Nome = nome;
+            Name = name;
             Email = email;
             Cpf = cpf;
         }

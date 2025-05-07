@@ -2,9 +2,9 @@
 
 namespace StackFood.Application.Interfaces
 {
-    public interface IClienteRepository
+    public interface ICustomerRepository
     {
-        Task AdicionarAsync(Cliente cliente);
-        Task<Cliente?> ObterPorCpfAsync(string cpf);
+        Task AddAsync(Customer cliente);
+        Task<Customer?> GetByCpfAsync(string cpf);
     }
 }

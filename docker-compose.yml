@@ -1,0 +1,20 @@
+services:
+  stackfood.api:
+    image: stackfoodapi:1.0
+    build:
+      context: .
+      dockerfile: src\Adapters\Driving\StackFood.API\Dockerfile
+    depends_on:
+      - postgres
+      
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432  
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data

@@ -12,6 +12,7 @@ services:
     container_name: postgres
     restart: always
     environment:
+      POSTGRES_DB: stackfood
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
     ports:

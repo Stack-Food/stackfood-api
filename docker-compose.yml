@@ -5,20 +5,39 @@ services:
       context: .
       dockerfile: src/Adapters/Driving/StackFood.API/Dockerfile
     depends_on:
-      - postgres
-      
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "8080:80"
+    networks:
+      - stackfood_network
+
   postgres:
     image: postgres:15.3-alpine
     container_name: postgres
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_DB: stackfood
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
     ports:
-      - 5432:5432  
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - stackfood_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
+
+networks:
+  stackfood_network:
+    driver: bridge

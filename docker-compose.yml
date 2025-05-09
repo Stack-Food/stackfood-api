@@ -3,7 +3,7 @@ services:
     image: stackfoodapi:1.0
     build:
       context: .
-      dockerfile: src\Adapters\Driving\StackFood.API\Dockerfile
+      dockerfile: src/Adapters/Driving/StackFood.API/Dockerfile
     depends_on:
       - postgres
       
@@ -18,4 +18,7 @@ services:
     ports:
       - 5432:5432  
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

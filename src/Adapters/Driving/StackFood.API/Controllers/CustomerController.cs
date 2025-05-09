@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StackFood.Application.Interfaces;
+using StackFood.Application.Interfaces.Repositories;
+using StackFood.Application.Interfaces.Services;
 using StackFood.Domain.Entities;
 
 namespace StackFood.API.Controllers
@@ -8,25 +9,25 @@ namespace StackFood.API.Controllers
     [Route("api/customers")]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerService _customerService;
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerService customerService)
         {
-            _customerRepository = customerRepository;
+            _customerService = customerService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CustomerRequest request)
+        public async Task<IActionResult> Create([FromBody] CustomerRequest request)
         {
             var customer = new Customer(request.Name, request.Email, request.Cpf);
-            await _customerRepository.AddAsync(customer);
+            await _customerService.RegisterAsync(customer);
             return Ok(customer);
         }
 
         [HttpGet("{cpf}")]
-        public async Task<IActionResult> GetByCpf(string cpf)
+        public async Task<IActionResult> GetByCpf([FromRoute] string cpf)
         {
-            var customer = await _customerRepository.GetByCpfAsync(cpf);
+            var customer = await _customerService.GetByCpfAsync(cpf);
             if (customer == null) return NotFound();
             return Ok(customer);
         }

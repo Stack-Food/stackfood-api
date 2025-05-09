@@ -1,0 +1,49 @@
+name: .NET Tests and Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Run linting
+      - name: Run linting
+        run: dotnet format --check
+
+      # Build the solution
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
+
+      # Run tests
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+  # Optional: Upload code coverage report
+  upload-coverage:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Upload code coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: "**/coverage.cobertura.xml"

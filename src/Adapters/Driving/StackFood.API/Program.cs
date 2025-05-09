@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StackFood.Application.Interfaces;
+using StackFood.Application.Interfaces.Repositories;
 using StackFood.Infra.Persistence;
 using StackFood.Infra.Persistence.Repositories;
 

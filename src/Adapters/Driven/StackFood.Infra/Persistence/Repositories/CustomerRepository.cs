@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StackFood.Application.Interfaces;
+using StackFood.Application.Interfaces.Repositories;
 using StackFood.Domain.Entities;
 
 namespace StackFood.Infra.Persistence.Repositories
@@ -13,9 +13,9 @@ namespace StackFood.Infra.Persistence.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Customer cliente)
+        public async Task RegisterAsync(Customer customer)
         {
-            await _context.Customers.AddAsync(cliente);
+            await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
         }
 

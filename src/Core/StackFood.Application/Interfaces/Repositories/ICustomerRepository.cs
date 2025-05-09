@@ -1,10 +1,10 @@
 ﻿using StackFood.Domain.Entities;
 
-namespace StackFood.Application.Interfaces
+namespace StackFood.Application.Interfaces.Repositories
 {
     public interface ICustomerRepository
     {
-        Task AddAsync(Customer cliente);
+        Task RegisterAsync(Customer customer);
         Task<Customer?> GetByCpfAsync(string cpf);
     }
 }

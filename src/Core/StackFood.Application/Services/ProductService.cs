@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.Interfaces.Services;
 using StackFood.Domain.Entities;
 
@@ -10,14 +6,36 @@ namespace StackFood.Application.Services
 {
     public class ProductService : IProductService
     {
-        Task<List<Product>> IProductService.GetAllProductAsync()
+        private readonly IProductRepository _productRepository;
+
+        public ProductService(IProductRepository productRepository)
         {
-            throw new NotImplementedException();
+            _productRepository = productRepository;
         }
 
-        Task<Product> IProductService.GetProductByNameAsync(string name)
+        public async Task<List<Product>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            return await _productRepository.GetAllProductsAsync();
+        }
+
+        public async Task<Product> GetProductByFilterAsync(string name, Guid? id)
+        {
+            return await _productRepository.GetProductByFilterAsync(name, id);
+        }
+
+        public async Task RegisterNewProductAsync(Product product)
+        {
+           await _productRepository.RegisterProductAsync(product);
+        }
+
+        public async Task UpdateProductAsync(Product product)
+        {
+            await _productRepository.UpdateProductAsync(product);
+        }
+
+        public async Task DeleteProductAsync(Guid? id)
+        {
+            await _productRepository.DeleteProductByIdAsync(id);
         }
     }
 }

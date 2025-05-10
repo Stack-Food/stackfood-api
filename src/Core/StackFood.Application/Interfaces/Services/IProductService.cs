@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StackFood.Domain.Entities;
+﻿using StackFood.Domain.Entities;
 
 namespace StackFood.Application.Interfaces.Services
 {
     public interface IProductService
     {
-        Task<List<Product>> GetAllProductAsync();
-        Task<Product> GetProductByNameAsync(string name);
+        Task DeleteProductAsync(Guid? id);
+        Task<List<Product>> GetAllProductsAsync();
+        Task<Product> GetProductByFilterAsync(string name, Guid? id);
+        Task RegisterNewProductAsync(Product product);
+        Task UpdateProductAsync(Product product);
     }
 }

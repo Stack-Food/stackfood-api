@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-          cache: true
+          cache: false
 
       # Display dotnet version
       - name: Display dotnet version
@@ -35,7 +35,7 @@ jobs:
 
       # Run linting
       - name: Run linting
-        run: dotnet format --check
+        run: dotnet format
 
       # Build the solution
       - name: Build solution

@@ -1,10 +1,10 @@
 name: .NET Tests and Lint
-
 on:
   pull_request:
     branches:
       - main
       - develop
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -53,14 +53,8 @@ jobs:
           path: TestResults-${{ matrix.dotnet-version }}
         if: ${{ always() }}
 
-  # Optional: Upload code coverage report
-  upload-coverage:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Upload code coverage report
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage
-          path: "**/TestResults-*/**/coverage.cobertura.xml"
+          path: "**/TestResults-${{ matrix.dotnet-version }}/**/coverage.cobertura.xml"

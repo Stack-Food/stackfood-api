@@ -34,6 +34,16 @@ docker-compose up -d
 - API: [http://localhost:7189](http://localhost:7189)
 - Swagger UI: [http://localhost:7189/swagger/index.html](http://localhost:7189/swagger/index.html)
 
+### 3. Rebuilding the Application After Changes
+
+If you make changes to the code or Docker configuration and need to rebuild the image, use the following command:
+
+```bash
+docker-compose up -d --build
+```
+
+This ensures that a new image is created with the latest updates.
+
 ## Environment Configuration
 
 The `.env` file contains key configuration variables:

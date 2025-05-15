@@ -3,8 +3,8 @@
     public enum OrderStatus
     {
         Received = 1,
-        InPreparation,
-        Ready,
-        Finalized
+        InPreparation = 2,
+        Ready = 3,
+        Finalized = 4
     }
 }

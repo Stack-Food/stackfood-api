@@ -8,26 +8,22 @@ namespace StackFood.Domain.Entities
         public Guid? CustomerId { get; private set; }
         public OrderStatus Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public decimal TotalPrice { get; private set; }
-        public string QrCodeUrl { get; private set; }
-
         public Customer? Customer { get; private set; }
-        public IEnumerable<ProductOrder> ProductsOrders { get; private set; }
-        public IEnumerable<OrderStatusLog> StatusLogs { get; private set; }
+        public List<ProductOrder> Products { get; private set; }
         public Payment? Payment { get; private set; }
+
+        public decimal TotalPrice => Products.Sum(x => x.Quantity * x.UnitPrice);
 
         protected Order() { }
 
-        public Order(Guid? customerId, decimal totalPrice, string qrCodeUrl)
+        public Order(Guid? customerId, List<ProductOrder> products)
         {
             Id = Guid.NewGuid();
             CustomerId = customerId;
-            TotalPrice = totalPrice;
-            QrCodeUrl = qrCodeUrl;
+            Products = products;
+
             Status = OrderStatus.Received;
             CreatedAt = DateTime.UtcNow;
         }
-
-        public void UpdateStatus(OrderStatus newStatus) => Status = newStatus;
     }
 }

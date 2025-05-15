@@ -18,10 +18,6 @@ namespace StackFood.Infra.Persistence.Configurations
             builder.HasOne(oi => oi.Product)
                    .WithMany()
                    .HasForeignKey(oi => oi.ProductId);
-
-            builder.HasOne(oi => oi.Order)
-                   .WithMany(o => o.ProductsOrders)
-                   .HasForeignKey(oi => oi.OrderId);
         }
     }
 }

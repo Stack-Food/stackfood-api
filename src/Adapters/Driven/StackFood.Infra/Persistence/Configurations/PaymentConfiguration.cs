@@ -17,10 +17,6 @@ namespace StackFood.Infra.Persistence.Configurations
                    .IsRequired();
 
             builder.Property(p => p.PaymentDate).IsRequired();
-
-            builder.HasOne(p => p.Order)
-                   .WithOne(o => o.Payment)
-                   .HasForeignKey<Payment>(p => p.OrderId);
         }
     }
 }

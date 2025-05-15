@@ -6,6 +6,7 @@ namespace StackFood.Domain.Entities
     {
         public Guid Id { get; private set; }
         public Guid OrderId { get; private set; }
+        public string QrCodeUrl { get; private set; }
         public PaymentStatus Status { get; private set; }
         public DateTime PaymentDate { get; private set; }
 

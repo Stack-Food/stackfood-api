@@ -1,21 +1,21 @@
 ﻿using StackFood.Application.Interfaces.Repositories;
-using StackFood.Application.UseCases.Orders.CreateOrder.Inputs;
-using StackFood.Application.UseCases.Orders.CreateOrder.Mappers;
-using StackFood.Application.UseCases.Orders.CreateOrder.Outputs;
+using StackFood.Application.UseCases.Orders.Base.Mappers;
+using StackFood.Application.UseCases.Orders.Base.Outputs;
+using StackFood.Application.UseCases.Orders.Create.Inputs;
 using StackFood.Domain.Entities;
 
-namespace StackFood.Application.UseCases.Orders.CreateOrder
+namespace StackFood.Application.UseCases.Orders.Create
 {
-    public class CreateOrderUseCase : ICreateOrderUseCase
+    public class GetOrderOrderUseCase : ICreateOrderUseCase
     {
         public readonly IOrderRepository _orderRepository;
 
-        public CreateOrderUseCase(IOrderRepository orderRepository)
+        public GetOrderOrderUseCase(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }
 
-        public async Task<CreateOrderOutput> CreateOrderAsync(CreateOrderInput input)
+        public async Task<OrderOutput> CreateOrderAsync(CreateOrderInput input)
         {
             var productsOrders = new List<ProductOrder>();
 
@@ -31,7 +31,7 @@ namespace StackFood.Application.UseCases.Orders.CreateOrder
 
             _orderRepository.CreateAsync(order);
 
-            return CreateOrderOutputMapper.Map(order);
+            return OrderOutputMapper.Map(order);
         }
     }
 }

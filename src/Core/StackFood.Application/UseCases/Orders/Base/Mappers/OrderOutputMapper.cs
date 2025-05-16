@@ -1,18 +1,18 @@
-﻿using StackFood.Application.UseCases.Orders.CreateOrder.Outputs;
+﻿using StackFood.Application.UseCases.Orders.Base.Outputs;
 using StackFood.Domain.Entities;
 
-namespace StackFood.Application.UseCases.Orders.CreateOrder.Mappers
+namespace StackFood.Application.UseCases.Orders.Base.Mappers
 {
-    public static class CreateOrderOutputMapper
+    public static class OrderOutputMapper
     {
-        public static CreateOrderOutput Map(Order order)
+        public static OrderOutput Map(Order order)
         {
-            return new CreateOrderOutput
+            return new OrderOutput
             {
                 Id = order.Id,
                 Status = order.Status,
                 CreatedAt = order.CreatedAt,
-                Products = order.Products.Select(po => new CreateOrderProductOutput
+                Products = order.Products.Select(po => new OrderProductOutput
                 {
                     ProductId = po.Product.Id,
                     Name = po.Product.Name,
@@ -23,6 +23,11 @@ namespace StackFood.Application.UseCases.Orders.CreateOrder.Mappers
                     Category = po.Product.Category
                 }).ToList()
             };
+        }
+
+        public static IEnumerable<OrderOutput> Map(List<Order> orders)
+        {
+            return orders.Select(Map);
         }
     }
 }

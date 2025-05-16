@@ -1,4 +1,4 @@
-﻿namespace StackFood.Application.UseCases.Orders.CreateOrder.Inputs
+﻿namespace StackFood.Application.UseCases.Orders.Create.Inputs
 {
     public class CreateOrderProductInput
     {

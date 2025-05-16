@@ -10,5 +10,7 @@ namespace StackFood.Application.Interfaces.Repositories
     public interface IOrderRepository
     {
         void CreateAsync(Order order);
+        Task<List<Order>> GetAllAsync();
+        Task<Order> GetByIdAsync(Guid id);
     }
 }

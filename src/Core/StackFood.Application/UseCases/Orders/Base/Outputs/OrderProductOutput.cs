@@ -1,8 +1,8 @@
 ﻿using StackFood.Domain.Enums;
 
-namespace StackFood.Application.UseCases.Orders.CreateOrder.Outputs
+namespace StackFood.Application.UseCases.Orders.Base.Outputs
 {
-    public class CreateOrderProductOutput
+    public class OrderProductOutput
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; }

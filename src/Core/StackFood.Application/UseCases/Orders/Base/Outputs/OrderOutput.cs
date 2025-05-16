@@ -1,12 +1,12 @@
 ﻿using StackFood.Domain.Enums;
 
-namespace StackFood.Application.UseCases.Orders.CreateOrder.Outputs
+namespace StackFood.Application.UseCases.Orders.Base.Outputs
 {
-    public class CreateOrderOutput
+    public class OrderOutput
     {
         public Guid Id { get; set; }
         public OrderStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<CreateOrderProductOutput> Products { get; set; }
+        public List<OrderProductOutput> Products { get; set; }
     }
 }

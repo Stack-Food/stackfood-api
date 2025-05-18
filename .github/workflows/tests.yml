@@ -1,0 +1,60 @@
+name: .NET Tests and Lint
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [7.0.x]
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup .NET
+      - name: Setup dotnet ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+          cache: false
+
+      # Display dotnet version
+      - name: Display dotnet version
+        run: dotnet --version
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Run linting
+      - name: Run linting
+        run: dotnet format
+
+      # Build the solution
+      - name: Build solution
+        run: dotnet build --no-restore --configuration Release
+
+      # Run tests
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+
+      # Upload test results
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-results-${{ matrix.dotnet-version }}
+          path: TestResults-${{ matrix.dotnet-version }}
+        if: ${{ always() }}
+
+      - name: Upload code coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: "**/TestResults-${{ matrix.dotnet-version }}/**/coverage.cobertura.xml"

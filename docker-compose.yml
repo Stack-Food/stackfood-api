@@ -1,24 +1,93 @@
 services:
   stackfood.api:
-    image: stackfoodapi:1.0
+    container_name: stackfood-api
+    image: stackfoodapi:${API_VERSION:-1.0.0}
     build:
       context: .
       dockerfile: src/Adapters/Driving/StackFood.API/Dockerfile
+      args:
+        - BUILD_CONFIGURATION=${BUILD_CONFIGURATION:-Release}
+        - configuration=Debug
     depends_on:
-      - postgres
-      
-  postgres:
-    image: postgres:15.3-alpine
-    container_name: postgres
-    restart: always
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: stackfood
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
+      - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT:-Development}
     ports:
-      - 5432:5432  
+      - "${API_PORT:-7189}:7189"
+    networks:
+      - stackfood_network
+    volumes:
+      - backup_data:/remote_debugger:rw
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:7189/swagger/index.html || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "StackFood API service"
+      com.stackfood.service: "api"
+      com.stackfood.version: "${API_VERSION:-latest}"
+
+  postgres:
+    container_name: stackfood-db
+    image: postgres:15.3-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-stackfood}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/docker-entrypoint-initdb.d
+      - postgres_data:/backup
+    networks:
+      - stackfood_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "PostgreSQL Database for StackFood"
+      com.stackfood.service: "database"
 
 volumes:
   postgres_data:
+    name: stackfood-postgres-data
+
+  backup_data:
+    name: stackfood-backup-data
+
+networks:
+  stackfood_network:
+    name: stackfood-network
+    driver: bridge

@@ -4,11 +4,11 @@ using StackFood.Application.UseCases.Orders.Base.Outputs;
 
 namespace StackFood.Application.UseCases.Orders.GetAll
 {
-    public class GetByIdOrderUseCase : IGetAllOrderUseCase
+    public class GetAllOrderUseCase : IGetAllOrderUseCase
     {
         public readonly IOrderRepository _orderRepository;
 
-        public GetByIdOrderUseCase(IOrderRepository orderRepository)
+        public GetAllOrderUseCase(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }

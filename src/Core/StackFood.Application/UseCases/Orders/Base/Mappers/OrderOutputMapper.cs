@@ -12,15 +12,16 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
                 Id = order.Id,
                 Status = order.Status,
                 CreatedAt = order.CreatedAt,
+                TotalPrice = order.TotalPrice,
                 Products = order.Products.Select(po => new OrderProductOutput
                 {
-                    ProductId = po.Product.Id,
-                    Name = po.Product.Name,
-                    Description = po.Product.Description,
-                    Price = po.Product.Price,
+                    ProductId = po.ProductId,
+                    Name = po.Name,
+                    Description = po.Description,
+                    Price = po.UnitPrice,
                     Quantity = po.Quantity,
-                    ImageUrl = po.Product.ImageUrl,
-                    Category = po.Product.Category
+                    ImageUrl = po.ImageUrl,
+                    Category = po.Category
                 }).ToList()
             };
         }

@@ -3,33 +3,55 @@ using StackFood.Application.UseCases.Orders.Base.Mappers;
 using StackFood.Application.UseCases.Orders.Base.Outputs;
 using StackFood.Application.UseCases.Orders.Create.Inputs;
 using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Application.UseCases.Orders.Create
 {
-    public class GetOrderOrderUseCase : ICreateOrderUseCase
+    public class CreateOrderUseCase : ICreateOrderUseCase
     {
         public readonly IOrderRepository _orderRepository;
+        public readonly ICustomerRepository _customerRepository;
 
-        public GetOrderOrderUseCase(IOrderRepository orderRepository)
+        public CreateOrderUseCase(IOrderRepository orderRepository, ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<OrderOutput> CreateOrderAsync(CreateOrderInput input)
         {
-            var productsOrders = new List<ProductOrder>();
+            var customer = await _customerRepository.GetByIdAsync(input.CustomerId);
+            if (customer is null)
+            {
+                throw new ArgumentNullException(nameof(customer), "Customer not found");
+                
+
+            }
+
+            var order = new Order(input.CustomerId);
 
             foreach (var product in input.Products)
             {
                 // TODO: buscar cada item no banco de dados e pegar preço atual
 
-                var productOrder = new ProductOrder(product.ProductId, product.Quantity, 123);
-                productsOrders.Add(productOrder);
+                
+
+
+
+                var productOrder = new ProductOrder(
+                    product.ProductId,
+                    "Teste",
+                    "Descriçao",
+                    "imageUrl",
+                    ProductCategory.Sandwich,
+                    product.Quantity,
+                    123);
+                order.AddProduct(productOrder);
             }
 
-            var order = new Order(input.CustomerId, productsOrders);
+            
 
-            _orderRepository.CreateAsync(order);
+            await _orderRepository.CreateAsync(order);
 
             return OrderOutputMapper.Map(order);
         }

@@ -13,19 +13,20 @@ namespace StackFood.Infra.Persistence.Repositories
             _context = context;
         }
 
-        public void CreateAsync(Order order)
+        public async Task CreateAsync(Order order)
         {
-            _context.Orders.Add(order);
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(o => o.Products).ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(Guid id)
         {
-            return await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            return await _context.Orders.Include(o => o.Products).FirstOrDefaultAsync(o => o.Id == id);
         }
     }
 }

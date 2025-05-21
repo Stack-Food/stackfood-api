@@ -10,6 +10,7 @@ namespace StackFood.Infra
         {
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
     }
 }

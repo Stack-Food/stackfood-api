@@ -2,8 +2,8 @@
 {
     public enum ProductCategory
     {
-        Burger = 1,
-        Side,
+        Sandwich = 1,
+        SideDish,
         Drink,
         Dessert
     }

@@ -22,8 +22,8 @@ namespace StackFood.Tests.Application.Services
         {
             var products = new List<Product>
             {
-                new Product("Baicon burger", "hamb de baicon com queijo salada", 10.0m, "http://image1.com", ProductCategory.Burger),
-                new Product("queijo burger", "hamb de queijo com salada 2", 20.0m, "http://image2.com", ProductCategory.Side)
+                new Product("Baicon burger", "hamb de baicon com queijo salada", 10.0m, "http://image1.com", ProductCategory.SideDish),
+                new Product("queijo burger", "hamb de queijo com salada 2", 20.0m, "http://image2.com", ProductCategory.SideDish)
             };
             _mockProductRepository.Setup(repo => repo.GetAllProductsAsync()).ReturnsAsync(products);
 
@@ -36,7 +36,7 @@ namespace StackFood.Tests.Application.Services
         [Fact]
         public async Task GetProductByFilterAsync_ShouldReturnProduct_WhenExists()
         {
-            var product = new Product("Product 1", "Description", 10.0m, "http://image.com", ProductCategory.Burger);
+            var product = new Product("Product 1", "Description", 10.0m, "http://image.com", ProductCategory.Sandwich);
             _mockProductRepository.Setup(repo => repo.GetProductByFilterAsync("Product 1", It.IsAny<Guid?>())).ReturnsAsync(product);
 
             var result = await _productService.GetProductByFilterAsync("Product 1", null);
@@ -48,7 +48,7 @@ namespace StackFood.Tests.Application.Services
         [Fact]
         public async Task RegisterNewProductAsync_ShouldCallRepositoryMethod()
         {
-            var product = new Product("New Product", "New Description", 15.0m, "http://newimage.com", ProductCategory.Burger);
+            var product = new Product("New Product", "New Description", 15.0m, "http://newimage.com", ProductCategory.SideDish);
 
             await _productService.RegisterNewProductAsync(product);
 
@@ -58,7 +58,7 @@ namespace StackFood.Tests.Application.Services
         [Fact]
         public async Task UpdateProductAsync_ShouldCallRepositoryMethod()
         {
-            var product = new Product("Updated Product", "Updated Description", 25.0m, "http://updateimage.com", ProductCategory.Side);
+            var product = new Product("Updated Product", "Updated Description", 25.0m, "http://updateimage.com", ProductCategory.SideDish);
 
             await _productService.UpdateProductAsync(product);
 

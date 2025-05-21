@@ -9,7 +9,6 @@ namespace StackFood.Infra.Persistence
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<ProductOrder> ProductsOrders => Set<ProductOrder>();
-        public DbSet<OrderStatusLog> OrderStatusLogs => Set<OrderStatusLog>();
         public DbSet<Payment> Payments => Set<Payment>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

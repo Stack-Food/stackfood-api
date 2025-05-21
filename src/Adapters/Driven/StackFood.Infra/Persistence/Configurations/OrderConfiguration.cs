@@ -17,25 +17,19 @@ namespace StackFood.Infra.Persistence.Configurations
                    .IsRequired();
 
             builder.Property(o => o.CreatedAt).IsRequired();
-            builder.Property(o => o.TotalPrice).HasColumnType("decimal(10,2)").IsRequired();
-            builder.Property(o => o.QrCodeUrl).HasMaxLength(255);
 
             builder.HasOne(o => o.Customer)
                    .WithMany()
                    .HasForeignKey(o => o.CustomerId)
                    .OnDelete(DeleteBehavior.SetNull);
 
-            builder.HasMany(o => o.ProductsOrders)
+            builder.HasMany(o => o.Products)
                    .WithOne(i => i.Order)
-                   .HasForeignKey(i => i.OrderId);
-
-            builder.HasMany(o => o.StatusLogs)
-                   .WithOne(s => s.Order)
-                   .HasForeignKey(s => s.OrderId);
+                   .HasForeignKey("OrderId");
 
             builder.HasOne(o => o.Payment)
                    .WithOne(p => p.Order)
-                   .HasForeignKey<Payment>(p => p.OrderId);
+                   .HasForeignKey<Payment>("OrderId");
         }
     }
 }

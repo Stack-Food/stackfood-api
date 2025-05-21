@@ -23,13 +23,9 @@ namespace StackFood.Infra.Persistence.Repositories
             return await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
         }
 
-        public async Task<Product> GetProductByFilterAsync(string name, Guid? id)
+        public async Task<Product> GetProductByFilterAsync(Guid? id)
         {
             IQueryable<Product> query = _context.Products;
-            if (!string.IsNullOrEmpty(name))
-            {
-                query = query.Where(p => p.Name.Contains(name));
-            }
             if (id.HasValue)
             {
                 query = query.Where(p => p.Id == id.Value);

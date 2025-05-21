@@ -18,9 +18,9 @@ namespace StackFood.Application.Services
             return await _productRepository.GetAllProductsAsync();
         }
 
-        public async Task<Product> GetProductByFilterAsync(string name, Guid? id)
+        public async Task<Product> GetProductByFilterAsync(Guid? id)
         {
-            return await _productRepository.GetProductByFilterAsync(name, id);
+            return await _productRepository.GetProductByFilterAsync(id);
         }
 
         public async Task RegisterNewProductAsync(Product product)

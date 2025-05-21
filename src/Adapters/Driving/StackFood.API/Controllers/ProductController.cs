@@ -25,12 +25,12 @@ namespace StackFood.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts([FromQuery] string name = null, [FromQuery] Guid? id = null)
+        public async Task<IActionResult> GetProducts([FromQuery] Guid? id = null)
         {
-            if (string.IsNullOrEmpty(name) && !id.HasValue)    {
-                return BadRequest("É necessário fornecer pelo menos um dos parâmetros: name ou id.");
+            if (!id.HasValue)    {
+                return BadRequest("É necessário fornecer parâmetros: id.");
             }
-            var products = await _productService.GetProductByFilterAsync(name, id); 
+            var products = await _productService.GetProductByFilterAsync(id); 
             
             if (products == null) return NotFound();
             
@@ -38,7 +38,7 @@ namespace StackFood.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductRequest request)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
         {
             var product = new Product(request.Name, request.Desc, request.Price, request.Img, (ProductCategory)Enum.ToObject(typeof(ProductCategory), request.Category));
             await _productService.RegisterNewProductAsync(product);
@@ -46,9 +46,9 @@ namespace StackFood.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductRequest request) 
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request) 
         { 
-            var product = await _productService.GetProductByFilterAsync(request.Name, null);
+            var product = await _productService.GetProductByFilterAsync(request.Id);
             
             if (product == null) {
                 return NotFound(); 
@@ -67,7 +67,7 @@ namespace StackFood.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid? id)
         {
-            var product = await _productService.GetProductByFilterAsync(null, id);
+            var product = await _productService.GetProductByFilterAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -75,8 +75,8 @@ namespace StackFood.API.Controllers
             await _productService.DeleteProductAsync(id);
             return NoContent();
         }
-        public record ProductRequest(string Name, string Desc, decimal Price, string Img, int Category);
-
+        public record CreateProductRequest(string Name, string Desc, decimal Price, string Img, int Category); 
+        public record UpdateProductRequest(Guid Id, string Name, string Desc, decimal Price, string Img, int Category);
     }
 
 }

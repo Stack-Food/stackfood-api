@@ -6,7 +6,7 @@ namespace StackFood.Application.Interfaces.Services
     {
         Task DeleteProductAsync(Guid? id);
         Task<List<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByFilterAsync(string name, Guid? id);
+        Task<Product> GetProductByFilterAsync(Guid? id);
         Task RegisterNewProductAsync(Product product);
         Task UpdateProductAsync(Product product);
     }

@@ -6,30 +6,52 @@ using StackFood.Domain.Entities;
 
 namespace StackFood.Application.UseCases.Orders.Create
 {
-    public class GetOrderOrderUseCase : ICreateOrderUseCase
+    public class CreateOrderUseCase : ICreateOrderUseCase
     {
         public readonly IOrderRepository _orderRepository;
+        public readonly IProductRepository _productRepository;
+        public readonly ICustomerRepository _customerRepository;
 
-        public GetOrderOrderUseCase(IOrderRepository orderRepository)
+        public CreateOrderUseCase(
+            IOrderRepository orderRepository,
+            IProductRepository productRepository,
+            ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
+            _productRepository = productRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<OrderOutput> CreateOrderAsync(CreateOrderInput input)
         {
-            var productsOrders = new List<ProductOrder>();
-
-            foreach (var product in input.Products)
+            var customer = await _customerRepository.GetByIdAsync(input.CustomerId);
+            if (customer is null)
             {
-                // TODO: buscar cada item no banco de dados e pegar preço atual
-
-                var productOrder = new ProductOrder(product.ProductId, product.Quantity, 123);
-                productsOrders.Add(productOrder);
+                throw new ArgumentNullException(nameof(customer), "Customer not found");
             }
 
-            var order = new Order(input.CustomerId, productsOrders);
+            var order = new Order(input.CustomerId);
 
-            _orderRepository.CreateAsync(order);
+            foreach (var inputProduct in input.Products)
+            {
+                var product = await _productRepository.GetByIdAsync(inputProduct.ProductId);
+                if (product is null)
+                {
+                    throw new ArgumentNullException(nameof(product), "Product not found");
+                }
+                
+                var productOrder = new ProductOrder(
+                    inputProduct.ProductId,
+                    product.Name,
+                    product.Description,
+                    product.ImageUrl,
+                    product.Category,
+                    inputProduct.Quantity,
+                    product.Price);
+                order.AddProduct(productOrder);
+            }
+
+            await _orderRepository.CreateAsync(order);
 
             return OrderOutputMapper.Map(order);
         }

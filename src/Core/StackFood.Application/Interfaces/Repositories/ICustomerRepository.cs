@@ -6,5 +6,6 @@ namespace StackFood.Application.Interfaces.Repositories
     {
         Task RegisterAsync(Customer customer);
         Task<Customer?> GetByCpfAsync(string cpf);
+        Task<Customer> GetByIdAsync(Guid id);
     }
 }

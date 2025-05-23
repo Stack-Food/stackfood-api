@@ -16,16 +16,21 @@ namespace StackFood.Domain.Entities
 
         protected Order() { }
 
-        public Order(Guid? customerId, List<ProductOrder> products)
+        public Order(Guid? customerId)
         {
             Id = Guid.NewGuid();
             CustomerId = customerId;
-            Products = products;
+            
 
             Status = OrderStatus.Received;
             CreatedAt = DateTime.UtcNow;
+            Products = new List<ProductOrder>();
         }
 
+        public void AddProduct(ProductOrder product)
+        {
+            Products.Add(product);
+        }
         public void GeneratePayment(string qrCode)
         {
             Payment = new Payment(qrCode);

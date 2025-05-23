@@ -10,14 +10,17 @@ namespace StackFood.Infra.Persistence.Configurations
         {
             builder.ToTable("product_orders");
 
-            builder.HasKey(oi => oi.Id);
+            builder.HasKey(po => po.Id);
 
-            builder.Property(oi => oi.Quantity).IsRequired();
-            builder.Property(oi => oi.UnitPrice).HasColumnType("decimal(10,2)").IsRequired();
-
-            builder.HasOne(oi => oi.Product)
-                   .WithMany()
-                   .HasForeignKey(oi => oi.ProductId);
+            builder.Property(po => po.Name).IsRequired().HasMaxLength(100);
+            builder.Property(po => po.Description).HasMaxLength(255);
+            builder.Property(po => po.UnitPrice).HasColumnType("decimal(10,2)").IsRequired();
+            builder.Property(po => po.ImageUrl).HasMaxLength(255);
+            builder.Property(po => po.Category)
+                   .HasConversion<string>()
+                   .IsRequired();
+            builder.Property(po => po.Quantity).IsRequired();
+            builder.Property(po => po.UnitPrice).HasColumnType("decimal(10,2)").IsRequired();
         }
     }
 }

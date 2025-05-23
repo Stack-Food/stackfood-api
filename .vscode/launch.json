@@ -1,0 +1,40 @@
+{
+    // Configuração de depuração exclusiva para a API StackFood
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "coreclr",
+            "request": "launch",
+            "name": "StackFood.API (Desenvolvimento)",
+            "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net7.0/StackFood.API.dll",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "http://localhost:5000/swagger",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start http://localhost:5000/swagger"
+                }
+            }
+        },
+        {
+            "type": "coreclr",
+            "request": "launch",
+            "name": "StackFood.API (Produção)",
+            "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net7.0/StackFood.API.dll",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Production"
+            },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "http://localhost:5000/swagger",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start http://localhost:5000/swagger"
+                }
+            }
+        }
+    ]
+}

@@ -12,5 +12,6 @@ namespace StackFood.Application.Interfaces.Repositories
         void CreateAsync(Order order);
         Task<List<Order>> GetAllAsync();
         Task<Order> GetByIdAsync(Guid id);
+        Task SaveAsync();
     }
 }

@@ -1,3 +1,4 @@
+using MercadoPago.Config;
 using Microsoft.EntityFrameworkCore;
 using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.Interfaces.Services;
@@ -8,7 +9,7 @@ using StackFood.Infra.Persistence.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+MercadoPagoConfig.AccessToken = "TEST-3012794291586434-051711-8a400aab6fd7b21510de463589bbd8a1-709468526";
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

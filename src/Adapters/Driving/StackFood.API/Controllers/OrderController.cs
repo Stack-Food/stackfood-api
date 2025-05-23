@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StackFood.API.Mappers.Orders.CreateOrder;
 using StackFood.API.Requests.Orders;
+using StackFood.API.Requests.Orders.Payment;
 using StackFood.Application.UseCases.Orders.Create;
 using StackFood.Application.UseCases.Orders.GetAll;
 using StackFood.Application.UseCases.Orders.GetById;
@@ -46,6 +47,13 @@ namespace StackFood.API.Controllers
 
             var order = await _orderUseCase.CreateOrderAsync(input);
             return Ok(order);
+        }
+
+        [HttpPut("{id}/payment")]
+        public async Task<IActionResult> GeneratePayament([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
+        {
+            var orders = await _getAllOrderUseCase.GetAllOrderAsync();
+            return Ok(orders);
         }
     }
 }

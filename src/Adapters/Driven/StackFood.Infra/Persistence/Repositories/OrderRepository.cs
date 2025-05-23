@@ -27,5 +27,10 @@ namespace StackFood.Infra.Persistence.Repositories
         {
             return await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
         }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

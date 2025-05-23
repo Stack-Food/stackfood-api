@@ -10,4 +10,13 @@
     <ProjectReference Include="..\StackFood.Domain\StackFood.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Payment\" />
+    <Folder Include="UseCases\Pay\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="mercadopago-sdk" Version="2.5.0" />
+  </ItemGroup>
+
 </Project>

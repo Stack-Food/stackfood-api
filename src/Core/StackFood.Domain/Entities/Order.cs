@@ -25,5 +25,10 @@ namespace StackFood.Domain.Entities
             Status = OrderStatus.Received;
             CreatedAt = DateTime.UtcNow;
         }
+
+        public void GeneratePayment(string qrCode)
+        {
+            Payment = new Payment(qrCode);
+        }
     }
 }

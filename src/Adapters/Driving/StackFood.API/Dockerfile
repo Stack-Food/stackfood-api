@@ -19,10 +19,6 @@ ARG CERT_PASSWORD_ARG
 
 WORKDIR /src
 COPY ["src/Adapters/Driving/StackFood.API/StackFood.API.csproj", "src/Adapters/Driving/StackFood.API/"]
-# Adicione outras referências de projeto aqui se necessário para o restore
-# COPY ["src/Core/StackFood.Application/StackFood.Application.csproj", "src/Core/StackFood.Application/"]
-# COPY ["src/Core/StackFood.Domain/StackFood.Domain.csproj", "src/Core/StackFood.Domain/"]
-# COPY ["src/Adapters/Driven/StackFood.Infra/StackFood.Infra.csproj", "src/Adapters/Driven/StackFood.Infra/"]
 RUN dotnet restore "src/Adapters/Driving/StackFood.API/StackFood.API.csproj"
 COPY . .
 
@@ -46,7 +42,7 @@ RUN mkdir -p /https # Cria o diretório para o certificado no estágio final
 # Copia o certificado gerado no estágio 'build' para o estágio 'final'
 COPY --from=build /https_build/aspnetapp.pfx /https/aspnetapp.pfx
 RUN chown appuser:appuser /https/aspnetapp.pfx && chmod 600 /https/aspnetapp.pfx
-RUN apt-get update && apt-get install -y curl # Mantém o curl se necessário
+RUN apt-get update && apt-get install -y curl
 
 USER appuser
 

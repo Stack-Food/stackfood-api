@@ -8,6 +8,6 @@ namespace StackFood.Domain.Enums
 {
     public enum PaymentType
     {
-        Pix
+        Pix = 1
     }
 }

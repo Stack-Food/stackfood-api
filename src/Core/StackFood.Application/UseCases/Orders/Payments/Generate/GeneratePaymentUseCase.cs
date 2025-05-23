@@ -20,7 +20,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             _customerRepository = customerRepository;
         }
 
-        public async Task GeneratePaymentAsycn(GeneratePaymentInput input)
+        public async Task GeneratePaymentAsync(GeneratePaymentInput input)
         {
             var order = await _orderRepository.GetByIdAsync(input.OrderId);
             if (order == null)
@@ -29,7 +29,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             }
 
             
-            var custumer = await _customerRepository.GetByCpfAsync(order.Customer.Cpf);
+            var custumer = await _customerRepository.GetByIdAsync(order.Customer.Id);
 
 
             var paymentMethodId = input.Type switch
@@ -46,7 +46,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 PaymentMethodId = paymentMethodId,
                 Payer = new PaymentPayerRequest
                 {
-                    Email = custumer.Email,
+                    Email = "stackFood@fiap.com",
                     FirstName = custumer.Name
                 }
             };

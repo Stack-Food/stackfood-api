@@ -9,6 +9,6 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
 {
    public interface IGeneratePaymentUseCase
     {
-        Task GeneratePaymentAsycn(GeneratePaymentInput input);
+        Task GeneratePaymentAsync(GeneratePaymentInput input);
     }
 }

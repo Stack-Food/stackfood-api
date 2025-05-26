@@ -33,7 +33,7 @@ public class Worker : BackgroundService
                 _logger.LogInformation($"Order {order.Id} updated to {status}");
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
         }
     }
 }

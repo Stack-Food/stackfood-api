@@ -19,14 +19,21 @@ namespace StackFood.Infra.Services
         {
             return await _context.Orders
                 .Include(o => o.Payment)
-                .Where(o => o.Payment.Status == PaymentStatus.Pending)
+                .Where(o => o.Payment != null && o.Payment.Status == PaymentStatus.Pending)
                 .ToListAsync();
         }
 
         public async Task UpdateOrderPaymentStatusAsync(Order order, PaymentStatus status)
         {
-            order.Payment.UpdateStatus(status); // Implemente esse método na entidade Payment
-            await _context.SaveChangesAsync();
+            if (order.Payment != null)
+            {
+                order.Payment.UpdateStatus(status);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Order payment cannot be null.");
+            }
         }
     }
 }

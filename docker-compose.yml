@@ -8,14 +8,18 @@ services:
       args:
         - BUILD_CONFIGURATION=${BUILD_CONFIGURATION:-Release}
         - configuration=Debug
+        - CERT_PASSWORD_ARG=${ASPNETCORE_CERT_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT:-Development}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_CERT_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}
     ports:
-      - "${API_PORT:-7189}:7189"
+      - "${API_HTTP_PORT:-5039}:5039" # HTTP
+      - "${API_HTTPS_PORT:-7189}:7189" # HTTPS
     networks:
       - stackfood_network
     volumes:
@@ -24,7 +28,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -f http://localhost:7189/swagger/index.html || exit 1",
+          "curl -f https://localhost:7189/swagger/index.html || exit 1",
         ]
       interval: 30s
       timeout: 10s

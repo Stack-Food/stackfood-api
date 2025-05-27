@@ -37,9 +37,9 @@ namespace StackFood.Tests.Application.Services
         public async Task GetProductByFilterAsync_ShouldReturnProduct_WhenExists()
         {
             var product = new Product("Product 1", "Description", 10.0m, "http://image.com", ProductCategory.Sandwich);
-            _mockProductRepository.Setup(repo => repo.GetProductByFilterAsync("Product 1", It.IsAny<Guid?>())).ReturnsAsync(product);
+            _mockProductRepository.Setup(repo => repo.GetProductByFilterAsync(It.IsAny<Guid?>())).ReturnsAsync(product);
 
-            var result = await _productService.GetProductByFilterAsync("Product 1", null);
+            var result = await _productService.GetProductByFilterAsync(It.IsAny<Guid?>());
 
             Assert.NotNull(result);
             Assert.Equal("Product 1", result.Name);

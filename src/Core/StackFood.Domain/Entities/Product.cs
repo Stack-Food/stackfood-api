@@ -22,6 +22,18 @@ namespace StackFood.Domain.Entities
             ImageUrl = imageUrl;
             Category = category;
         }
-    }
+        public void SetId(Guid id)
+        {
+            Id = id;
+        }
 
+        public void Update(string name, string description, decimal price, string imageUrl, ProductCategory category) 
+        { 
+            Name = name; 
+            Description = description; 
+            Price = price; 
+            ImageUrl = imageUrl;
+            Category = category; 
+        }
+    }
 }

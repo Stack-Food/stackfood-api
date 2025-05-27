@@ -45,24 +45,6 @@ namespace StackFood.API.Controllers
             return Ok(product);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request) 
-        { 
-            var product = await _productService.GetProductByFilterAsync(request.Id);
-            
-            if (product == null) {
-                return NotFound(); 
-            }
-            product = new Product(
-                request.Name,
-                request.Desc,
-                request.Price,
-                request.Img,
-                (ProductCategory) Enum.ToObject(typeof(ProductCategory), request.Category));
-
-            await _productService.UpdateProductAsync(product); 
-            return Ok(product); 
-        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid? id)
@@ -75,6 +57,32 @@ namespace StackFood.API.Controllers
             await _productService.DeleteProductAsync(id);
             return NoContent();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request)
+        {
+            var existingProduct = await _productService.GetProductByFilterAsync(request.Id); 
+            
+            if (existingProduct == null) {
+                return NotFound(); 
+            }
+
+            existingProduct.Update(
+                request.Name,
+                request.Desc,
+                request.Price,
+                request.Img, 
+                (ProductCategory)Enum.ToObject(typeof(ProductCategory),
+                request.Category
+                ));
+
+            existingProduct.SetId (request.Id);
+
+            await _productService.UpdateProductAsync(existingProduct);
+
+            return NoContent();
+        }
+             
         public record CreateProductRequest(string Name, string Desc, decimal Price, string Img, int Category); 
         public record UpdateProductRequest(Guid Id, string Name, string Desc, decimal Price, string Img, int Category);
     }

@@ -16,6 +16,10 @@ namespace StackFood.Infra.Persistence.Configurations
                    .HasConversion<string>()
                    .IsRequired();
 
+            builder.Property(p => p.Type)
+                   .HasConversion<string>()
+                   .IsRequired();
+
             builder.Property(p => p.PaymentDate).IsRequired();
         }
     }

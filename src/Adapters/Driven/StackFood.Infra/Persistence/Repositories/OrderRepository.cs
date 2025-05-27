@@ -28,6 +28,11 @@ namespace StackFood.Infra.Persistence.Repositories
             return await _context.Orders.Include(o => o.Products).Include(c => c.Customer).FirstOrDefaultAsync(o => o.Id == id);
         }
 
+        public async Task UpdateAsync(Order order)
+        {
+           await Task.FromResult(_context.Orders.Update(order));
+        }
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();

@@ -15,10 +15,11 @@ namespace StackFood.Domain.Entities
         {
 
         }
-        public Payment(string qrCode)
+        public Payment(PaymentType paymentType, string qrCode)
         {
             Id = Guid.NewGuid();
             Status = PaymentStatus.Pending;
+            Type = paymentType;
             PaymentDate = DateTime.UtcNow;
             QrCodeUrl = qrCode;
         }

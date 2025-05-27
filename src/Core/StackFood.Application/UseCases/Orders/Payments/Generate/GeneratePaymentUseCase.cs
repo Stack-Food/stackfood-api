@@ -54,8 +54,9 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             var client = new PaymentClient();
             var payment = await client.CreateAsync(paymentRequest);
 
-            order.GeneratePayment(payment.PointOfInteraction.TransactionData.QrCode);
+            order.GeneratePayment(input.Type, payment.PointOfInteraction.TransactionData.QrCode);
 
+            await _orderRepository.UpdateAsync(order);
             await _orderRepository.SaveAsync();
 
         }

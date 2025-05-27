@@ -1,5 +1,5 @@
 # --- Base runtime image ---
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
 # Expor as portas que Kestrel vai usar
@@ -13,7 +13,7 @@ ENV ASPNETCORE_URLS="http://+:5039;https://+:7189"
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 
 # --- Build image ---
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 ARG CERT_PASSWORD_ARG
 

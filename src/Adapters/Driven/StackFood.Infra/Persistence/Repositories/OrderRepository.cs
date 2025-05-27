@@ -26,7 +26,12 @@ namespace StackFood.Infra.Persistence.Repositories
 
         public async Task<Order> GetByIdAsync(Guid id)
         {
-            return await _context.Orders.Include(o => o.Products).FirstOrDefaultAsync(o => o.Id == id);
+            return await _context.Orders.Include(o => o.Products).Include(c => c.Customer).FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

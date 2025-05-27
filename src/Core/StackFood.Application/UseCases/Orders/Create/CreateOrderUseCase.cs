@@ -3,6 +3,7 @@ using StackFood.Application.UseCases.Orders.Base.Mappers;
 using StackFood.Application.UseCases.Orders.Base.Outputs;
 using StackFood.Application.UseCases.Orders.Create.Inputs;
 using StackFood.Domain.Entities;
+
 namespace StackFood.Application.UseCases.Orders.Create
 {
     public class CreateOrderUseCase : ICreateOrderUseCase

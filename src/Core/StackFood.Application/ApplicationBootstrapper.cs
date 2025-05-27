@@ -2,6 +2,7 @@
 using StackFood.Application.UseCases.Orders.Create;
 using StackFood.Application.UseCases.Orders.GetAll;
 using StackFood.Application.UseCases.Orders.GetById;
+using StackFood.Application.UseCases.Orders.Payments.Generate;
 
 namespace StackFood.Application
 {
@@ -12,6 +13,7 @@ namespace StackFood.Application
             services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
             services.AddScoped<IGetAllOrderUseCase, GetAllOrderUseCase>();
             services.AddScoped<IGetByIdOrderUseCase, GetByIdOrderUseCase>();
+            services.AddScoped<IGeneratePaymentUseCase, GeneratePaymentUseCase>();
         }
     }
 }

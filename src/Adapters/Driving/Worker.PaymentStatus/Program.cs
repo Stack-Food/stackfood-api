@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using StackFood.Application.Interfaces.Services;
-using StackFood.Infra.Services;
 using Microsoft.EntityFrameworkCore;
+using StackFood.Application.Interfaces.Repositories;
+using StackFood.Application.Interfaces.Services;
 using StackFood.Infra.Persistence;
+using StackFood.Infra.Persistence.Repositories;
+using StackFood.Infra.Services;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>

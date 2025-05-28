@@ -1,26 +1,33 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using StackFood.Application.Interfaces.Services;
-using StackFood.Domain.Enums;
 
-public class Worker : BackgroundService
+public class Worker(
+    ILogger<Worker> logger,
+    IServiceScopeFactory scopeFactory) : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
-    private readonly IOrderPaymentService _orderPaymentService;
-    private readonly IExternalPaymentGateway _paymentGateway;
-
-    public Worker(
-        ILogger<Worker> logger,
-        IOrderPaymentService orderPaymentService,
-        IExternalPaymentGateway paymentGateway)
-    {
-        _logger = logger;
-        _orderPaymentService = orderPaymentService;
-        _paymentGateway = paymentGateway;
-    }
+    private readonly ILogger<Worker> _logger = logger;
+    private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var orderPaymentService = scope.ServiceProvider.GetRequiredService<IOrderPaymentService>();
+                var paymentGateway = scope.ServiceProvider.GetRequiredService<IExternalPaymentGateway>();
 
+                var orders = await orderPaymentService.GetPendingPaymentOrdersAsync();
+
+                foreach (var order in orders)
+                {
+                    var status = await paymentGateway.GetPaymentStatusAsync(order);
+                    await orderPaymentService.UpdateOrderPaymentStatusAsync(order, status);
+
+                    _logger.LogInformation($"Order {order.Id} updated to {status}");
+                }
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+        }
     }
 }

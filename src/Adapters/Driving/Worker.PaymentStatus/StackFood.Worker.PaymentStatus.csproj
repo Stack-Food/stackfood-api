@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\StackFood.Domain\StackFood.Domain.csproj" />
-    <ProjectReference Include="..\Adapters\Driven\StackFood.Infra\StackFood.Infra.csproj" />
+    <ProjectReference Include="..\..\..\Core\StackFood.Application\StackFood.Application.csproj" />
+    <ProjectReference Include="..\..\..\Core\StackFood.Domain\StackFood.Domain.csproj" />
+    <ProjectReference Include="..\..\Driven\StackFood.Infra\StackFood.Infra.csproj" />
   </ItemGroup>
 </Project>

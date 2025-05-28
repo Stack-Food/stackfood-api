@@ -52,6 +52,7 @@ namespace StackFood.Application.UseCases.Orders.Create
             }
 
             await _orderRepository.CreateAsync(order);
+            await _orderRepository.SaveAsync();
 
             return OrderOutputMapper.Map(order);
         }

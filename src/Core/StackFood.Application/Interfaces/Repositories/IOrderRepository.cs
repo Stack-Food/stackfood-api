@@ -12,7 +12,7 @@ namespace StackFood.Application.Interfaces.Repositories
         Task CreateAsync(Order order);
         Task<List<Order>> GetAllAsync();
         Task<Order> GetByIdAsync(Guid id);
-        Task UpdateAsync(Order order);
         Task SaveAsync();
+        Task AddPaymentAsync(Payment payment);
     }
 }

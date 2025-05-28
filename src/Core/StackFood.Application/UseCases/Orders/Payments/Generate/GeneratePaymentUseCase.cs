@@ -8,13 +8,13 @@ using MercadoPago.Resource.Payment;
 
 namespace StackFood.Application.UseCases.Orders.Payments.Generate
 {
-    public class GeneratePaymentUseCase : IGeneratePaymentUseCase                       
+    public class GeneratePaymentUseCase : IGeneratePaymentUseCase
     {
         public readonly IOrderRepository _orderRepository;
 
         public readonly ICustomerRepository _customerRepository;
 
-        public GeneratePaymentUseCase(IOrderRepository orderRepository, ICustomerRepository customerRepository  )
+        public GeneratePaymentUseCase(IOrderRepository orderRepository, ICustomerRepository customerRepository)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
@@ -28,7 +28,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 return;
             }
 
-            
+
             var custumer = await _customerRepository.GetByIdAsync(order.Customer.Id);
 
 
@@ -54,8 +54,10 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             var client = new PaymentClient();
             var payment = await client.CreateAsync(paymentRequest);
 
-            order.GeneratePayment(payment.PointOfInteraction.TransactionData.QrCode);
-
+            order.GeneratePayment(
+                payment.PointOfInteraction.TransactionData.QrCode,
+                payment.Id.ToString() // ou payment.Id, dependendo do tipo
+            );
             await _orderRepository.SaveAsync();
 
         }

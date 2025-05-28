@@ -61,8 +61,7 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - postgres_data:/docker-entrypoint-initdb.d
-      - postgres_data:/backup
+      #- ./sql/placeholder_data.sql:/docker-entrypoint-initdb.d/placeholder_data.sql:ro
     networks:
       - stackfood_network
     healthcheck:
@@ -83,6 +82,18 @@ services:
     labels:
       com.stackfood.description: "PostgreSQL Database for StackFood"
       com.stackfood.service: "database"
+
+  stackfood-worker:
+    build:
+      context: .
+      dockerfile: src/StackFood.Worker.PaymentStatus/Dockerfile
+    container_name: stackfood-worker
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stackfood;Username=postgres;Password=password
+      - MercadoPago__AccessToken=SEU_ACCESS_TOKEN_SANDBOX
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:

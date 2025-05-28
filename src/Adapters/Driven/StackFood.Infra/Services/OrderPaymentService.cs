@@ -19,7 +19,7 @@ namespace StackFood.Infra.Services
         {
             return await _context.Orders
                 .Include(o => o.Payment)
-                .Where(o => o.Payment != null && o.Payment.Status == PaymentStatus.Pending)
+                .Where(o => o.Payment != null && o.Payment.Status == PaymentStatus.Pending && !string.IsNullOrEmpty(o.Payment.ExternalPaymentId))
                 .ToListAsync();
         }
 

@@ -21,19 +21,6 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            var orders = await _orderPaymentService.GetPendingPaymentOrdersAsync();
 
-            foreach (var order in orders)
-            {
-                var status = await _paymentGateway.GetPaymentStatusAsync(order);
-                await _orderPaymentService.UpdateOrderPaymentStatusAsync(order, status);
-
-                _logger.LogInformation($"Order {order.Id} updated to {status}");
-            }
-
-            await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
-        }
     }
 }

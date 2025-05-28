@@ -19,7 +19,7 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddScoped<IOrderPaymentService, OrderPaymentService>();
         services.AddScoped<IExternalPaymentGateway, MercadoPagoGateway>();
         services.AddSingleton<IConfiguration>(context.Configuration);
-        services
+        services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddHostedService<Worker>();
     })
     .Build();

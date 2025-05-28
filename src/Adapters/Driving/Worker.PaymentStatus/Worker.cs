@@ -1,4 +1,5 @@
 using StackFood.Application.Interfaces.Services;
+using StackFood.Domain.Enums;
 
 public class Worker(
     ILogger<Worker> logger,
@@ -14,16 +15,16 @@ public class Worker(
             using (var scope = _scopeFactory.CreateScope())
             {
                 var orderPaymentService = scope.ServiceProvider.GetRequiredService<IOrderPaymentService>();
-                var paymentGateway = scope.ServiceProvider.GetRequiredService<IExternalPaymentGateway>();
+                // var paymentGateway = scope.ServiceProvider.GetRequiredService<IExternalPaymentGateway>();
 
                 var orders = await orderPaymentService.GetPendingPaymentOrdersAsync();
 
                 foreach (var order in orders)
                 {
-                    var status = await paymentGateway.GetPaymentStatusAsync(order);
-                    await orderPaymentService.UpdateOrderPaymentStatusAsync(order, status);
+                    // var status = await paymentGateway.GetPaymentStatusAsync(order);
+                    await orderPaymentService.UpdateOrderPaymentStatusAsync(order, PaymentStatus.Paid);
 
-                    _logger.LogInformation($"Order {order.Id} updated to {status}");
+                    _logger.LogInformation($"Order {order.Id} updated to approved");
                 }
             }
 

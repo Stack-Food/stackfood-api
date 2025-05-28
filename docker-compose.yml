@@ -86,14 +86,34 @@ services:
   stackfood-worker:
     build:
       context: .
-      dockerfile: src/Adapters/Driving/Worker.PaymentStatus/Dockerfile
+      dockerfile: src/Adapters/Driving/StackFood.Worker/Dockerfile
     container_name: stackfood-worker
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stackfood;Username=postgres;Password=password
-      - MercadoPago__AccessToken=SEU_ACCESS_TOKEN_SANDBOX
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}
+      - MercadoPago__AccessToken=${SEU_ACCESS_TOKEN_SANDBOX:-your_access_token}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      stackfood.api:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - stackfood_network
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "StackFood Worker service"
+      com.stackfood.service: "worker"
+      com.stackfood.version: "${WORKER_VERSION:-latest}"
 
 volumes:
   postgres_data:

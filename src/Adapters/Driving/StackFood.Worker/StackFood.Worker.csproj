@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-StackFood.Worker.PaymentStatus-565ceedb-a542-4ebc-95c7-d2ade7ea8694</UserSecretsId>
+    <UserSecretsId>dotnet-StackFood.Worker-565ceedb-a542-4ebc-95c7-d2ade7ea8694</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

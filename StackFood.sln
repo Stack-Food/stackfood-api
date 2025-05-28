@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackFood.Domain", "src\Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Tests", "src\Tests\StackFood.Tests\StackFood.Tests.csproj", "{AFBEF1A6-6182-43DD-9178-B0B38BC7D767}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Worker.PaymentStatus", "src\Adapters\Driving\Worker.PaymentStatus\StackFood.Worker.PaymentStatus.csproj", "{670753CC-51CD-8332-3616-ADC691C5CCD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Worker", "src\Adapters\Driving\StackFood.Worker\StackFood.Worker.csproj", "{670753CC-51CD-8332-3616-ADC691C5CCD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

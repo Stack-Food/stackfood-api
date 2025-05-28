@@ -41,9 +41,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Adapters/Driving/Worker.PaymentStatus/bin/Debug/net8.0/StackFood.Worker.PaymentStatus.dll",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Debug/net8.0/StackFood.Worker.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Adapters/Driving/Worker.PaymentStatus",
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
       "console": "internalConsole",
       "stopAtEntry": false
     },
@@ -58,7 +58,7 @@
       "request": "launch",
       "preLaunchTask": "docker-run: debug",
       "netCore": {
-        "appProject": "${workspaceFolder}/src/Adapters/Driving/Worker.PaymentStatus/StackFood.Worker.PaymentStatus.csproj"
+        "appProject": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/StackFood.Worker.csproj"
       }
     }
   ]

@@ -86,7 +86,7 @@ services:
   stackfood-worker:
     build:
       context: .
-      dockerfile: src/StackFood.Worker.PaymentStatus/Dockerfile
+      dockerfile: src/Adapters/Driving/Worker.PaymentStatus/Dockerfile
     container_name: stackfood-worker
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

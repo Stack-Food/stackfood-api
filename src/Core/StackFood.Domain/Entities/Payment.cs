@@ -8,12 +8,6 @@ namespace StackFood.Domain.Entities
         public long PaymentExternalId { get; private set; }
         public string QrCodeUrl { get; private set; }
         public PaymentStatus Status { get; private set; }
-
-        public void UpdateStatus(PaymentStatus status)
-        {
-            Status = status;
-        }
-
         public DateTime PaymentDate { get; private set; }
         public PaymentType Type { get; set; }  
         public Order Order { get; private set; } = null!;
@@ -31,11 +25,13 @@ namespace StackFood.Domain.Entities
             Type = paymentType;
             PaymentDate = DateTime.UtcNow;
             QrCodeUrl = qrCode;
-            ExternalPaymentId = externalPaymentId;
         }
 
         public void MarkAsPaid() => Status = PaymentStatus.Paid;
 
-        public string ExternalPaymentId { get; set; }
+        public void UpdateStatus(PaymentStatus status)
+        {
+            Status = status;
+        }
     }
 }

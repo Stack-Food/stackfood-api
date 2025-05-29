@@ -29,24 +29,17 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 return;
             }
 
-
-            var custumer = await _customerRepository.GetByIdAsync(order.Customer.Id);
-
-
-            var paymentMethodId = input.Type switch
-            
             if (order.Payment is not null)
-            
             {
                 throw new InvalidOperationException("Pagamento já foi gerado para este pedido.");
             }
 
-            var custumer = await _customerRepository.GetByIdAsync(order.Customer.Id);
+            var customer = await _customerRepository.GetByIdAsync(order.Customer.Id);
 
             var (paymentExternalId, qrCode) = await _mercadoPagoApiService.GeneratePaymentAsync(
                 input.Type,
                 order,
-                custumer);
+                customer);
             if (paymentExternalId is null)
             {
                 throw new InvalidOperationException("Falha ao criar pagamento.");
@@ -54,11 +47,8 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
 
             order.GeneratePayment(input.Type, paymentExternalId.Value, qrCode);
 
-            order.GeneratePayment(
-                payment.PointOfInteraction.TransactionData.QrCode,
-                payment.Id.ToString() // ou payment.Id, dependendo do tipo
-            );
             await _orderRepository.AddPaymentAsync(order.Payment);
+            await _orderRepository.SaveAsync();
         }
     }
 }

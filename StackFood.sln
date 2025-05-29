@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackFood.Domain", "src\Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackFood.Tests", "src\Tests\StackFood.Tests\StackFood.Tests.csproj", "{AFBEF1A6-6182-43DD-9178-B0B38BC7D767}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackFood.ExternalService.MercadoPago", "src\Adapters\Driven\StackFood.ExternalService.MercadoPago\StackFood.ExternalService.MercadoPago.csproj", "{2A11688B-90FA-403F-9B4F-F4A37DAB2B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackFood.Worker", "src\Adapters\Driving\StackFood.Worker\StackFood.Worker.csproj", "{670753CC-51CD-8332-3616-ADC691C5CCD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackFood.Worker", "src\Adapters\Driving\StackFood.Worker\StackFood.Worker.csproj", "{670753CC-51CD-8332-3616-ADC691C5CCD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackFood.ExternalService.MercadoPago", "src\Adapters\Driven\StackFood.ExternalService.MercadoPago\StackFood.ExternalService.MercadoPago.csproj", "{26684EFC-F18A-4F2C-8A6B-A42304C5C68F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +57,10 @@ Global
 		{670753CC-51CD-8332-3616-ADC691C5CCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{670753CC-51CD-8332-3616-ADC691C5CCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{670753CC-51CD-8332-3616-ADC691C5CCD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26684EFC-F18A-4F2C-8A6B-A42304C5C68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26684EFC-F18A-4F2C-8A6B-A42304C5C68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26684EFC-F18A-4F2C-8A6B-A42304C5C68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26684EFC-F18A-4F2C-8A6B-A42304C5C68F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +74,7 @@ Global
 		{4A13CE31-B668-47A4-912E-F79CABEB4D20} = {F4A32842-065E-4FD6-ADB9-2F56D2A22D85}
 		{AFBEF1A6-6182-43DD-9178-B0B38BC7D767} = {35B03661-CF05-4F2E-87A0-D5B3D2B9B8CE}
 		{670753CC-51CD-8332-3616-ADC691C5CCD5} = {42574E15-C281-4DEC-8928-90A67144DFEC}
+		{26684EFC-F18A-4F2C-8A6B-A42304C5C68F} = {4BEEE82F-5C90-46CB-9A06-4C481367D6E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8F43801-19F8-4626-A248-9FC41904E02F}

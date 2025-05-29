@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StackFood.Infra.Persistence;
@@ -11,13 +12,15 @@ using StackFood.Infra.Persistence;
 namespace StackFood.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527020105_AddPaymentTypeColumn")]
+    partial class AddPaymentTypeColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -80,23 +83,15 @@ namespace StackFood.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ExternalPaymentId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("PaymentExternalId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("QrCodeUrl")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -105,9 +100,6 @@ namespace StackFood.Infra.Migrations
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

@@ -1,5 +1,4 @@
 {
-  // Configuração de depuração exclusiva para a API StackFood
   "version": "0.2.0",
   "configurations": [
     {

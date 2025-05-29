@@ -31,6 +31,7 @@ namespace StackFood.Domain.Entities
         {
             Products.Add(product);
         }
+      
         public void GeneratePayment(string qrCode, string externalPaymentId)
         {
             if (Payment != null)

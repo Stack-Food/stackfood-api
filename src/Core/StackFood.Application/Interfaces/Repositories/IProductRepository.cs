@@ -7,7 +7,7 @@ namespace StackFood.Application.Interfaces.Repositories
         Task DeleteProductByIdAsync(Guid? id);
         Task<List<Product>> GetAllProductsAsync();
         Task<Product> GetByIdAsync(Guid productId);
-        Task<Product> GetProductByFilterAsync(string name, Guid? id);
+        Task<Product> GetProductByFilterAsync(Guid? id);
         Task RegisterProductAsync(Product product);
         Task UpdateProductAsync(Product product);
     }

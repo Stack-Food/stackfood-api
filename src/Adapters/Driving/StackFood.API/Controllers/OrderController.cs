@@ -55,7 +55,7 @@ namespace StackFood.API.Controllers
         }
 
         [HttpPut("{id}/payment")]
-        public async Task GeneratePayament([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
+        public async Task GeneratePayment([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
         {
 
             var input = new GeneratePaymentInput

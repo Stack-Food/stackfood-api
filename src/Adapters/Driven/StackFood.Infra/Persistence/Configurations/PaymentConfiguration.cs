@@ -12,7 +12,14 @@ namespace StackFood.Infra.Persistence.Configurations
 
             builder.HasKey(p => p.Id);
 
+            builder.Property(p => p.PaymentExternalId).IsRequired();
+            builder.Property(p => p.QrCodeUrl).IsRequired().HasMaxLength(2000);
+
             builder.Property(p => p.Status)
+                   .HasConversion<string>()
+                   .IsRequired();
+
+            builder.Property(p => p.Type)
                    .HasConversion<string>()
                    .IsRequired();
 

@@ -36,10 +36,10 @@ namespace StackFood.Application.UseCases.Orders.Create
             {
                 var product = await _productRepository.GetByIdAsync(inputProduct.ProductId);
                 if (product is null)
-                {
+            {
                     throw new ArgumentNullException(nameof(product), "Product not found");
                 }
-                
+
                 var productOrder = new ProductOrder(
                     inputProduct.ProductId,
                     product.Name,
@@ -52,6 +52,7 @@ namespace StackFood.Application.UseCases.Orders.Create
             }
 
             await _orderRepository.CreateAsync(order);
+            await _orderRepository.SaveAsync();
 
             return OrderOutputMapper.Map(order);
         }

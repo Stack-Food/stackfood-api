@@ -1,23 +1,23 @@
-﻿
-using StackFood.Application.Interfaces.Repositories;
+﻿using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.UseCases.Orders.Payments.Generate.Inputs;
-using StackFood.Domain.Entities;
-using StackFood.Domain.Enums;
-using MercadoPago.Client.Payment;
-using MercadoPago.Resource.Payment;
+using StackFood.Application.Interfaces.ExternalsServices;
 
 namespace StackFood.Application.UseCases.Orders.Payments.Generate
 {
     public class GeneratePaymentUseCase : IGeneratePaymentUseCase                       
     {
         public readonly IOrderRepository _orderRepository;
-
         public readonly ICustomerRepository _customerRepository;
+        public readonly IMercadoPagoApiService _mercadoPagoApiService;
 
-        public GeneratePaymentUseCase(IOrderRepository orderRepository, ICustomerRepository customerRepository  )
+        public GeneratePaymentUseCase(
+            IOrderRepository orderRepository,
+            ICustomerRepository customerRepository,
+            IMercadoPagoApiService mercadoPagoApiService)
         {
             _orderRepository = orderRepository;
             _customerRepository = customerRepository;
+            _mercadoPagoApiService = mercadoPagoApiService;
         }
 
         public async Task GeneratePaymentAsync(GeneratePaymentInput input)
@@ -28,36 +28,27 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 return;
             }
 
-            
+            if (order.Payment is not null)
+            {
+                throw new InvalidOperationException("Pagamento já foi gerado para este pedido.");
+            }
+
             var custumer = await _customerRepository.GetByIdAsync(order.Customer.Id);
 
-
-            var paymentMethodId = input.Type switch
+            var (paymentExternalId, qrCode) = await _mercadoPagoApiService.GeneratePaymentAsync(
+                input.Type,
+                order,
+                custumer);
+            if (paymentExternalId is null)
             {
-                PaymentType.Pix => "pix",
-                _ => throw new ArgumentOutOfRangeException(nameof(input), "Tipo de pagamento não suportado.")
-            };
+                throw new InvalidOperationException("Falha ao criar pagamento.");
+            }
 
+            order.GeneratePayment(input.Type, paymentExternalId.Value, qrCode);
 
-            var paymentRequest = new PaymentCreateRequest
-            {
-                TransactionAmount = order.TotalPrice,
-                Description = "Descrição da compra",
-                PaymentMethodId = paymentMethodId,
-                Payer = new PaymentPayerRequest
-                {
-                    Email = "stackFood@fiap.com",
-                    FirstName = custumer.Name
-                }
-            };
-
-            var client = new PaymentClient();
-            var payment = await client.CreateAsync(paymentRequest);
-
-            order.GeneratePayment(payment.PointOfInteraction.TransactionData.QrCode);
+            await _orderRepository.AddPaymentAsync(order.Payment);
 
             await _orderRepository.SaveAsync();
-
         }
     }
 }

@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="mercadopago-sdk" Version="2.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
@@ -20,6 +29,7 @@
     <ProjectReference Include="..\..\..\Core\StackFood.Application\StackFood.Application.csproj" />
     <ProjectReference Include="..\..\..\Core\StackFood.Domain\StackFood.Domain.csproj" />
     <ProjectReference Include="..\..\Driven\StackFood.Infra\StackFood.Infra.csproj" />
+    <ProjectReference Include="..\..\Driven\StackFood.ExternalService.MercadoPago\StackFood.ExternalService.MercadoPago.csproj" />
   </ItemGroup>
 
 </Project>

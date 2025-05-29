@@ -16,19 +16,30 @@ namespace StackFood.Infra.Persistence.Repositories
         public async Task CreateAsync(Order order)
         {
             await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await _context.Orders.Include(o => o.Products).ToListAsync();
+            return await _context.Orders
+                .Include(o => o.Products)
+                .Include(c => c.Customer)
+                .Include(p => p.Payment).ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(Guid id)
         {
-            return await _context.Orders.Include(o => o.Products).Include(c => c.Customer).FirstOrDefaultAsync(o => o.Id == id);
+            return await _context.Orders
+                .Include(o => o.Products)
+                .Include(c => c.Customer)
+                .Include(p => p.Payment)
+                .FirstOrDefaultAsync(o => o.Id == id);
         }
 
+        public async Task AddPaymentAsync(Payment payment)
+        {
+            await _context.Payments.AddAsync(payment);
+        }
+        
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();

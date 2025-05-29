@@ -27,6 +27,7 @@ namespace StackFood.Infra.Persistence.Configurations
                    .WithOne(i => i.Order)
                    .HasForeignKey("OrderId");
 
+
             builder.HasOne(o => o.Payment)
                    .WithOne(p => p.Order)
                    .HasForeignKey<Payment>("OrderId");

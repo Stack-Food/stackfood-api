@@ -22,7 +22,23 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
                     Quantity = po.Quantity,
                     ImageUrl = po.ImageUrl,
                     Category = po.Category
-                }).ToList()
+                }).ToList(),
+                Customer = order.Customer is not null ? new OrderCustomerOutput
+                {
+                    Id = order.Customer.Id,
+                    Name = order.Customer.Name,
+                    Email = order.Customer.Email,
+                    Cpf = order.Customer.Cpf
+                } : null,
+                Payment = order.Payment is not null ? new OrderPaymentOutput
+                {
+                    Id = order.Payment.Id,
+                    PaymentExternalId = order.Payment.PaymentExternalId,
+                    QrCodeUrl = order.Payment.QrCodeUrl,
+                    Status = order.Payment.Status,
+                    PaymentDate = order.Payment.PaymentDate,
+                    Type = order.Payment.Type
+                } : null
             };
         }
 

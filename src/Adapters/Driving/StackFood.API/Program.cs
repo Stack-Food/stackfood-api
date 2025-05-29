@@ -13,6 +13,7 @@ using System.Reflection;
 using StackFood.API.Validators.Customer;
 using StackFood.Application.UseCases.Customers.Create;
 using StackFood.Application.UseCases.Customers.GetByCpf;
+using StackFood.Application.Interfaces.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

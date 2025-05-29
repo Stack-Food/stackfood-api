@@ -84,7 +84,7 @@ namespace StackFood.API.Controllers
         /// Returns HTTP 204 (No Content) on successful payment generation.
         /// </returns>
         [HttpPut("{id}/payment")]
-        public async Task GeneratePayament([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
+        public async Task GeneratePayment([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
         {
 
             var input = new GeneratePaymentInput

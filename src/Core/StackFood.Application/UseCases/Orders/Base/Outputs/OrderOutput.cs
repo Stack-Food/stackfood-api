@@ -9,5 +9,8 @@ namespace StackFood.Application.UseCases.Orders.Base.Outputs
         public DateTime CreatedAt { get; set; }
         public decimal TotalPrice { get; set; }
         public List<OrderProductOutput> Products { get; set; }
+        public OrderCustomerOutput? Customer { get; set; }
+        public OrderPaymentOutput? Payment { get; set; }
+
     }
 }

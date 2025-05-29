@@ -13,7 +13,7 @@ namespace StackFood.Infra.Persistence.Repositories
             _context = context;
         }
 
-        public async Task RegisterAsync(Customer customer)
+        public async Task CreateAsync(Customer customer)
         {
             await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();

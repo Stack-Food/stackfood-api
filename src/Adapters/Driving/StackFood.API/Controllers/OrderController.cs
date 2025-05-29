@@ -31,6 +31,12 @@ namespace StackFood.API.Controllers
             _generatePaymentUseCase = generatePaymentUseCase;
         }
 
+        /// <summary>
+        /// Retrieves a list of all orders.
+        /// </summary>
+        /// <returns>
+        /// Returns HTTP 200 (OK) with the list of all orders.
+        /// </returns>
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -38,6 +44,14 @@ namespace StackFood.API.Controllers
             return Ok(orders);
         }
 
+        /// <summary>
+        /// Retrieves the details of a specific order by its ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order.</param>
+        /// <returns>
+        /// Returns HTTP 200 (OK) with the order details,
+        /// or HTTP 404 (Not Found) if the order does not exist.
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
@@ -45,6 +59,13 @@ namespace StackFood.API.Controllers
             return Ok(order);
         }
 
+        /// <summary>
+        /// Creates a new order with the provided information.
+        /// </summary>
+        /// <param name="request">The request body containing order details.</param>
+        /// <returns>
+        /// Returns HTTP 200 (OK) with the created order.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateOrderRequest request)
         {
@@ -54,6 +75,14 @@ namespace StackFood.API.Controllers
             return Ok(order);
         }
 
+        /// <summary>
+        /// Generates a payment for a specific order.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order.</param>
+        /// <param name="request">The request body containing payment details.</param>
+        /// <returns>
+        /// Returns HTTP 204 (No Content) on successful payment generation.
+        /// </returns>
         [HttpPut("{id}/payment")]
         public async Task GeneratePayment([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StackFood.Application.Interfaces.Repositories;
-using StackFood.Application.Interfaces.Services;
+using StackFood.API.Requests.Customers;
+using StackFood.Application.UseCases.Customers.Create;
+using StackFood.Application.UseCases.Customers.GetByCpf;
 using StackFood.Domain.Entities;
 
 namespace StackFood.API.Controllers
@@ -9,29 +10,50 @@ namespace StackFood.API.Controllers
     [Route("api/customers")]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICreateCustomerUseCase _createCustomerUseCase;
+        private readonly IGetByCpfCustomerUseCase _getByCpfCustomerUseCase;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(
+            ICreateCustomerUseCase createCustomerUseCase, 
+            IGetByCpfCustomerUseCase getByCpfCustomerUseCase)
         {
-            _customerService = customerService;
+            _createCustomerUseCase = createCustomerUseCase;
+            _getByCpfCustomerUseCase = getByCpfCustomerUseCase;
         }
 
+        /// <summary>
+        /// Creates a new customer in the database.
+        /// </summary>
+        /// <param name="request">The customer data (name, email, and CPF).</param>
+        /// <returns>
+        /// Returns HTTP 200 (OK) with the created customer, 
+        /// or HTTP 400 (Bad Request) if the input is invalid.
+        /// </returns>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CustomerRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateCustomerRequest request)
         {
             var customer = new Customer(request.Name, request.Email, request.Cpf);
-            await _customerService.RegisterAsync(customer);
+            await _createCustomerUseCase.CreateCustomerAsync(customer);
             return Ok(customer);
         }
 
-        [HttpGet("{cpf}")]
-        public async Task<IActionResult> GetByCpf([FromRoute] string cpf)
+        /// <summary>
+        /// Get a customer by CPF.
+        /// </summary>
+        /// <param name="request">Request with CPF of the customer to retrieve.</param>
+        /// <returns>
+        /// Returns HTTP 200 (OK) with the customer data, 
+        /// or HTTP 404 (Not Found) if no customer is found with the given CPF.
+        /// </returns>
+        [HttpGet("{Cpf}")]
+        public async Task<IActionResult> GetByCpf([FromRoute] GetCustomerByCpfRequest request)
         {
-            var customer = await _customerService.GetByCpfAsync(cpf);
-            if (customer == null) return NotFound();
+            var customer = await _getByCpfCustomerUseCase.GetByCpfAsync(request.Cpf);
+
+            if (customer is null)
+                return NotFound();
+
             return Ok(customer);
         }
-    }
-
-    public record CustomerRequest(string Name, string Email, string Cpf);
+    }    
 }

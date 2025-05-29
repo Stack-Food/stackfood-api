@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StackFood.Application.Interfaces.Repositories;
 using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Infra.Persistence.Repositories
 {
@@ -23,7 +24,7 @@ namespace StackFood.Infra.Persistence.Repositories
             return await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
         }
 
-        public async Task<Product> GetProductByFilterAsync(Guid? id)
+        public async Task<Product> GetProductByIdAsync(Guid? id)
         {
             IQueryable<Product> query = _context.Products;
             if (id.HasValue)
@@ -54,6 +55,13 @@ namespace StackFood.Infra.Persistence.Repositories
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync(); 
             }
+        }
+
+        public async Task<List<Product>> GetAllProductsByCategoryAsync(ProductCategory category)
+        {
+            return await _context.Products
+                .Where(p => p.Category == category)
+                .ToListAsync();
         }
     }
 }

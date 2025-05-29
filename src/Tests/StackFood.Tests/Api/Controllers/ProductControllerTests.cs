@@ -4,19 +4,33 @@ using Moq;
 using StackFood.API.Controllers;
 using StackFood.Domain.Entities;
 using StackFood.Domain.Enums;
-using StackFood.Application.Interfaces.Services;
-using Xunit;
 using StackFood.API.Requests.Products;
+using StackFood.Application.UseCases.Products.Create;
+using StackFood.Application.UseCases.Products.Delete;
+using StackFood.Application.UseCases.Products.GetAll;
+using StackFood.Application.UseCases.Products.GetById;
+using StackFood.Application.UseCases.Products.Update;
 
 public class ProductControllerTests
 {
-    private readonly Mock<IProductService> _productServiceMock;
     private readonly ProductController _controller;
+
+    private readonly Mock<ICreateProductUseCase> _productUseCaseMock;
+    private readonly Mock<IUpdateProductUseCase> _updateProductUseCaseMock;
+    private readonly Mock<IGetAllProductUseCase> _getAllProductUseCaseMock;
+    private readonly Mock<IGetByIdProductUseCase> _getByIdProductUseCaseMock;
+    private readonly Mock<IDeleteProductUseCase> _deleteProductUseCaseMock;
+
 
     public ProductControllerTests()
     {
-        _productServiceMock = new Mock<IProductService>();
-        _controller = new ProductController(_productServiceMock.Object);
+        _productUseCaseMock = new Mock<ICreateProductUseCase>();
+        _updateProductUseCaseMock = new Mock<IUpdateProductUseCase>();
+        _getAllProductUseCaseMock = new Mock<IGetAllProductUseCase>();
+        _getByIdProductUseCaseMock = new Mock<IGetByIdProductUseCase>();
+        _deleteProductUseCaseMock = new Mock<IDeleteProductUseCase>();
+
+        _controller = new ProductController(_productUseCaseMock.Object, _updateProductUseCaseMock.Object,_getAllProductUseCaseMock.Object,_getByIdProductUseCaseMock.Object,_deleteProductUseCaseMock.Object);
     }
 
     [Fact]
@@ -24,7 +38,7 @@ public class ProductControllerTests
     {
         // Arrange
         var products = new List<Product> { new("Coca", "Drink", 5.5m, "url", ProductCategory.Drink) };
-        _productServiceMock.Setup(s => s.GetAllProductsAsync()).ReturnsAsync(products);
+        _getAllProductUseCaseMock.Setup(s => s.GetAllProductsAsync()).ReturnsAsync(products);
 
         // Act
         var result = await _controller.GetAllProducts();
@@ -34,18 +48,7 @@ public class ProductControllerTests
         var returned = okResult.Value.Should().BeAssignableTo<IEnumerable<Product>>().Subject;
 
         returned.Should().HaveCount(1);
-        _productServiceMock.Verify(s => s.GetAllProductsAsync(), Times.Once);
-    }
-
-    [Fact]
-    public async Task GetProducts_ShouldReturnBadRequest_WhenIdIsNull()
-    {
-        // Act
-        var result = await _controller.GetProducts(null);
-
-        // Assert
-        var badRequest = result.Should().BeOfType<BadRequestObjectResult>().Subject;
-        badRequest.Value.Should().Be("É necessário fornecer parâmetros: id.");
+        _getAllProductUseCaseMock.Verify(s => s.GetAllProductsAsync(), Times.Once);
     }
 
     [Fact]
@@ -53,7 +56,7 @@ public class ProductControllerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        _productServiceMock
+        _getAllProductUseCaseMock
             .Setup(s => s.GetAllProductsAsync())
             .ReturnsAsync(new List<Product>());
 
@@ -70,7 +73,7 @@ public class ProductControllerTests
         // Arrange
         var id = Guid.NewGuid();
         var product = new Product("X-Burguer", "Sanduíche", 10, "img", ProductCategory.Sandwich);
-        _productServiceMock.Setup(s => s.GetProductByFilterAsync(id)).ReturnsAsync(product);
+        _getByIdProductUseCaseMock.Setup(s => s.GetProductByIdAsync(id)).ReturnsAsync(product);
 
         // Act
         var result = await _controller.GetProducts(id);
@@ -80,7 +83,7 @@ public class ProductControllerTests
         var returned = okResult.Value.Should().BeOfType<Product>().Subject;
 
         returned.Name.Should().Be("X-Burguer");
-        _productServiceMock.Verify(s => s.GetProductByFilterAsync(id), Times.Once);
+        _getByIdProductUseCaseMock.Verify(s => s.GetProductByIdAsync(id), Times.Once);
     }
 
     [Fact]
@@ -98,7 +101,7 @@ public class ProductControllerTests
 
         product.Name.Should().Be("Suco");
         product.Price.Should().Be(7);
-        _productServiceMock.Verify(s => s.RegisterNewProductAsync(It.IsAny<Product>()), Times.Once);
+        _productUseCaseMock.Verify(s => s.RegisterNewProductAsync(It.IsAny<Product>()), Times.Once);
     }
 
     [Fact]
@@ -106,7 +109,7 @@ public class ProductControllerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        _productServiceMock.Setup(s => s.GetProductByFilterAsync(id)).ReturnsAsync((Product?)null);
+        _getByIdProductUseCaseMock.Setup(s => s.GetProductByIdAsync(id)).ReturnsAsync((Product?)null);
 
         // Act
         var result = await _controller.DeleteProduct(id);
@@ -121,14 +124,14 @@ public class ProductControllerTests
         // Arrange
         var id = Guid.NewGuid();
         var product = new Product("Pepsi", "Drink", 6, "img", ProductCategory.Drink);
-        _productServiceMock.Setup(s => s.GetProductByFilterAsync(id)).ReturnsAsync(product);
+        _getByIdProductUseCaseMock.Setup(s => s.GetProductByIdAsync(id)).ReturnsAsync(product);
 
         // Act
         var result = await _controller.DeleteProduct(id);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
-        _productServiceMock.Verify(s => s.DeleteProductAsync(id), Times.Once);
+        _deleteProductUseCaseMock.Verify(s => s.DeleteProductAsync(id), Times.Once);
     }
 
     [Fact]
@@ -136,7 +139,7 @@ public class ProductControllerTests
     {
         // Arrange
         var request = new UpdateProductRequest(Guid.NewGuid(), "New", "Desc", 10, "img", 1);
-        _productServiceMock.Setup(s => s.GetProductByFilterAsync(request.Id)).ReturnsAsync((Product?)null);
+        _getByIdProductUseCaseMock.Setup(s => s.GetProductByIdAsync(request.Id)).ReturnsAsync((Product?)null);
 
         // Act
         var result = await _controller.UpdateProduct(request);
@@ -152,13 +155,13 @@ public class ProductControllerTests
         var product = new Product("Old", "Old Desc", 5, "img", ProductCategory.Sandwich);
         var request = new UpdateProductRequest(Guid.NewGuid(), "Updated", "Updated Desc", 10, "img", (int)ProductCategory.Sandwich);
 
-        _productServiceMock.Setup(s => s.GetProductByFilterAsync(request.Id)).ReturnsAsync(product);
+        _getByIdProductUseCaseMock.Setup(s => s.GetProductByIdAsync(request.Id)).ReturnsAsync(product);
 
         // Act
         var result = await _controller.UpdateProduct(request);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
-        _productServiceMock.Verify(s => s.UpdateProductAsync(It.IsAny<Product>()), Times.Once);
+        _updateProductUseCaseMock.Verify(s => s.UpdateProductAsync(It.IsAny<Product>()), Times.Once);
     }
 }

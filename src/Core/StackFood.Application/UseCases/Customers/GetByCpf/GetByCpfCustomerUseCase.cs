@@ -1,20 +1,14 @@
 ﻿using StackFood.Application.Interfaces.Repositories;
-using StackFood.Application.Interfaces.Services;
 using StackFood.Domain.Entities;
 
-namespace StackFood.Application.Services
+namespace StackFood.Application.UseCases.Customers.GetByCpf
 {
-    public class CustomerService : ICustomerService
+    public class GetByCpfCustomerUseCase : IGetByCpfCustomerUseCase
     {
         private readonly ICustomerRepository _repository;
-
-        public CustomerService(ICustomerRepository repository)
+        public GetByCpfCustomerUseCase(ICustomerRepository repository)
         {
             _repository = repository;
-        }
-        public async Task RegisterAsync(Customer customer)
-        {
-            await _repository.RegisterAsync(customer);
         }
 
         public async Task<Customer?> GetByCpfAsync(string cpf)

@@ -21,7 +21,6 @@ namespace StackFood.Domain.Entities
             Id = Guid.NewGuid();
             CustomerId = customerId;
 
-
             Status = OrderStatus.Received;
             CreatedAt = DateTime.UtcNow;
             Products = new List<ProductOrder>();
@@ -32,14 +31,14 @@ namespace StackFood.Domain.Entities
             Products.Add(product);
         }
       
-        public void GeneratePayment(string qrCode, string externalPaymentId)
+        public void GeneratePayment(PaymentType type, long paymentExternalId, string qrCode)
         {
             if (Payment != null)
             {
                 throw new InvalidOperationException("Payment already exists for this order.");
             }
 
-            Payment = new Payment(qrCode, externalPaymentId);
+            Payment = new Payment(type, paymentExternalId, qrCode);
         }
     }
 }

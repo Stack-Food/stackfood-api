@@ -26,7 +26,7 @@ namespace StackFood.Infra.Services
             if (order.Payment == null)
                 throw new Exception("Order.Payment is null. Cannot retrieve ExternalPaymentId.");
 
-            var paymentId = order.Payment.ExternalPaymentId; // ajuste conforme seu modelo
+            var paymentId = order.Payment.PaymentExternalId; // ajuste conforme seu modelo
 
             var url = $"https://api.mercadopago.com/v1/payments/{paymentId}";
             var response = await _httpClient.GetAsync(url);

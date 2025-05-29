@@ -4,11 +4,12 @@ using StackFood.Application.Interfaces.ExternalsServices;
 
 namespace StackFood.Application.UseCases.Orders.Payments.Generate
 {
-    public class GeneratePaymentUseCase : IGeneratePaymentUseCase                       
+    public class GeneratePaymentUseCase : IGeneratePaymentUseCase
     {
         public readonly IOrderRepository _orderRepository;
         public readonly ICustomerRepository _customerRepository;
         public readonly IMercadoPagoApiService _mercadoPagoApiService;
+
 
         public GeneratePaymentUseCase(
             IOrderRepository orderRepository,
@@ -28,7 +29,14 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 return;
             }
 
+
+            var custumer = await _customerRepository.GetByIdAsync(order.Customer.Id);
+
+
+            var paymentMethodId = input.Type switch
+            
             if (order.Payment is not null)
+            
             {
                 throw new InvalidOperationException("Pagamento já foi gerado para este pedido.");
             }
@@ -46,9 +54,11 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
 
             order.GeneratePayment(input.Type, paymentExternalId.Value, qrCode);
 
+            order.GeneratePayment(
+                payment.PointOfInteraction.TransactionData.QrCode,
+                payment.Id.ToString() // ou payment.Id, dependendo do tipo
+            );
             await _orderRepository.AddPaymentAsync(order.Payment);
-
-            await _orderRepository.SaveAsync();
         }
     }
 }

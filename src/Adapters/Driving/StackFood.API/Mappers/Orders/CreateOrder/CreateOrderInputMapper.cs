@@ -1,5 +1,5 @@
 ﻿using StackFood.API.Requests.Orders;
-using StackFood.Application.UseCases.Orders.CreateOrder.Inputs;
+using StackFood.Application.UseCases.Orders.Create.Inputs;
 
 namespace StackFood.API.Mappers.Orders.CreateOrder
 {

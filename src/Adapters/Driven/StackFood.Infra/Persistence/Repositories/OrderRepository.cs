@@ -16,7 +16,6 @@ namespace StackFood.Infra.Persistence.Repositories
         public async Task CreateAsync(Order order)
         {
             await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Order>> GetAllAsync()

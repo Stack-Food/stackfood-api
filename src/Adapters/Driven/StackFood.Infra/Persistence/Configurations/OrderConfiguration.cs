@@ -25,8 +25,7 @@ namespace StackFood.Infra.Persistence.Configurations
                    .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(o => o.Products)
-                   .HasForeignKey("orderId");
-
+                   .WithOne(i => i.Order)
                    .HasForeignKey("OrderId");
 
 

@@ -61,8 +61,7 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - postgres_data:/docker-entrypoint-initdb.d
-      - postgres_data:/backup
+      #- ./sql/placeholder_data.sql:/docker-entrypoint-initdb.d/placeholder_data.sql:ro
     networks:
       - stackfood_network
     healthcheck:
@@ -83,6 +82,38 @@ services:
     labels:
       com.stackfood.description: "PostgreSQL Database for StackFood"
       com.stackfood.service: "database"
+
+  stackfood-worker:
+    build:
+      context: .
+      dockerfile: src/Adapters/Driving/StackFood.Worker/Dockerfile
+    container_name: stackfood-worker
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}
+      - MercadoPago__AccessToken=${SEU_ACCESS_TOKEN_SANDBOX:-your_access_token}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      stackfood.api:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - stackfood_network
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "StackFood Worker service"
+      com.stackfood.service: "worker"
+      com.stackfood.version: "${WORKER_VERSION:-latest}"
 
 volumes:
   postgres_data:

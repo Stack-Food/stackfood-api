@@ -17,7 +17,6 @@ namespace StackFood.Infra.Persistence.Configurations
                    .IsRequired();
 
             builder.Property(o => o.CreatedAt).IsRequired();
-            builder.Property(o => o.QrCodeUrl).HasMaxLength(255);
 
             builder.HasOne(o => o.Customer)
                    .WithMany()

@@ -35,5 +35,10 @@ namespace StackFood.Domain.Entities
         {
             Payment = new Payment(qrCode);
         }
+
+        public void GeneratePayment(string qrCode)
+        {
+            Payment = new Payment(qrCode);
+        }
     }
 }

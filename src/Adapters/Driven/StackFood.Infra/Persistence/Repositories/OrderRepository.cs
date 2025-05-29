@@ -32,5 +32,10 @@ namespace StackFood.Infra.Persistence.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

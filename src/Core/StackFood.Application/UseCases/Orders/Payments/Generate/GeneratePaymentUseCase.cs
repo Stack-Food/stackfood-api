@@ -46,7 +46,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 PaymentMethodId = paymentMethodId,
                 Payer = new PaymentPayerRequest
                 {
-                    Email = "stackFood@fiap.com",
+                    Email = custumer.Email,
                     FirstName = custumer.Name
                 }
             };

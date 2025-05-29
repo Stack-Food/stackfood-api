@@ -1,12 +1,11 @@
 using MercadoPago.Config;
 using Microsoft.EntityFrameworkCore;
 using StackFood.Application;
-using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.Interfaces.Services;
 using StackFood.Application.Services;
+using StackFood.ExternalService.MercadoPago;
 using StackFood.Infra;
 using StackFood.Infra.Persistence;
-using StackFood.Infra.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +19,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+MercadoPagoBootstrapper.Register(builder.Services);
 InfraBootstrapper.Register(builder.Services);
 ApplicationBootstrapper.Register(builder.Services);
 
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 var app = builder.Build();

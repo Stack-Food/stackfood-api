@@ -19,13 +19,22 @@ namespace StackFood.Infra.Persistence.Repositories
             await _context.Orders.AddAsync(order);
         }
 
-        public async Task<List<Order>> GetAllAsync()
+        public async Task<List<Order>> GetAllAsync(OrderStatus? status)
         {
-            return await _context.Orders
-                .Include(o => o.Products)
-                .Include(c => c.Customer)
-                .Include(p => p.Payment)
-                .ToListAsync();
+            var query = _context.Orders
+                       .Include(o => o.Products)
+                       .Include(c => c.Customer)
+                       .Include(p => p.Payment)
+                       .AsQueryable();
+
+            if (status.HasValue)
+            {
+                query = query.Where(o => o.Status == status.Value);
+            }
+
+            query = query.OrderBy(o => o.CreatedAt);
+
+            return await query.ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(Guid id)

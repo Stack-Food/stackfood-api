@@ -1,145 +1,284 @@
-# StackFood API - Development Environment
+# 🧾 StackFood API
 
-This repository contains the StackFood API project, a .NET 7 application using PostgreSQL for data storage. Follow this guide to set up and run the development environment using Docker Compose.
+Sistema Backend para gerenciamento de pedidos e produtos em uma lanchonete com autoatendimento, desenvolvido como parte do **Tech Challenge** da formação em Arquitetura de Software.
 
-## Prerequisites
+---
 
-Ensure the following are installed:
+## 📋 Descrição do Projeto
 
-- [Docker](https://www.docker.com/products/docker-desktop/) (20.10.0+)
-- [Docker Compose](https://docs.docker.com/compose/install/) (v2.0.0+)
-- Git
+O **StackFood API** resolve o problema de desorganização no atendimento de uma lanchonete em expansão. Com foco no autoatendimento, o sistema permite que clientes realizem pedidos personalizados, paguem via QR Code (Mercado Pago) e acompanhem o status do pedido em tempo real, enquanto o administrador pode gerenciar produtos, clientes e acompanhar os pedidos em andamento.
 
-## Quick Start
+---
 
-### 1. Clone the Repository
+## 🎯 Funcionalidades
 
-```bash
-git clone https://github.com/yourusername/stackfood-api.git
-cd stackfood-api
+- **Cadastro e Identificação de Clientes**
+  - Cadastro com nome e e-mail
+  - Identificação via CPF
+  - Pedido anônimo (sem identificação)
+- **Montagem de Combos**
+  - Lanche, acompanhamento, bebida, sobremesa
+- **Gerenciamento Administrativo**
+  - Cadastro/edição de produtos
+  - Categorias fixas (lanche, acompanhamento, bebida, sobremesa)
+  - Acompanhamento de pedidos e tempo de espera
+- **Processamento de Pedidos**
+  - Envio para cozinha com etapas: Recebido, Em preparação, Pronto, Finalizado
+- **Pagamento**
+  - Integração com QR Code do Mercado Pago (checkout simulado para MVP)
+- **Monitoramento de Pagamento**
+  - Worker consulta status do pagamento e libera pedido para cozinha
 
-# Copy and configure the environment file
-cp .env.example .env
-```
+---
 
-Edit the `.env` file to customize settings, especially the database password.
+## 🛠️ Tecnologias Utilizadas
 
-### 2. Start the Application
+- **Linguagem:** C# (.NET 8)
+- **Banco de Dados:** PostgreSQL 15.3
+- **Arquitetura:** Hexagonal (Ports & Adapters)
+- **ORM:** Entity Framework Core
+- **Integração de Pagamento:** Mercado Pago SDK
+- **Documentação de API:** Swagger / OpenAPI
+- **Containerização:** Docker
+- **Orquestração:** Docker Compose
 
-```bash
-# Start services
-docker-compose up -d
-```
+---
 
-- API: [http://localhost:7189](http://localhost:7189)
-- Swagger UI: [http://localhost:7189/swagger/index.html](http://localhost:7189/swagger/index.html)
-
-### 3. Rebuilding the Application After Changes
-
-If you make changes to the code or Docker configuration and need to rebuild the image, use the following command:
-
-```bash
-docker-compose up -d --build
-```
-
-This ensures that a new image is created with the latest updates.
-
-## Environment Configuration
-
-The `.env` file contains key configuration variables:
-
-| Variable            | Description              | Default         |
-| ------------------- | ------------------------ | --------------- |
-| API_VERSION         | API image version        | 1.0.0           |
-| API_PORT            | API host port            | 7189            |
-| ENVIRONMENT         | ASP.NET Core environment | Development     |
-| BUILD_CONFIGURATION | Build configuration      | Debug           |
-| POSTGRES_DB         | PostgreSQL database name | stackfood       |
-| POSTGRES_USER       | PostgreSQL username      | postgres        |
-| POSTGRES_PASSWORD   | PostgreSQL password      | StrongP@ssw0rd! |
-| POSTGRES_PORT       | PostgreSQL host port     | 5432            |
-
-## Project Structure
+## 🗂️ Estrutura do Projeto
 
 ```
-├── src/
-│   ├── Adapters/
-│   │   ├── Driven/
-│   │   └── Driving/
-│   │       └── StackFood.API/
-│   │           └── Dockerfile
-│   └── Core/
+src/
+├── Adapters/
+│   ├── Driven/
+│   │   ├── StackFood.Infra/                # Infraestrutura: banco, repositórios, serviços
+│   │   └── StackFood.ExternalService.MercadoPago/ # Integração Mercado Pago
+│   └── Driving/
+│       ├── StackFood.API/                  # API REST (entrada principal)
+│       └── StackFood.Worker/               # Worker (consulta status de pagamento)
+├── Core/
+│   ├── StackFood.Domain/                   # Entidades e regras de negócio
+│   └── StackFood.Application/              # Casos de uso e interfaces (ports)
+├── Infrastructure/
+│   └── PostgresConnectionFactory.cs        # Fábrica de conexão com o banco
+├── Tests/
+│   └── StackFood.Tests/                    # Testes automatizados
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
 ```
 
-## Available Services
+---
 
-| Service       | Description                | Port |
-| ------------- | -------------------------- | ---- |
-| stackfood.api | .NET 7 API with Swagger UI | 7189 |
-| postgres      | PostgreSQL 15.3 database   | 5432 |
+## 🏛️ Arquitetura Hexagonal (Ports & Adapters)
 
-## Development Workflow
+O projeto segue a arquitetura hexagonal, separando regras de negócio (core) das implementações técnicas (infraestrutura e integrações externas).
 
-1. Modify the code.
-2. The API container auto-reloads changes.
-3. Test via Swagger UI or an API client.
-4. Commit and push updates.
+- **Domain:** Entidades e regras de negócio puras (ex: Pedido, Cliente, Produto).
+- **Application:** Casos de uso (ex: Criar Pedido, Gerar Pagamento) e interfaces (ports).
+- **Infra:** Implementações técnicas (banco, repositórios, serviços externos).
+- **Adapters Driving:** Pontos de entrada (API REST, Worker).
+- **Adapters Driven:** Pontos de saída (banco, Mercado Pago).
 
-## Database Management
+**Vantagens:**
 
-### Connecting to PostgreSQL
+- Independência de frameworks e tecnologias externas.
+- Facilidade para testes e manutenção.
+- Troca de implementações sem afetar o core do sistema.
 
-- **Using Docker**:
+---
 
+## 🚀 Como Executar Localmente
+
+### Pré-requisitos
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Git](https://git-scm.com/)
+
+### Passos
+
+1. **Clone o repositório**
+
+   ```bash
+   git clone https://github.com/Stack-Food/stackfood-api.git
+   cd stackfood-api
+   ```
+
+2. **Configure o ambiente**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edite o arquivo `.env` conforme necessário (principalmente a senha do banco e token do Mercado Pago).
+
+3. **Suba o ambiente**
+   ```bash
+   docker-compose up --build
+   ```
+
+- API: [https://localhost:7189](http://localhost:7189)
+- Swagger UI: [https://localhost:7189/swagger/index.html](http://localhost:7189/swagger/index.html)
+
+---
+
+## ⚙️ Variáveis de Ambiente
+
+| Variável                 | Descrição               | Valor Padrão     |
+| ------------------------ | ----------------------- | ---------------- |
+| API_VERSION              | Versão da imagem da API | 1.0.0            |
+| API_HTTP_PORT            | Porta HTTP da API       | 5039             |
+| API_HTTPS_PORT           | Porta HTTPS da API      | 7189             |
+| ENVIRONMENT              | Ambiente ASP.NET Core   | Development      |
+| BUILD_CONFIGURATION      | Configuração de build   | Debug            |
+| POSTGRES_DB              | Nome do banco de dados  | stackfood        |
+| POSTGRES_USER            | Usuário do PostgreSQL   | postgres         |
+| POSTGRES_PASSWORD        | Senha do PostgreSQL     | StrongP@ssw0rd!  |
+| POSTGRES_PORT            | Porta do PostgreSQL     | 5432             |
+| SEU_ACCESS_TOKEN_SANDBOX | Token Mercado Pago      | (defina no .env) |
+
+---
+
+## 🧩 Serviços Disponíveis
+
+| Serviço          | Descrição                               | Porta |
+| ---------------- | --------------------------------------- | ----- |
+| stackfood.api    | API .NET 8 com Swagger UI               | 7189  |
+| postgres         | Banco de dados PostgreSQL 15.3          | 5432  |
+| stackfood-worker | Worker para monitoramento de pagamentos | -     |
+
+---
+
+## 🛠️ Fluxo de Desenvolvimento
+
+1. Modifique o código.
+2. O container da API recarrega automaticamente.
+3. Teste via Swagger UI ou cliente de API.
+4. Faça commit e push das alterações.
+
+---
+
+## 🗄️ Gerenciamento do Banco de Dados
+
+- **Acessar via Docker:**
   ```bash
   docker exec -it stackfood-db psql -U postgres -d stackfood
   ```
+- **Acessar via cliente externo:**
 
-- **Using a PostgreSQL Client**:
-  - **Host**: `localhost`
-  - **Port**: `5432`
-  - **Database**: `stackfood`
-  - **Username**: `postgres`
-  - **Password**: Refer to `POSTGRES_PASSWORD` in `.env`.
+  - Host: `localhost`
+  - Porta: `5432`
+  - Banco: `stackfood`
+  - Usuário: `postgres`
+  - Senha: conforme `.env`
 
-### Creating Backups
+- **Backup:**
+  ```bash
+  docker exec stackfood-db pg_dump -U postgres -d stackfood > backup_$(date +%Y%m%d_%H%M%S).sql
+  ```
+  Backups ficam no volume `backup_data`.
 
-```bash
-docker exec stackfood-db pg_dump -U postgres -d stackfood > backup_$(date +%Y%m%d_%H%M%S).sql
-```
+---
 
-Backups are stored in the `backup_data` volume.
+## 🩺 Troubleshooting
 
-## Troubleshooting
+- **API não inicia:**  
+  Verifique logs:
 
-### API Not Starting
+  ```bash
+  docker-compose logs stackfood.api
+  ```
 
-Check logs for errors:
+- **Problemas de conexão com o banco:**  
+  Confirme se o serviço está rodando:
 
-```bash
-docker-compose logs stackfood.api
-```
+  ```bash
+  docker-compose ps postgres
+  ```
 
-### Database Connection Issues
+  Verifique as credenciais no `.env`.
 
-Ensure the database service is running:
+- **Resetar ambiente:**
 
-```bash
-docker-compose ps postgres
-```
+  ```bash
+  docker-compose down -v
+  docker-compose up -d
+  ```
 
-Verify `.env` credentials.
+- **Migrations não aplicam:**  
+  Confirme se as migrations existem em `src/Adapters/Driven/StackFood.Infra/Migrations` e se o comando `db.Database.Migrate()` está presente no `Program.cs` da API.
 
-### Resetting the Environment
+---
 
-To reset and remove all data:
+## 🏗️ Fluxo Principal da Aplicação
 
-```bash
-docker-compose down -v
-docker-compose up -d
-```
+1. **Cliente faz pedido via API**  
+   → Pedido é salvo no banco.
 
-This recreates containers and volumes for a fresh start.
+2. **Geração de pagamento (QR Code Mercado Pago)**  
+   → API integra com Mercado Pago e retorna QR Code.
+
+3. **Worker monitora status do pagamento**  
+   → Ao ser aprovado, pedido é liberado para cozinha.
+
+4. **Admin acompanha pedidos e gerencia produtos**  
+   → Via endpoints protegidos.
+
+---
+
+## 🏛️ Detalhes da Arquitetura
+
+- **Domain:**  
+  Entidades como Pedido, Produto, Cliente, Pagamento.  
+  Não dependem de nada externo.
+
+- **Application:**  
+  Casos de uso (ex: CriarPedido, GerarPagamento) e interfaces (ex: IOrderRepository).
+
+- **Infra:**  
+  Implementações dos repositórios, contexto do banco (AppDbContext), integrações externas (Mercado Pago).
+
+- **Adapters Driving:**  
+  API REST (controllers) e Worker (serviço background).
+
+- **Adapters Driven:**  
+  Banco de dados, Mercado Pago, outros serviços externos.
+
+---
+
+## 📄 Documentação
+
+- **Swagger UI:**  
+  [http://localhost:7189/swagger/index.html](http://localhost:7189/swagger/index.html)
+
+- **Miro (Event Storming, DDD):**  
+  [Acesse o Miro](https://miro.com/welcomeonboard/R1VpcjhVdnp5WkIyVmRjcjI1dlpyU2xVWGs1VjUzV1JBMW52RXovSnpUUFh1cE1TdndXTUtCUDhlZkNzbXo1K1N5ajRnUTUvelBQSVIveVpEOC84dWhDSnZtLzEyWUZ2UVoxSUkzV1loczdHU2FHVG9UYjYrM0dUNUphSy9lWHd0R2lncW1vRmFBVnlLcVJzTmdFdlNRPT0hdjE=?share_link_id=29384969431)
+
+- **Trello (Kanban do projeto):**  
+  [Acesse o Trello](https://trello.com/invite/b/6811409dfb1a245ff6e5c82e/ATTI57c89a0ebf7c3b36c8f4d397bad187a4A6D78212/tech-challenge)
+
+---
+
+## 📹 Vídeo Demonstrativo
+
+- [Link para o vídeo](https://youtube.com)
+
+O vídeo mostra a arquitetura da aplicação, como subir os containers via Docker Compose e detalhes sobre os principais fluxos.
+
+---
+
+## 👥 Participantes
+
+- Luiz
+- Leonardo Duarte
+- Leonardo Lemos
+- Rodrigo Rodrigues
+- Vinicius Targa
+
+---
+
+## 💡 Observações Finais
+
+- O projeto foi desenvolvido com foco em boas práticas de arquitetura, separação de responsabilidades e facilidade de manutenção.
+- A arquitetura hexagonal permite fácil evolução e integração com novos serviços ou tecnologias.
+- O uso de Docker e Docker Compose garante portabilidade e facilidade de setup para novos desenvolvedores.

@@ -26,12 +26,15 @@ namespace StackFood.Domain.Entities
             PaymentDate = DateTime.UtcNow;
             QrCodeUrl = qrCode;
         }
-
-        public void MarkAsPaid() => Status = PaymentStatus.Paid;
-
-        public void UpdateStatus(PaymentStatus status)
+        
+        public void Paid()
         {
-            Status = status;
+            Status = PaymentStatus.Paid;
+        }
+
+        public void Cancelled()
+        {
+            Status = PaymentStatus.Cancelled;
         }
     }
 }

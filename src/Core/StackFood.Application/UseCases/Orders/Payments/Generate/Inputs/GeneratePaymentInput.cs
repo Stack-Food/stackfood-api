@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StackFood.Domain.Enums;
+﻿using StackFood.Domain.Enums;
 
 namespace StackFood.Application.UseCases.Orders.Payments.Generate.Inputs
 {

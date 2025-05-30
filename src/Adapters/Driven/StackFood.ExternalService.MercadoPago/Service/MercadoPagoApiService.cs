@@ -1,5 +1,7 @@
-﻿using MercadoPago.Client.Payment;
+﻿using System.Text.Json;
+using MercadoPago.Client.Payment;
 using StackFood.Application.Interfaces.ExternalsServices;
+using StackFood.Domain.Entities;
 using StackFood.Domain.Enums;
 
 namespace StackFood.ExternalService.MercadoPago.Service
@@ -38,6 +40,36 @@ namespace StackFood.ExternalService.MercadoPago.Service
             }
 
             return (payment.Id, payment.PointOfInteraction.TransactionData.QrCode);
+        }
+
+        public async Task<PaymentStatus> GetPaymentStatusAsync(Order order)
+        {
+            // TODO: Mock para testes
+            if (order.Customer.Name.Contains("PAGO"))
+                return PaymentStatus.Paid;
+
+            if (order.Customer.Name.Contains("CANCELADO"))
+                return PaymentStatus.Cancelled;
+            
+            return PaymentStatus.Pending;
+
+            if (order.Payment == null)
+                throw new Exception("Order.Payment is null. Cannot retrieve ExternalPaymentId.");
+
+            var client = new PaymentClient();
+            var payment = await client.GetAsync(order.Payment.PaymentExternalId);
+
+            if (payment is null)
+                throw new Exception($"Erro ao consultar Mercado Pago");
+
+            return payment.Status switch
+            {
+                "approved" => PaymentStatus.Paid,
+                "pending" => PaymentStatus.Pending,
+                "rejected" => PaymentStatus.Cancelled,
+                "cancelled" => PaymentStatus.Cancelled,
+                _ => PaymentStatus.Pending
+            };
         }
     }
 }

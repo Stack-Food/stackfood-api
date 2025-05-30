@@ -1,5 +1,6 @@
 ﻿using StackFood.Application.UseCases.Orders.Base.Outputs;
 using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Application.UseCases.Orders.Base.Mappers
 {
@@ -9,7 +10,7 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
         {
             double? preparationTimeInMinutes = null;
 
-            if (order.PreparationStartedAt.HasValue)
+            if (order.PreparationStartedAt.HasValue && order.Status == OrderStatus.InPreparation)
             {
                 preparationTimeInMinutes = (DateTime.UtcNow - order.PreparationStartedAt.Value).TotalMinutes;
             }

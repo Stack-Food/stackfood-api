@@ -43,18 +43,6 @@ MercadoPagoBootstrapper.Register(builder.Services);
 InfraBootstrapper.Register(builder.Services);
 ApplicationBootstrapper.Register(builder.Services);
 
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
-builder.Services.AddScoped<ICreateCustomerUseCase, CreateCustomerUseCase>();
-builder.Services.AddScoped<IGetByCpfCustomerUseCase, GetByCpfCustomerUseCase>();
-builder.Services.AddScoped<ICreateProductUseCase, CreateProductUseCase>();
-builder.Services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
-builder.Services.AddScoped<IGetAllProductUseCase, GetAllProductUseCase>();
-builder.Services.AddScoped<IGetByIdProductUseCase, GetByIdProductUseCase>();
-builder.Services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

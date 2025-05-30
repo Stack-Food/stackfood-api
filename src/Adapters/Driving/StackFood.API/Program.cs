@@ -1,8 +1,6 @@
 using MercadoPago.Config;
 using Microsoft.EntityFrameworkCore;
 using StackFood.Application;
-using StackFood.Application.Interfaces.Services;
-using StackFood.Application.Services;
 using StackFood.ExternalService.MercadoPago;
 using StackFood.Infra;
 using StackFood.Infra.Persistence;
@@ -14,6 +12,11 @@ using StackFood.API.Validators.Customer;
 using StackFood.Application.UseCases.Customers.Create;
 using StackFood.Application.UseCases.Customers.GetByCpf;
 using StackFood.Application.Interfaces.Repositories;
+using StackFood.Application.UseCases.Products.Create;
+using StackFood.Application.UseCases.Products.Delete;
+using StackFood.Application.UseCases.Products.GetAll;
+using StackFood.Application.UseCases.Products.GetById;
+using StackFood.Application.UseCases.Products.Update;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,11 +45,15 @@ ApplicationBootstrapper.Register(builder.Services);
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddScoped<ICreateCustomerUseCase, CreateCustomerUseCase>();
 builder.Services.AddScoped<IGetByCpfCustomerUseCase, GetByCpfCustomerUseCase>();
+builder.Services.AddScoped<ICreateProductUseCase, CreateProductUseCase>();
+builder.Services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
+builder.Services.AddScoped<IGetAllProductUseCase, GetAllProductUseCase>();
+builder.Services.AddScoped<IGetByIdProductUseCase, GetByIdProductUseCase>();
+builder.Services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
 
 var app = builder.Build();
 

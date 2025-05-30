@@ -1,4 +1,5 @@
 ﻿using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Application.Interfaces.Repositories
 {
@@ -6,8 +7,9 @@ namespace StackFood.Application.Interfaces.Repositories
     {
         Task DeleteProductByIdAsync(Guid? id);
         Task<List<Product>> GetAllProductsAsync();
+        Task<List<Product>> GetAllProductsByCategoryAsync(ProductCategory value);
         Task<Product> GetByIdAsync(Guid productId);
-        Task<Product> GetProductByFilterAsync(Guid? id);
+        Task<Product> GetProductByIdAsync(Guid? id);
         Task RegisterProductAsync(Product product);
         Task UpdateProductAsync(Product product);
     }

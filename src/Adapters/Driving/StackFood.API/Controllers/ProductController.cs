@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StackFood.API.Requests.Products;
 using StackFood.Application.Interfaces.Services;
+using StackFood.Application.UseCases.Products.Create;
+using StackFood.Application.UseCases.Products.Delete;
+using StackFood.Application.UseCases.Products.GetAll;
+using StackFood.Application.UseCases.Products.GetById;
+using StackFood.Application.UseCases.Products.Update;
 using StackFood.Domain.Entities;
 using StackFood.Domain.Enums;
 
@@ -10,11 +15,21 @@ namespace StackFood.API.Controllers
     [Route("api/product")]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService _productService;
+        public readonly ICreateProductUseCase _productUseCase;
+        public readonly IUpdateProductUseCase _updateProductUseCase;
+        public readonly IGetAllProductUseCase _getAllProductUseCase;
+        public readonly IGetByIdProductUseCase _getByIdProductUseCase;
+        public readonly IDeleteProductUseCase _deleteProductUseCase;
 
-        public ProductController(IProductService productService)
+        public ProductController(ICreateProductUseCase productService, IUpdateProductUseCase updateProductUseCase,
+                                 IGetAllProductUseCase getAllProductUseCase, IGetByIdProductUseCase getByIdProductUseCase,
+                                 IDeleteProductUseCase deleteProductUseCase)
         {
-            _productService = productService;
+            _productUseCase = productService;
+            _updateProductUseCase = updateProductUseCase;
+            _getAllProductUseCase = getAllProductUseCase;
+            _getByIdProductUseCase = getByIdProductUseCase;
+            _deleteProductUseCase = deleteProductUseCase;
         }
 
         /// <summary>
@@ -25,11 +40,17 @@ namespace StackFood.API.Controllers
         /// or HTTP 404 (Not Found) if no products are found.
         /// </returns>
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] ProductCategory? category = null)
         {
-            var product = await _productService.GetAllProductsAsync();
-            if (product == null) return NotFound();
-            return Ok(product);
+            IEnumerable<Product> products;
+            if (category.HasValue) {
+                products = await _getAllProductUseCase.GetProductsByCategoryAsync(category.Value);
+            }
+            else {
+                products = await _getAllProductUseCase.GetAllProductsAsync();
+            }
+            if (products == null || !products.Any()) return NotFound();
+            return Ok(products);
         }
 
         /// <summary>
@@ -41,13 +62,10 @@ namespace StackFood.API.Controllers
         /// HTTP 400 (Bad Request) if no filter is provided,
         /// or HTTP 404 (Not Found) if no products match the filter.
         /// </returns>
-        [HttpGet]
-        public async Task<IActionResult> GetProducts([FromQuery] Guid? id = null)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProducts(Guid id)
         {
-            if (!id.HasValue)    {
-                return BadRequest("É necessário fornecer parâmetros: id.");
-            }
-            var products = await _productService.GetProductByFilterAsync(id); 
+            var products = await _getByIdProductUseCase.GetProductByIdAsync(id); 
             
             if (products == null) return NotFound();
             
@@ -65,7 +83,7 @@ namespace StackFood.API.Controllers
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
         {
             var product = new Product(request.Name, request.Desc, request.Price, request.Img, (ProductCategory)Enum.ToObject(typeof(ProductCategory), request.Category));
-            await _productService.RegisterNewProductAsync(product);
+            await _productUseCase.RegisterNewProductAsync(product);
             return Ok(product);
         }
 
@@ -80,12 +98,12 @@ namespace StackFood.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid? id)
         {
-            var product = await _productService.GetProductByFilterAsync(id);
+            var product = await _getByIdProductUseCase.GetProductByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-            await _productService.DeleteProductAsync(id);
+            await _deleteProductUseCase.DeleteProductAsync(id);
             return NoContent();
         }
 
@@ -100,7 +118,7 @@ namespace StackFood.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request)
         {
-            var existingProduct = await _productService.GetProductByFilterAsync(request.Id); 
+            var existingProduct = await _getByIdProductUseCase.GetProductByIdAsync(request.Id); 
             
             if (existingProduct == null) {
                 return NotFound(); 
@@ -117,7 +135,7 @@ namespace StackFood.API.Controllers
 
             existingProduct.SetId (request.Id);
 
-            await _productService.UpdateProductAsync(existingProduct);
+            await _updateProductUseCase.UpdateProductAsync(existingProduct);
 
             return NoContent();
         }        

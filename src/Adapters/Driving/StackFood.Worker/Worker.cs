@@ -1,4 +1,5 @@
 using StackFood.Application.Interfaces.Services;
+using StackFood.Application.UseCases.Orders.Payments.Check;
 using StackFood.Domain.Enums;
 
 public class Worker(
@@ -14,18 +15,9 @@ public class Worker(
         {
             using (var scope = _scopeFactory.CreateScope())
             {
-                var orderPaymentService = scope.ServiceProvider.GetRequiredService<IOrderPaymentService>();
-                // var paymentGateway = scope.ServiceProvider.GetRequiredService<IExternalPaymentGateway>();
-
-                var orders = await orderPaymentService.GetPendingPaymentOrdersAsync();
-
-                foreach (var order in orders)
-                {
-                    // var status = await paymentGateway.GetPaymentStatusAsync(order);
-                    await orderPaymentService.UpdateOrderPaymentStatusAsync(order, PaymentStatus.Paid);
-
-                    _logger.LogInformation($"Order {order.Id} updated to approved");
-                }
+                var checkPaymentUseCase = scope.ServiceProvider.GetRequiredService<ICheckPaymentUseCase>();
+                await checkPaymentUseCase.CheckPaymentAsync();
+                _logger.LogInformation($"Worker running at: {DateTimeOffset.Now}");
             }
 
             await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);

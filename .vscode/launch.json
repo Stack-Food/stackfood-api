@@ -2,63 +2,72 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "API - Development",
       "type": "coreclr",
       "request": "launch",
-      "name": "StackFood.API (Desenvolvimento)",
-      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net7.0/StackFood.API.dll",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net8.0/StackFood.API.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.API",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "launchBrowser": {
         "enabled": true,
-        "args": "http://localhost:5000/swagger",
+        "args": "swagger",
         "windows": {
           "command": "cmd.exe",
-          "args": "/C start http://localhost:5000/swagger"
+          "args": "/C start https://localhost:7189/swagger"
         }
-      }
+      },
+      "stopAtEntry": false
     },
     {
+      "name": "API - Production",
       "type": "coreclr",
       "request": "launch",
-      "name": "StackFood.API (Produção)",
-      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net7.0/StackFood.API.dll",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Release/net8.0/StackFood.API.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.API",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "launchBrowser": {
         "enabled": true,
-        "args": "http://localhost:5000/swagger",
+        "args": "swagger",
         "windows": {
           "command": "cmd.exe",
-          "args": "/C start http://localhost:5000/swagger"
+          "args": "/C start https://localhost:7189/swagger"
         }
-      }
+      },
+      "stopAtEntry": false
     },
     {
-      "name": ".NET Core Launch (console)",
+      "name": "Worker - Development",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
       "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Debug/net8.0/StackFood.Worker.dll",
       "args": [],
       "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
-      "console": "internalConsole",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "stopAtEntry": false
     },
     {
-      "name": ".NET Core Attach",
+      "name": "Worker - Production",
       "type": "coreclr",
-      "request": "attach"
-    },
-    {
-      "name": "Containers: .NET Launch",
-      "type": "docker",
       "request": "launch",
-      "preLaunchTask": "docker-run: debug",
-      "netCore": {
-        "appProject": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/StackFood.Worker.csproj"
-      }
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Release/net8.0/StackFood.Worker.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "stopAtEntry": false
     }
   ]
 }

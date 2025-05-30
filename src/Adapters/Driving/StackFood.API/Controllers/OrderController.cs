@@ -2,6 +2,8 @@
 using StackFood.API.Mappers.Orders.CreateOrder;
 using StackFood.API.Requests.Orders;
 using StackFood.API.Requests.Orders.Payment;
+using StackFood.Application.UseCases.Orders.ChangeStatus;
+using StackFood.Application.UseCases.Orders.ChangeStatus.inputs;
 using StackFood.Application.UseCases.Orders.Create;
 using StackFood.Application.UseCases.Orders.GetAll;
 using StackFood.Application.UseCases.Orders.GetById;
@@ -18,17 +20,20 @@ namespace StackFood.API.Controllers
         public readonly IGetAllOrderUseCase _getAllOrderUseCase;
         public readonly IGetByIdOrderUseCase _getByIdOrderUseCase;
         public readonly IGeneratePaymentUseCase _generatePaymentUseCase;
+        public readonly IChangeStatusOrderUseCase _changeStatusOrderUseCase;
 
         public OrderController(
             ICreateOrderUseCase orderUseCase,
             IGetAllOrderUseCase getAllOrderUseCase,
             IGetByIdOrderUseCase getByIdOrderUseCase,
-            IGeneratePaymentUseCase generatePaymentUseCase)
+            IGeneratePaymentUseCase generatePaymentUseCase,
+            IChangeStatusOrderUseCase changeStatusOrderUseCase)
         {
             _orderUseCase = orderUseCase;
             _getAllOrderUseCase = getAllOrderUseCase;
             _getByIdOrderUseCase = getByIdOrderUseCase;
             _generatePaymentUseCase = generatePaymentUseCase;
+            _changeStatusOrderUseCase = changeStatusOrderUseCase;
         }
 
         /// <summary>
@@ -84,7 +89,7 @@ namespace StackFood.API.Controllers
         /// Returns HTTP 204 (No Content) on successful payment generation.
         /// </returns>
         [HttpPut("{id}/payment")]
-        public async Task GeneratePayment([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
+        public async Task GeneratePaymentAsync([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
         {
 
             var input = new GeneratePaymentInput
@@ -93,7 +98,19 @@ namespace StackFood.API.Controllers
                 Type = request.Type
             };
 
-             await _generatePaymentUseCase.GeneratePaymentAsync(input);
+            await _generatePaymentUseCase.GeneratePaymentAsync(input);
+        }
+        
+        [HttpPut("{id}/change-status")]
+        public async Task ChangeStatusAsync([FromRoute] Guid id, [FromBody] ChangeStatusRequest request)
+        {
+            var input = new ChangeStatusInput
+            {
+                OrderId = id,
+                Status = request.Status
+            };
+
+            await _changeStatusOrderUseCase.ChangeStatusOrderAsync(input);
         }
     }
 }

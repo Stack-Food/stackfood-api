@@ -40,5 +40,29 @@ namespace StackFood.Domain.Entities
 
             Payment = new Payment(type, paymentExternalId, qrCode);
         }
+
+        public void Paid()
+        {
+            Payment.Paid();
+
+            Status = OrderStatus.InPreparation;
+        }
+
+        public void Ready()
+        {
+            Status = OrderStatus.Ready;
+        }
+
+        public void Finalized()
+        {
+            Status = OrderStatus.Finalized;
+        }
+
+        public void Cancelled()
+        {
+            Payment.Cancelled();
+
+            Status = OrderStatus.Cancelled;
+        }
     }
 }

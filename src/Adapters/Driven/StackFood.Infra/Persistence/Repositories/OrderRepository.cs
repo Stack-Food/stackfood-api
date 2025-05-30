@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StackFood.Application.Interfaces.Repositories;
 using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Infra.Persistence.Repositories
 {
@@ -23,7 +24,8 @@ namespace StackFood.Infra.Persistence.Repositories
             return await _context.Orders
                 .Include(o => o.Products)
                 .Include(c => c.Customer)
-                .Include(p => p.Payment).ToListAsync();
+                .Include(p => p.Payment)
+                .ToListAsync();
         }
 
         public async Task<Order> GetByIdAsync(Guid id)
@@ -33,6 +35,16 @@ namespace StackFood.Infra.Persistence.Repositories
                 .Include(c => c.Customer)
                 .Include(p => p.Payment)
                 .FirstOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<List<Order>> GetPendingPaymentOrdersAsync()
+        {
+            return await _context.Orders
+                .Include(c => c.Customer)
+                .Include(p => p.Payment)
+                .Where(o => o.Payment != null)
+                .Where(o => o.Payment.Status == PaymentStatus.Pending)
+                .ToListAsync();
         }
 
         public async Task AddPaymentAsync(Payment payment)

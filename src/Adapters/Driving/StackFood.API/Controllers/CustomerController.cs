@@ -45,7 +45,7 @@ namespace StackFood.API.Controllers
         /// Returns HTTP 200 (OK) with the customer data, 
         /// or HTTP 404 (Not Found) if no customer is found with the given CPF.
         /// </returns>
-        [HttpGet("{Cpf}")]
+        [HttpGet("{cpf}")]
         public async Task<IActionResult> GetByCpf([FromRoute] GetCustomerByCpfRequest request)
         {
             var customer = await _getByCpfCustomerUseCase.GetByCpfAsync(request.Cpf);

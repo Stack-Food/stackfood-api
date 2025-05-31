@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using MercadoPago.Client.Payment;
+﻿using MercadoPago.Client.Payment;
 using StackFood.Application.Interfaces.ExternalsServices;
 using StackFood.Domain.Entities;
 using StackFood.Domain.Enums;
@@ -10,8 +9,8 @@ namespace StackFood.ExternalService.MercadoPago.Service
     {
         public async Task<(long? paymentExternalId, string qrCodeUrl)> GeneratePaymentAsync(
             PaymentType type,
-            StackFood.Domain.Entities.Order order,
-            StackFood.Domain.Entities.Customer custumer)
+            Order order,
+            Customer customer)
         {
             var paymentMethodId = type switch
             {
@@ -27,7 +26,7 @@ namespace StackFood.ExternalService.MercadoPago.Service
                 Payer = new PaymentPayerRequest
                 {
                     Email = "stackFood@fiap.com",
-                    FirstName = custumer.Name
+                    FirstName = customer.Name
                 }
             };
 

@@ -10,7 +10,6 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
         public readonly ICustomerRepository _customerRepository;
         public readonly IMercadoPagoApiService _mercadoPagoApiService;
 
-
         public GeneratePaymentUseCase(
             IOrderRepository orderRepository,
             ICustomerRepository customerRepository,

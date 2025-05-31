@@ -1,4 +1,5 @@
-﻿using StackFood.Application.Interfaces.Repositories;
+﻿using StackFood.Application.Common;
+using StackFood.Application.Interfaces.Repositories;
 using StackFood.Domain.Entities;
 
 namespace StackFood.Application.UseCases.Customers.Create
@@ -12,9 +13,17 @@ namespace StackFood.Application.UseCases.Customers.Create
             _repository = repository;
         }
 
-        public async Task CreateCustomerAsync(Customer customer)
+        public async Task<Result> CreateCustomerAsync(Customer customer)
         {
+            var existingCustomer = await _repository.GetByCpfAsync(customer.Cpf);
+            if (existingCustomer != null)
+            {
+                return Result.Failure("Cliente já cadastrado.");
+            }
+
             await _repository.CreateAsync(customer);
+
+            return Result.Success();
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using StackFood.Domain.Entities;
+﻿using StackFood.Application.Common;
+using StackFood.Domain.Entities;
 
 namespace StackFood.Application.UseCases.Customers.Create
 {
     public interface ICreateCustomerUseCase
     {
-        Task CreateCustomerAsync(Customer customer);
+        Task<Result> CreateCustomerAsync(Customer customer);
     }
 }

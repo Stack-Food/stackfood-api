@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StackFood.API.Requests.Products;
 using StackFood.Application.Interfaces.Services;
+using StackFood.Application.UseCases.Orders.Base.Outputs;
 using StackFood.Application.UseCases.Products.Create;
 using StackFood.Application.UseCases.Products.Delete;
 using StackFood.Application.UseCases.Products.GetAll;
@@ -49,7 +50,7 @@ namespace StackFood.API.Controllers
             else {
                 products = await _getAllProductUseCase.GetAllProductsAsync();
             }
-            if (products == null || !products.Any()) return NotFound();
+            if (products == null || !products.Any()) return Ok(Array.Empty<Product>());
             return Ok(products);
         }
 
@@ -67,8 +68,8 @@ namespace StackFood.API.Controllers
         {
             var products = await _getByIdProductUseCase.GetProductByIdAsync(id); 
             
-            if (products == null) return NotFound();
-            
+            if (products == null) return Ok(Array.Empty<Product>());
+
             return Ok(products);
         }
 
@@ -121,7 +122,7 @@ namespace StackFood.API.Controllers
             var existingProduct = await _getByIdProductUseCase.GetProductByIdAsync(request.Id); 
             
             if (existingProduct == null) {
-                return NotFound(); 
+                return Ok(Array.Empty<Product>()); 
             }
 
             existingProduct.Update(

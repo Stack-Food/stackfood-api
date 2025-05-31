@@ -1,6 +1,7 @@
 ﻿using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.UseCases.Orders.Base.Mappers;
 using StackFood.Application.UseCases.Orders.Base.Outputs;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Application.UseCases.Orders.GetAll
 {
@@ -13,10 +14,11 @@ namespace StackFood.Application.UseCases.Orders.GetAll
             _orderRepository = orderRepository;
         }
 
-        public async Task<IEnumerable<OrderOutput>> GetAllOrderAsync()
+        public async Task<IEnumerable<OrderOutput>> GetAllOrderAsync(OrderStatus? status)
         {
-            var orders = await _orderRepository.GetAllAsync();
+            var orders = await _orderRepository.GetAllAsync(status);
             return OrderOutputMapper.Map(orders);
         }
+
     }
 }

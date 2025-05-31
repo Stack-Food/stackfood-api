@@ -9,6 +9,7 @@ using StackFood.Application.UseCases.Orders.GetAll;
 using StackFood.Application.UseCases.Orders.GetById;
 using StackFood.Application.UseCases.Orders.Payments.Generate;
 using StackFood.Application.UseCases.Orders.Payments.Generate.Inputs;
+using StackFood.Domain.Enums;
 
 namespace StackFood.API.Controllers
 {
@@ -43,9 +44,9 @@ namespace StackFood.API.Controllers
         /// Returns HTTP 200 (OK) with the list of all orders.
         /// </returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] OrderStatus? status)
         {
-            var orders = await _getAllOrderUseCase.GetAllOrderAsync();
+            var orders = await _getAllOrderUseCase.GetAllOrderAsync(status);
             return Ok(orders);
         }
 

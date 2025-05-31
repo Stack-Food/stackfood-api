@@ -1,5 +1,6 @@
 ﻿using StackFood.Application.UseCases.Orders.Base.Outputs;
 using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.Application.UseCases.Orders.Base.Mappers
 {
@@ -7,6 +8,13 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
     {
         public static OrderOutput Map(Order order)
         {
+            double? preparationTimeInMinutes = null;
+
+            if (order.PreparationStartedAt.HasValue && order.Status == OrderStatus.InPreparation)
+            {
+                preparationTimeInMinutes = (DateTime.UtcNow - order.PreparationStartedAt.Value).TotalMinutes;
+            }
+
             return new OrderOutput
             {
                 Id = order.Id,
@@ -38,7 +46,8 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
                     Status = order.Payment.Status,
                     PaymentDate = order.Payment.PaymentDate,
                     Type = order.Payment.Type
-                } : null
+                } : null,
+                PreparationTimeInMinutes = preparationTimeInMinutes
             };
         }
 

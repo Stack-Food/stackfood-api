@@ -31,6 +31,8 @@ namespace StackFood.Infra.Persistence.Configurations
             builder.HasOne(o => o.Payment)
                    .WithOne(p => p.Order)
                    .HasForeignKey<Payment>("OrderId");
+
+            builder.Property(o => o.PreparationStartedAt);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace StackFood.Domain.Entities
         public Customer? Customer { get; private set; }
         public List<ProductOrder> Products { get; private set; }
         public Payment? Payment { get; private set; }
+        public DateTime? PreparationStartedAt { get; private set; }
 
         public decimal TotalPrice => Products.Sum(x => x.Quantity * x.UnitPrice);
 
@@ -46,6 +47,7 @@ namespace StackFood.Domain.Entities
             Payment.Paid();
 
             Status = OrderStatus.InPreparation;
+            PreparationStartedAt = DateTime.UtcNow;
         }
 
         public void Ready()

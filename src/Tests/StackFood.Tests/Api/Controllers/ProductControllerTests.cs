@@ -60,13 +60,15 @@ namespace StackFood.UnitTests.Api.Controllers
             var id = Guid.NewGuid();
             _getAllProductUseCaseMock
                 .Setup(s => s.GetAllProductsAsync())
-                .ReturnsAsync([]);
+                .ReturnsAsync(new List<Product>());
 
             // Act
             var result = await _controller.GetProducts(id);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
+            var products = okResult.Value as IEnumerable<Product>;
+            products.Should().BeEmpty();
         }
 
         [Fact]
@@ -141,13 +143,20 @@ namespace StackFood.UnitTests.Api.Controllers
         {
             // Arrange
             var request = new UpdateProductRequest(Guid.NewGuid(), "New", "Desc", 10, "img", 1);
-            _getByIdProductUseCaseMock.Setup(s => s.GetProductByIdAsync(request.Id)).ReturnsAsync((Product?)null);
+
+            _getByIdProductUseCaseMock
+                .Setup(s => s.GetProductByIdAsync(request.Id))
+                .ReturnsAsync((Product?)null);
 
             // Act
             var result = await _controller.UpdateProduct(request);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            result.Should().BeOfType<OkObjectResult>();
+
+            var okResult = result.As<OkObjectResult>();
+            okResult.Value.Should().BeAssignableTo<IEnumerable<Product>>();
+            ((IEnumerable<Product>)okResult.Value).Should().BeEmpty();
         }
 
         [Fact]

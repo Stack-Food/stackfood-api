@@ -3,6 +3,7 @@ using Moq;
 using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.UseCases.Orders.GetAll;
 using StackFood.Domain.Entities;
+using StackFood.Domain.Enums;
 
 namespace StackFood.UnitTests.Application.UseCases.Orders
 {

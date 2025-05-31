@@ -29,9 +29,12 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
 
 
             // Act
-            await _useCase.ChangeStatusOrderAsync(input);
+            Func<Task> act = async () => await _useCase.ChangeStatusOrderAsync(input);
 
             // Assert
+            await act.Should()
+                .ThrowAsync<InvalidOperationException>()
+                .WithMessage("Pedido não encontrado.");
             _orderRepositoryMock.Verify(r => r.SaveAsync(), Times.Never);
         }
 

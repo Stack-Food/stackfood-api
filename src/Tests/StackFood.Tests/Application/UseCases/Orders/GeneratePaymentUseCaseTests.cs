@@ -77,7 +77,9 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
             var act = async () => await _useCase.GeneratePaymentAsync(input);
 
             // Assert
-            await act.Should().NotThrowAsync();
+            await act.Should()
+                .ThrowAsync<InvalidOperationException>()
+                .WithMessage("Pedido não encontrado.");
             _orderRepoMock.Verify(r => r.AddPaymentAsync(It.IsAny<Payment>()), Times.Never);
             _orderRepoMock.Verify(r => r.SaveAsync(), Times.Never);
         }

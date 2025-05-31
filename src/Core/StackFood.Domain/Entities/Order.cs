@@ -13,6 +13,8 @@ namespace StackFood.Domain.Entities
         public Payment? Payment { get; private set; }
         public DateTime? PreparationStartedAt { get; private set; }
 
+        public string PreparationTimeInMinutes => FormatTextWaitingTime();
+
         public decimal TotalPrice => Products.Sum(x => x.Quantity * x.UnitPrice);
 
         protected Order() { }
@@ -31,12 +33,12 @@ namespace StackFood.Domain.Entities
         {
             Products.Add(product);
         }
-      
+
         public void GeneratePayment(PaymentType type, long paymentExternalId, string qrCode)
         {
             if (Payment != null)
             {
-                throw new InvalidOperationException("Payment already exists for this order.");
+                throw new InvalidOperationException("Pagamento já realizado.");
             }
 
             Payment = new Payment(type, paymentExternalId, qrCode);
@@ -65,6 +67,14 @@ namespace StackFood.Domain.Entities
             Payment.Cancelled();
 
             Status = OrderStatus.Cancelled;
+        }
+
+        private string FormatTextWaitingTime()
+        {
+            if (Status != OrderStatus.InPreparation)
+                return string.Empty;
+
+            return $"Tempo de espera: {Math.Ceiling((DateTime.UtcNow - PreparationStartedAt.Value).TotalMinutes)} minutos.";
         }
     }
 }

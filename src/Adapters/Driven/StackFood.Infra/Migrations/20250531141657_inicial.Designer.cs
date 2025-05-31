@@ -12,15 +12,15 @@ using StackFood.Infra.Persistence;
 namespace StackFood.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250528012221_AddPaymentExternalId")]
-    partial class AddPaymentExternalId
+    [Migration("20250531141657_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -65,6 +65,9 @@ namespace StackFood.Infra.Migrations
 
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("PreparationStartedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()

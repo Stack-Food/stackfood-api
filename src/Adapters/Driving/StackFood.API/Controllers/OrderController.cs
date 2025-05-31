@@ -79,8 +79,14 @@ namespace StackFood.API.Controllers
         {
             var input = CreateOrderInputMapper.Map(request);
 
-            var order = await _orderUseCase.CreateOrderAsync(input);
-            return Ok(order);
+            var result = await _orderUseCase.CreateOrderAsync(input);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { error = result.Error });
+            }
+
+            return Ok(result.Value);
         }
 
         /// <summary>

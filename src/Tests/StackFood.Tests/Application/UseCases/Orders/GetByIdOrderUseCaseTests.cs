@@ -38,7 +38,7 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
         {
             // Arrange
             var orderId = Guid.NewGuid();
-            _orderRepoMock.Setup(r => r.GetAllAsync()).ReturnsAsync([]);
+            _orderRepoMock.Setup(r => r.GetAllAsync(null)).ReturnsAsync([]);
 
             // Act
             var result = await _useCase.GetByIdOrderAsync(orderId);

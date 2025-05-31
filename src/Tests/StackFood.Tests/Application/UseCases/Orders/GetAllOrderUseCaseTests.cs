@@ -27,31 +27,31 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
                 new(Guid.NewGuid())
             };
 
-            _orderRepoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(orders);
+            _orderRepoMock.Setup(r => r.GetAllAsync(null)).ReturnsAsync(orders);
 
             // Act
-            var result = await _useCase.GetAllOrderAsync();
+            var result = await _useCase.GetAllOrderAsync(null);
 
             // Assert
             result.Should().NotBeNull();
             result.Should().HaveSameCount(orders);
             result.All(o => o is not null).Should().BeTrue();
-            _orderRepoMock.Verify(r => r.GetAllAsync(), Times.Once);
+            _orderRepoMock.Verify(r => r.GetAllAsync(null), Times.Once);
         }
 
         [Fact]
         public async Task GetAllOrderAsync_WhenNoOrders_ShouldReturnEmptyList()
         {
             // Arrange
-            _orderRepoMock.Setup(r => r.GetAllAsync()).ReturnsAsync([]);
+            _orderRepoMock.Setup(r => r.GetAllAsync(null)).ReturnsAsync([]);
 
             // Act
-            var result = await _useCase.GetAllOrderAsync();
+            var result = await _useCase.GetAllOrderAsync(null);
 
             // Assert
             result.Should().NotBeNull();
             result.Should().BeEmpty();
-            _orderRepoMock.Verify(r => r.GetAllAsync(), Times.Once);
+            _orderRepoMock.Verify(r => r.GetAllAsync(null), Times.Once);
         }
     }
 }

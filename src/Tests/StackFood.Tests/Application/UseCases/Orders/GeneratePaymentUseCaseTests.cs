@@ -74,12 +74,12 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
             _orderRepoMock.Setup(r => r.GetByIdAsync(input.OrderId)).ReturnsAsync((Order?)null);
 
             // Act
-            var act = async () => await _useCase.GeneratePaymentAsync(input);
+            var result = await _useCase.GeneratePaymentAsync(input);
 
             // Assert
-            await act.Should()
-                .ThrowAsync<InvalidOperationException>()
-                .WithMessage("Pedido não encontrado.");
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Pedido não encontrado.");
+
             _orderRepoMock.Verify(r => r.AddPaymentAsync(It.IsAny<Payment>()), Times.Never);
             _orderRepoMock.Verify(r => r.SaveAsync(), Times.Never);
         }
@@ -96,12 +96,14 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
             _orderRepoMock.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
 
             // Act
-            Func<Task> act = async () => await _useCase.GeneratePaymentAsync(input);
+            var result = await _useCase.GeneratePaymentAsync(input);
 
             // Assert
-            await act.Should()
-                .ThrowAsync<InvalidOperationException>()
-                .WithMessage("Pagamento já foi gerado para este pedido.");
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Pagamento já foi gerado para este pedido.");
+
+            _orderRepoMock.Verify(r => r.AddPaymentAsync(It.IsAny<Payment>()), Times.Never);
+            _orderRepoMock.Verify(r => r.SaveAsync(), Times.Never);
         }
 
         [Fact]
@@ -124,12 +126,14 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
                             .ReturnsAsync((null, "qr_code_here"));
 
             // Act
-            Func<Task> act = async () => await _useCase.GeneratePaymentAsync(input);
+            var result = await _useCase.GeneratePaymentAsync(input);
 
             // Assert
-            await act.Should()
-                .ThrowAsync<InvalidOperationException>()
-                .WithMessage("Falha ao criar pagamento.");
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Falha ao criar pagamento.");
+
+            _orderRepoMock.Verify(r => r.AddPaymentAsync(It.IsAny<Payment>()), Times.Never);
+            _orderRepoMock.Verify(r => r.SaveAsync(), Times.Never);
         }
     }
 }

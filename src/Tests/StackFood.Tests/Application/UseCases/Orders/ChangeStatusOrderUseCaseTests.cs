@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using StackFood.Application.Common;
 using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.UseCases.Orders.ChangeStatus;
 using StackFood.Application.UseCases.Orders.ChangeStatus.inputs;
@@ -29,12 +30,11 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
 
 
             // Act
-            Func<Task> act = async () => await _useCase.ChangeStatusOrderAsync(input);
+            var result = await _useCase.ChangeStatusOrderAsync(input);
 
             // Assert
-            await act.Should()
-                .ThrowAsync<InvalidOperationException>()
-                .WithMessage("Pedido não encontrado.");
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Pedido não encontrado.");
             _orderRepositoryMock.Verify(r => r.SaveAsync(), Times.Never);
         }
 
@@ -85,8 +85,13 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
                                 .ReturnsAsync(orderMock.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                _useCase.ChangeStatusOrderAsync(input));
+            var result = await _useCase.ChangeStatusOrderAsync(input);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Status inválido para o pedido.");
+
+            _orderRepositoryMock.Verify(r => r.SaveAsync(), Times.Never);
         }
     }
 }

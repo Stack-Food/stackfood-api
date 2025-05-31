@@ -1,6 +1,8 @@
 ﻿using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.UseCases.Orders.Payments.Generate.Inputs;
 using StackFood.Application.Interfaces.ExternalsServices;
+using StackFood.Application.Common;
+using StackFood.Domain.Entities;
 
 namespace StackFood.Application.UseCases.Orders.Payments.Generate
 {
@@ -20,20 +22,20 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             _mercadoPagoApiService = mercadoPagoApiService;
         }
 
-        public async Task GeneratePaymentAsync(GeneratePaymentInput input)
+        public async Task<Result> GeneratePaymentAsync(GeneratePaymentInput input)
         {
             var order = await _orderRepository.GetByIdAsync(input.OrderId);
 
             if (order == null)
             {
-                throw new InvalidOperationException("Pedido não encontrado.");
+                 return Result.Failure("Pedido não encontrado.");
             }
 
             var customer = order.Customer;
 
             if (order.Payment is not null)
             {
-                throw new InvalidOperationException("Pagamento já foi gerado para este pedido.");
+                 return Result.Failure("Pagamento já foi gerado para este pedido.");
             }
 
             if (customer != null)
@@ -47,13 +49,19 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 customer);
             if (paymentExternalId is null)
             {
-                throw new InvalidOperationException("Falha ao criar pagamento.");
+                 return Result.Failure("Falha ao criar pagamento.");
+            }
+
+            if (order.Payment != null)
+            {
+                return Result.Failure("Pagamento já realizado.");
             }
 
             order.GeneratePayment(input.Type, paymentExternalId.Value, qrCode);
 
             await _orderRepository.AddPaymentAsync(order.Payment);
             await _orderRepository.SaveAsync();
+            return Result.Success();
         }
     }
 }

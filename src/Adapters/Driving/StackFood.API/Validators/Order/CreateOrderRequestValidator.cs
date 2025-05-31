@@ -7,9 +7,6 @@ namespace StackFood.API.Validators.Order
     {
         public CreateOrderRequestValidator()
         {
-            RuleFor(x => x.CustomerId)
-                .NotEmpty().WithMessage("CustomerId is required.");
-
             RuleFor(x => x.Products)
                 .NotEmpty().WithMessage("At least one product is required.");                
         }

@@ -43,13 +43,15 @@ namespace StackFood.ExternalService.MercadoPago.Service
 
         public async Task<PaymentStatus> GetPaymentStatusAsync(Order order)
         {
-            // TODO: Mock para testes
+            if (order.Customer == null)
+                return PaymentStatus.Paid;
+
             if (order.Customer.Name.Contains("PAGO"))
                 return PaymentStatus.Paid;
 
             if (order.Customer.Name.Contains("CANCELADO"))
                 return PaymentStatus.Cancelled;
-            
+
             return PaymentStatus.Pending;
 
             if (order.Payment == null)

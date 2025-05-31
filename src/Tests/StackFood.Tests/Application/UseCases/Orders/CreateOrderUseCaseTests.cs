@@ -72,7 +72,7 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
                 Products = new List<CreateOrderProductInput>()
             };
 
-            _customerRepoMock.Setup(r => r.GetByIdAsync(input.CustomerId)).ReturnsAsync((Customer?)null);
+            _customerRepoMock.Setup(r => r.GetByIdAsync(input.CustomerId.Value)).ReturnsAsync((Customer?)null);
 
             // Act
             Func<Task> act = async () => await _useCase.CreateOrderAsync(input);

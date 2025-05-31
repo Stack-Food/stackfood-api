@@ -17,10 +17,14 @@ namespace StackFood.Application.UseCases.Orders.Create
 
         public async Task<OrderOutput> CreateOrderAsync(CreateOrderInput input)
         {
-            var customer = await _customerRepository.GetByIdAsync(input.CustomerId);
-            if (customer is null)
+            Customer customer = null;
+            if (input.CustomerId != null)
             {
-                throw new ArgumentNullException(nameof(customer), "Customer not found");
+                customer = await _customerRepository.GetByIdAsync(input.CustomerId.Value);
+                if (customer is null)
+                {
+                    throw new ArgumentNullException(nameof(customer), "Customer not found");
+                }
             }
 
             var order = new Order(input.CustomerId);
@@ -29,7 +33,7 @@ namespace StackFood.Application.UseCases.Orders.Create
             {
                 var product = await _productRepository.GetByIdAsync(inputProduct.ProductId);
                 if (product is null)
-            {
+                {
                     throw new ArgumentNullException(nameof(product), "Product not found");
                 }
 

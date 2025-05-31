@@ -11,7 +11,7 @@ namespace StackFood.Application.UseCases.Orders.Base.Outputs
         public List<OrderProductOutput> Products { get; set; }
         public OrderCustomerOutput? Customer { get; set; }
         public OrderPaymentOutput? Payment { get; set; }
-        public double? PreparationTimeInMinutes { get; set; }
+        public string PreparationTimeInMinutes { get; set; }
 
     }
 }

@@ -38,10 +38,11 @@ namespace StackFood.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a list of all orders.
+        /// Retrieves a list of all orders, optionally filtered by status.
         /// </summary>
+        /// <param name="status">Optional filter for order status.</param>
         /// <returns>
-        /// Returns HTTP 200 (OK) with the list of all orders.
+        /// Returns HTTP 200 (OK) with a list of orders.
         /// </returns>
         [HttpGet]
         public async Task<IActionResult> GetAllAsync([FromQuery] OrderStatus? status)

@@ -25,7 +25,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             var order = await _orderRepository.GetByIdAsync(input.OrderId);
             if (order == null)
             {
-                return;
+                throw new InvalidOperationException("Pedido não encontrado.");
             }
 
             if (order.Payment is not null)

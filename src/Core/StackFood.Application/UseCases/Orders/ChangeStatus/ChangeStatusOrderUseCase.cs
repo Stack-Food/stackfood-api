@@ -20,7 +20,7 @@ namespace StackFood.Application.UseCases.Orders.ChangeStatus
             var order = await _orderRepository.GetByIdAsync(input.OrderId);
             if (order == null)
             {
-                return;
+                throw new InvalidOperationException("Pedido não encontrado.");
             }
 
             switch (input.Status)

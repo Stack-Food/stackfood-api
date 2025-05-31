@@ -61,7 +61,7 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      #- ./sql/placeholder_data.sql:/docker-entrypoint-initdb.d/placeholder_data.sql:ro
+      - ./database:/docker-entrypoint-initdb.d
     networks:
       - stackfood_network
     healthcheck:

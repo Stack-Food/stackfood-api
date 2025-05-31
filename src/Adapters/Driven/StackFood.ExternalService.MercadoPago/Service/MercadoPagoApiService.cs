@@ -10,7 +10,7 @@ namespace StackFood.ExternalService.MercadoPago.Service
         public async Task<(long? paymentExternalId, string qrCodeUrl)> GeneratePaymentAsync(
             PaymentType type,
             Order order,
-            Customer customer)
+            Customer? customer)
         {
             var paymentMethodId = type switch
             {
@@ -25,8 +25,8 @@ namespace StackFood.ExternalService.MercadoPago.Service
                 PaymentMethodId = paymentMethodId,
                 Payer = new PaymentPayerRequest
                 {
-                    Email = "stackFood@fiap.com",
-                    FirstName = customer.Name
+                    Email = customer?.Email ?? "semidentificacao@stackfood.com",
+                    FirstName = customer?.Name ?? "Cliente Anônimo",
                 }
             };
 

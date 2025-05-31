@@ -8,13 +8,6 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
     {
         public static OrderOutput Map(Order order)
         {
-            double? preparationTimeInMinutes = null;
-
-            if (order.PreparationStartedAt.HasValue && order.Status == OrderStatus.InPreparation)
-            {
-                preparationTimeInMinutes = (DateTime.UtcNow - order.PreparationStartedAt.Value).TotalMinutes;
-            }
-
             return new OrderOutput
             {
                 Id = order.Id,
@@ -47,7 +40,7 @@ namespace StackFood.Application.UseCases.Orders.Base.Mappers
                     PaymentDate = order.Payment.PaymentDate,
                     Type = order.Payment.Type
                 } : null,
-                PreparationTimeInMinutes = preparationTimeInMinutes
+                PreparationTimeInMinutes = order.PreparationTimeInMinutes
             };
         }
 

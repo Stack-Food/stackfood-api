@@ -5,6 +5,6 @@ namespace StackFood.Application.UseCases.Orders.GetAll
 {
     public interface IGetAllOrderUseCase
     {
-        Task<IEnumerable<OrderOutput>> GetAllOrderAsync(OrderStatus? status);
+        Task<IEnumerable<OrderOutput>> GetAllOrderAsync(OrderStatus? status = null);
     }
 }

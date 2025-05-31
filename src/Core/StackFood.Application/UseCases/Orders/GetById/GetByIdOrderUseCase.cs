@@ -16,6 +16,12 @@ namespace StackFood.Application.UseCases.Orders.GetById
         public async Task<OrderOutput> GetByIdOrderAsync(Guid id)
         {
             var order = await _orderRepository.GetByIdAsync(id);
+
+            if (order is null)
+            {
+                return new OrderOutput();
+            }
+
             return OrderOutputMapper.Map(order);
         }
     }

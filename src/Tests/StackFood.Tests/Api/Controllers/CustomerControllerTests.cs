@@ -47,7 +47,7 @@ namespace StackFood.UnitTests.Api.Controllers
         {
             // Arrange
             var cpf = "12345678901";
-            var request = new GetCustomerByCpfRequest(cpf);
+            var request = new GetCustomerByCpfRequest() { Cpf = cpf };
             var expectedCustomer = new Customer("Maria", "maria@email.com", cpf);
 
             _getByCpfCustomerUseCase.Setup(x => x.GetByCpfAsync(request.Cpf)).ReturnsAsync(expectedCustomer);
@@ -69,8 +69,8 @@ namespace StackFood.UnitTests.Api.Controllers
         public async Task GetByCpf_ShouldReturnNotFound_IfNotFoundCustomer()
         {
             // Arrange
-            var request = new GetCustomerByCpfRequest("0000000");
-            _getByCpfCustomerUseCase.Setup(x => x.GetByCpfAsync(request.Cpf)).ReturnsAsync((Customer)null);
+            var request = new GetCustomerByCpfRequest() { Cpf = "000000" };
+            _getByCpfCustomerUseCase.Setup(x => x.GetByCpfAsync(request.Cpf)).ReturnsAsync(value: null);
 
             // Act
             var result = await _controller.GetByCpf(request);

@@ -6,21 +6,14 @@ using StackFood.Domain.Entities;
 
 namespace StackFood.Application.UseCases.Orders.Create
 {
-    public class CreateOrderUseCase : ICreateOrderUseCase
+    public class CreateOrderUseCase(
+        IOrderRepository orderRepository,
+        IProductRepository productRepository,
+        ICustomerRepository customerRepository) : ICreateOrderUseCase
     {
-        public readonly IOrderRepository _orderRepository;
-        public readonly IProductRepository _productRepository;
-        public readonly ICustomerRepository _customerRepository;
-
-        public CreateOrderUseCase(
-            IOrderRepository orderRepository,
-            IProductRepository productRepository,
-            ICustomerRepository customerRepository)
-        {
-            _orderRepository = orderRepository;
-            _productRepository = productRepository;
-            _customerRepository = customerRepository;
-        }
+        public readonly IOrderRepository _orderRepository = orderRepository;
+        public readonly IProductRepository _productRepository = productRepository;
+        public readonly ICustomerRepository _customerRepository = customerRepository;
 
         public async Task<OrderOutput> CreateOrderAsync(CreateOrderInput input)
         {

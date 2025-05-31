@@ -2,5 +2,9 @@
 
 namespace StackFood.API.Requests.Customers
 {
-    public record GetCustomerByCpfRequest(string Cpf);
+    public class GetCustomerByCpfRequest
+    {
+        [FromRoute(Name = "cpf")]
+        public required string Cpf { get; init; }
+    }
 }

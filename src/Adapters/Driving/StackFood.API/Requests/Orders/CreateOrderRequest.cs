@@ -2,7 +2,7 @@
 {
     public class CreateOrderRequest
     {
-        public Guid CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
         public IEnumerable<CreateOrderProductRequest> Products { get; set; }
     }
 }

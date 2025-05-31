@@ -8,7 +8,7 @@ namespace StackFood.Application.Interfaces.ExternalsServices
         Task<(long? paymentExternalId, string qrCodeUrl)> GeneratePaymentAsync(
             PaymentType type,
             Order order,
-            Customer custumer);
+            Customer? custumer);
 
         Task<PaymentStatus> GetPaymentStatusAsync(Order order);
     }

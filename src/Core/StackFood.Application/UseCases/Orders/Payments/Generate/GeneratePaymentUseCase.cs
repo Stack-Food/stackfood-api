@@ -23,12 +23,13 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
         public async Task GeneratePaymentAsync(GeneratePaymentInput input)
         {
             var order = await _orderRepository.GetByIdAsync(input.OrderId);
-            var customer = order.Customer;
 
             if (order == null)
             {
                 throw new InvalidOperationException("Pedido não encontrado.");
             }
+
+            var customer = order.Customer;
 
             if (order.Payment is not null)
             {

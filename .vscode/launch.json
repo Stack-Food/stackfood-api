@@ -1,0 +1,73 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API - Development",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net8.0/StackFood.API.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.API",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "swagger",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start https://localhost:7189/swagger"
+        }
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "API - Production",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Release/net8.0/StackFood.API.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.API",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "swagger",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start https://localhost:7189/swagger"
+        }
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "Worker - Development",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Debug/net8.0/StackFood.Worker.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "Worker - Production",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Release/net8.0/StackFood.Worker.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "stopAtEntry": false
+    }
+  ]
+}

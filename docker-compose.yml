@@ -1,0 +1,128 @@
+services:
+  stackfood.api:
+    container_name: stackfood-api
+    image: stackfoodapi:${API_VERSION:-1.0.0}
+    build:
+      context: .
+      dockerfile: src/Adapters/Driving/StackFood.API/Dockerfile
+      args:
+        - BUILD_CONFIGURATION=${BUILD_CONFIGURATION:-Release}
+        - configuration=Debug
+        - CERT_PASSWORD_ARG=${ASPNETCORE_CERT_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT:-Development}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_CERT_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}
+    ports:
+      - "${API_HTTP_PORT:-5039}:5039" # HTTP
+      - "${API_HTTPS_PORT:-7189}:7189" # HTTPS
+    networks:
+      - stackfood_network
+    volumes:
+      - backup_data:/remote_debugger:rw
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f https://localhost:7189/swagger/index.html || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "StackFood API service"
+      com.stackfood.service: "api"
+      com.stackfood.version: "${API_VERSION:-latest}"
+
+  postgres:
+    container_name: stackfood-db
+    image: postgres:15.3-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-stackfood}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - stackfood_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "PostgreSQL Database for StackFood"
+      com.stackfood.service: "database"
+
+  stackfood-worker:
+    build:
+      context: .
+      dockerfile: src/Adapters/Driving/StackFood.Worker/Dockerfile
+    container_name: stackfood-worker
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}
+      - MercadoPago__AccessToken=${SEU_ACCESS_TOKEN_SANDBOX:-your_access_token}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      stackfood.api:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - stackfood_network
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.stackfood.description: "StackFood Worker service"
+      com.stackfood.service: "worker"
+      com.stackfood.version: "${WORKER_VERSION:-latest}"
+
+volumes:
+  postgres_data:
+    name: stackfood-postgres-data
+
+  backup_data:
+    name: stackfood-backup-data
+
+networks:
+  stackfood_network:
+    name: stackfood-network
+    driver: bridge

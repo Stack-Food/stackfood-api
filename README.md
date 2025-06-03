@@ -261,7 +261,7 @@ O projeto segue a arquitetura hexagonal, separando regras de negócio (core) das
 
 ## 📹 Vídeo Demonstrativo
 
-- [Link para o vídeo](https://youtube.com)
+- [Link para o vídeo](https://www.youtube.com/watch?v=5S64LJJtYUE)
 
 O vídeo mostra a arquitetura da aplicação, como subir os containers via Docker Compose e detalhes sobre os principais fluxos.
 

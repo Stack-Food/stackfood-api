@@ -252,7 +252,7 @@ O projeto segue a arquitetura hexagonal, separando regras de negócio (core) das
   [http://localhost:7189/swagger/index.html](http://localhost:7189/swagger/index.html)
 
 - **Miro (Event Storming, DDD):**  
-  [Acesse o Miro](https://miro.com/welcomeonboard/R1VpcjhVdnp5WkIyVmRjcjI1dlpyU2xVWGs1VjUzV1JBMW52RXovSnpUUFh1cE1TdndXTUtCUDhlZkNzbXo1K1N5ajRnUTUvelBQSVIveVpEOC84dWhDSnZtLzEyWUZ2UVoxSUkzV1loczdHU2FHVG9UYjYrM0dUNUphSy9lWHd0R2lncW1vRmFBVnlLcVJzTmdFdlNRPT0hdjE=?share_link_id=29384969431)
+  [Acesse o Miro](https://miro.com/app/board/uXjVIFy-qVA=/?share_link_id=295945750126)
 
 - **Trello (Kanban do projeto):**  
   [Acesse o Trello](https://trello.com/invite/b/6811409dfb1a245ff6e5c82e/ATTI57c89a0ebf7c3b36c8f4d397bad187a4A6D78212/tech-challenge)

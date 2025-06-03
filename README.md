@@ -269,26 +269,13 @@ O vídeo mostra a arquitetura da aplicação, como subir os containers via Docke
 
 ## 👥 Participantes
 
-- Leonardo Duarte - RM364564
-- leo.duarte.dev@gmail.com
-- iscord: _leonardoduarte
-
-- Luiz Felipe Maia - RM361928
-- luiz.felipeam@hotmail.com
-- Discord: luiz_08
-
-- Leonardo Luiz Lemos - RM364201
-- leoo_lemos@outlook.com
-- Discord: leoo_lemos
-
-- Rodrigo Rodriguez Figueiredo de Oliveira Silva - RM362272
-- rodrigorfig1@gmail.com
-- Discord: lilroz
-
-- Vinicius Targa Gonçalves - RM364425
-- viniciustarga@gmail.com
-- Discord: targa1765
-
+| Nome                                      | RM       | E-mail                      | Discord         |
+| ----------------------------------------- | -------- | --------------------------- | --------------- |
+| Leonardo Duarte                          | RM364564 | leo.duarte.dev@gmail.com    | _leonardoduarte |
+| Luiz Felipe Maia                         | RM361928 | luiz.felipeam@hotmail.com   | luiz_08         |
+| Leonardo Luiz Lemos                      | RM364201 | leoo_lemos@outlook.com      | leoo_lemos      |
+| Rodrigo Rodriguez Figueiredo de Oliveira Silva | RM362272 | rodrigorfig1@gmail.com      | lilroz          |
+| Vinicius Targa Gonçalves                 | RM364425 | viniciustarga@gmail.com     | targa1765       |
 ---
 
 ## 💡 Observações Finais

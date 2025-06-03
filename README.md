@@ -29,6 +29,22 @@ O **StackFood API** resolve o problema de desorganização no atendimento de uma
 - **Monitoramento de Pagamento**
   - Worker consulta status do pagamento e libera pedido para cozinha
 
+
+## 🚨 Importante FAKE CHECKOUT
+  Para fins de fake checkout fizemos com que o nome do cliente identifique o status do pagamento ao criar o usuario colocar no nome PAGO/CANCELADO ou se não informar nada o pagamento ficará PENDENTE
+
+- Exemplo de pagamento que com status pago:
+ 
+![image](https://github.com/user-attachments/assets/c3bf7f61-91d4-4520-9841-f099472a2a62)
+
+- Exemplo de pagamento que com status cancelado:
+ 
+![image](https://github.com/user-attachments/assets/f092dda6-6903-426c-ba38-18af107b9989)
+
+- Exemplo de pagamento que com status pendente:
+
+![image](https://github.com/user-attachments/assets/00abe7a3-f430-4fe1-8d08-6ac1a2329c8a)
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
@@ -283,3 +299,4 @@ O vídeo mostra a arquitetura da aplicação, como subir os containers via Docke
 - O projeto foi desenvolvido com foco em boas práticas de arquitetura, separação de responsabilidades e facilidade de manutenção.
 - A arquitetura hexagonal permite fácil evolução e integração com novos serviços ou tecnologias.
 - O uso de Docker e Docker Compose garante portabilidade e facilidade de setup para novos desenvolvedores.
+

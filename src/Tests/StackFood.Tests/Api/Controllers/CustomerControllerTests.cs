@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using StackFood.API.Controllers;
 using StackFood.API.Requests.Customers;
+using StackFood.Application.Common;
 using StackFood.Application.UseCases.Customers.Create;
 using StackFood.Application.UseCases.Customers.GetByCpf;
 using StackFood.Domain.Entities;
@@ -27,6 +28,16 @@ namespace StackFood.UnitTests.Api.Controllers
         {
             // Arrange
             var request = new CreateCustomerRequest("João", "joao@email.com", "12345678901");
+            var expectedCustomer = new Customer("João", "joao@email.com", "12345678901");
+            var expectedResult = Result<Customer>.Success(expectedCustomer);
+
+            _createCustomerUseCase
+                .Setup(x => x.CreateCustomerAsync(It.IsAny<Customer>()))
+                .ReturnsAsync(expectedResult);
+
+            _getByCpfCustomerUseCase
+                .Setup(x => x.GetByCpfAsync(request.Cpf))
+                .ReturnsAsync(expectedCustomer);
 
             // Act
             var result = await _controller.Create(request);

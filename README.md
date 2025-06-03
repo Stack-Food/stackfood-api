@@ -261,7 +261,7 @@ O projeto segue a arquitetura hexagonal, separando regras de negócio (core) das
 
 ## 📹 Vídeo Demonstrativo
 
-- [Link para o vídeo](https://youtube.com)
+- [Link para o vídeo](https://www.youtube.com/watch?v=5S64LJJtYUE)
 
 O vídeo mostra a arquitetura da aplicação, como subir os containers via Docker Compose e detalhes sobre os principais fluxos.
 
@@ -269,11 +269,25 @@ O vídeo mostra a arquitetura da aplicação, como subir os containers via Docke
 
 ## 👥 Participantes
 
-- Luiz
-- Leonardo Duarte
-- Leonardo Lemos
-- Rodrigo Rodrigues
-- Vinicius Targa
+- Leonardo Duarte - RM364564
+- leo.duarte.dev@gmail.com
+- iscord: _leonardoduarte
+
+- Luiz Felipe Maia - RM361928
+- luiz.felipeam@hotmail.com
+- Discord: luiz_08
+
+- Leonardo Luiz Lemos - RM364201
+- leoo_lemos@outlook.com
+- Discord: leoo_lemos
+
+- Rodrigo Rodriguez Figueiredo de Oliveira Silva - RM362272
+- rodrigorfig1@gmail.com
+- Discord: lilroz
+
+- Vinicius Targa Gonçalves - RM364425
+- viniciustarga@gmail.com
+- Discord: targa1765
 
 ---
 

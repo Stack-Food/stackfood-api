@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using StackFood.Application.Common;
 using StackFood.Application.Interfaces.Repositories;
 using StackFood.Application.UseCases.Orders.Create;
 using StackFood.Application.UseCases.Orders.Create.Inputs;
@@ -55,9 +56,15 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
 
             // Assert
             result.Should().NotBeNull();
-            result.Customer?.Id.Should().Be(customerId);
-            result.Products.Should().HaveCount(1);
-            result.Products.First().ProductId.Should().Be(productId);
+            result.IsSuccess.Should().BeTrue();
+            result.Error.Should().BeNull();
+
+            var orderOutput = result.Value;
+            orderOutput.Should().NotBeNull();
+            orderOutput.Customer?.Id.Should().Be(customerId);
+            orderOutput.Products.Should().HaveCount(1);
+            orderOutput.Products.First().ProductId.Should().Be(productId);
+
             _orderRepoMock.Verify(r => r.CreateAsync(It.IsAny<Order>()), Times.Once);
             _orderRepoMock.Verify(r => r.SaveAsync(), Times.Once);
         }
@@ -75,13 +82,12 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
             _customerRepoMock.Setup(r => r.GetByIdAsync(input.CustomerId.Value)).ReturnsAsync((Customer?)null);
 
             // Act
-            Func<Task> act = async () => await _useCase.CreateOrderAsync(input);
+            var result = await _useCase.CreateOrderAsync(input);
 
             // Assert
-            await act.Should()
-                .ThrowAsync<ArgumentNullException>()
-                .WithParameterName("customer")
-                .WithMessage("*Customer not found*");
+            result.Should().NotBeNull();
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Cliente não encontrado.");
         }
 
         [Fact]
@@ -107,13 +113,13 @@ namespace StackFood.UnitTests.Application.UseCases.Orders
             _productRepoMock.Setup(r => r.GetByIdAsync(productId)).ReturnsAsync((Product?)null);
 
             // Act
-            Func<Task> act = async () => await _useCase.CreateOrderAsync(input);
+            // Act
+            var result = await _useCase.CreateOrderAsync(input);
 
             // Assert
-            await act.Should()
-                .ThrowAsync<ArgumentNullException>()
-                .WithParameterName("product")
-                .WithMessage("*Product not found*");
+            result.Should().NotBeNull();
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Produto não encontrado.");
         }
     }
 }

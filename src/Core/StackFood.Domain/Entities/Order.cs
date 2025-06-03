@@ -36,10 +36,6 @@ namespace StackFood.Domain.Entities
 
         public void GeneratePayment(PaymentType type, long paymentExternalId, string qrCode)
         {
-            if (Payment != null)
-            {
-                throw new InvalidOperationException("Pagamento já realizado.");
-            }
 
             Payment = new Payment(type, paymentExternalId, qrCode);
         }

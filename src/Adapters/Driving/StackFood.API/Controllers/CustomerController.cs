@@ -33,7 +33,11 @@ namespace StackFood.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateCustomerRequest request)
         {
             var customer = new Customer(request.Name, request.Email, request.Cpf);
-            await _createCustomerUseCase.CreateCustomerAsync(customer);
+            var result = await _createCustomerUseCase.CreateCustomerAsync(customer);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { error = result.Error });
+
             return Ok(customer);
         }
 

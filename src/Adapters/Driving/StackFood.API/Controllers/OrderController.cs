@@ -2,6 +2,7 @@
 using StackFood.API.Mappers.Orders.CreateOrder;
 using StackFood.API.Requests.Orders;
 using StackFood.API.Requests.Orders.Payment;
+using StackFood.Application.Common;
 using StackFood.Application.UseCases.Orders.ChangeStatus;
 using StackFood.Application.UseCases.Orders.ChangeStatus.inputs;
 using StackFood.Application.UseCases.Orders.Create;
@@ -78,8 +79,14 @@ namespace StackFood.API.Controllers
         {
             var input = CreateOrderInputMapper.Map(request);
 
-            var order = await _orderUseCase.CreateOrderAsync(input);
-            return Ok(order);
+            var result = await _orderUseCase.CreateOrderAsync(input);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { error = result.Error });
+            }
+
+            return Ok(result.Value);
         }
 
         /// <summary>
@@ -91,7 +98,7 @@ namespace StackFood.API.Controllers
         /// Returns HTTP 204 (No Content) on successful payment generation.
         /// </returns>
         [HttpPut("{id}/payment")]
-        public async Task GeneratePaymentAsync([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
+        public async Task<IActionResult> GeneratePaymentAsync([FromRoute] Guid id, [FromBody] GeneratePaymentRequest request)
         {
 
             var input = new GeneratePaymentInput
@@ -100,11 +107,18 @@ namespace StackFood.API.Controllers
                 Type = request.Type
             };
 
-            await _generatePaymentUseCase.GeneratePaymentAsync(input);
+            var result = await _generatePaymentUseCase.GeneratePaymentAsync(input);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { error = result.Error });
+            }
+
+            return NoContent();
         }
         
         [HttpPut("{id}/change-status")]
-        public async Task ChangeStatusAsync([FromRoute] Guid id, [FromBody] ChangeStatusRequest request)
+        public async Task<IActionResult> ChangeStatusAsync([FromRoute] Guid id, [FromBody] ChangeStatusRequest request)
         {
             var input = new ChangeStatusInput
             {
@@ -112,7 +126,14 @@ namespace StackFood.API.Controllers
                 Status = request.Status
             };
 
-            await _changeStatusOrderUseCase.ChangeStatusOrderAsync(input);
+            var result = await _changeStatusOrderUseCase.ChangeStatusOrderAsync(input);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { error = result.Error });
+            }
+
+            return NoContent();
         }
     }
 }

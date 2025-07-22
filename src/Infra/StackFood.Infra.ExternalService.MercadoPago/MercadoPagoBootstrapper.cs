@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using StackFood.Application.Interfaces.ExternalsServices;
-using StackFood.ExternalService.MercadoPago.Service;
+using StackFood.Infra.ExternalService.MercadoPago.Service;
 
-namespace StackFood.ExternalService.MercadoPago
+namespace StackFood.Infra.ExternalService.MercadoPago
 {
     public static class MercadoPagoBootstrapper
     {

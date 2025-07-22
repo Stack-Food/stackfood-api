@@ -30,11 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\StackFood.Application\StackFood.Application.csproj" />
-    <ProjectReference Include="..\..\..\Core\StackFood.Domain\StackFood.Domain.csproj" />
-    <ProjectReference Include="..\..\Driven\StackFood.Infra\StackFood.Infra.csproj" />
-    <ProjectReference Include="..\..\Driven\StackFood.ExternalService.MercadoPago\StackFood.ExternalService.MercadoPago.csproj" />
-
+    <ProjectReference Include="..\..\Application\StackFood.Application\StackFood.Application.csproj" />
+    <ProjectReference Include="..\..\Domain\StackFood.Domain\StackFood.Domain.csproj" />
+    <ProjectReference Include="..\..\Infra\StackFood.Infra\StackFood.Infra.csproj" />
+    <ProjectReference Include="..\..\Infra\StackFood.Infra.ExternalService.MercadoPago\StackFood.Infra.ExternalService.MercadoPago.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

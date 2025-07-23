@@ -46,9 +46,27 @@ jobs:
 
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Define image tags
+        id: tagger
+        run: |
+          REPO=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          SHORT_SHA=${GITHUB_SHA::7}
+          TAGS=""
+
+          if [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
+            TAGS="${REPO}:develop"
+          elif [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
+            TAGS="${REPO}:latest,${REPO}:${SHORT_SHA}"
+          elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION_TAG=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
+            TAGS="${REPO}:${VERSION_TAG},${REPO}:latest"
+          fi
+
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         id: build-and-push
@@ -57,7 +75,7 @@ jobs:
           context: .
           file: ./src/Adapters/Driving/StackFood.API/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.tagger.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha

@@ -4,6 +4,7 @@ on:
   push:
     branches: ["master", "develop"]
     tags: ["v*.*.*"]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -53,7 +54,7 @@ jobs:
       - name: Define image tags
         id: tagger
         run: |
-          REPO=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          REPO=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
           SHORT_SHA=${GITHUB_SHA::7}
           TAGS=""
 

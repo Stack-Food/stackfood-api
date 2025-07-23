@@ -10,8 +10,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-
 jobs:
   build_docker_image:
     name: Build Docker image (PR)

@@ -1,4 +1,4 @@
-name: Build and Publish Docker image
+name: Build and Publish Docker images
 
 on:
   push:
@@ -8,12 +8,13 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  API_IMAGE_NAME: ${{ github.repository }}/api
+  WORKER_IMAGE_NAME: ${{ github.repository }}/worker
   GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
 jobs:
   build_and_publish:
-    name: Build and Publish Docker image
+    name: Build and Publish Docker images
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,10 +25,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check if Dockerfile exists
+      - name: Check if Dockerfiles exist
         run: |
           if [ ! -f ./src/Adapters/Driving/StackFood.API/Dockerfile ]; then
-            echo "❌ Dockerfile not found!" && exit 1
+            echo "❌ API Dockerfile not found!" && exit 1
+          fi
+          if [ ! -f ./src/Adapters/Driving/StackFood.Worker/Dockerfile ]; then
+            echo "❌ Worker Dockerfile not found!" && exit 1
           fi
 
       - name: Install cosign
@@ -45,16 +49,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ env.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Define image tags
-        id: tagger
+      # API IMAGE BUILD AND PUSH
+      - name: Define API image tags
+        id: api-tagger
         run: |
-          REPO=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+          REPO=$(echo "${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
           SHORT_SHA=${GITHUB_SHA::7}
           TAGS=""
 
@@ -69,22 +68,73 @@ jobs:
 
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
 
-      - name: Build and push Docker image
-        id: build-and-push
+      - name: Extract API Docker metadata
+        id: api-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
+
+      - name: Build and push API Docker image
+        id: api-build-and-push
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./src/Adapters/Driving/StackFood.API/Dockerfile
           push: true
-          tags: ${{ steps.tagger.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.api-tagger.outputs.tags }}
+          labels: ${{ steps.api-meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
 
-      - name: Sign the Docker image
+      - name: Sign the API Docker image
         env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+          TAGS: ${{ steps.api-tagger.outputs.tags }}
+          DIGEST: ${{ steps.api-build-and-push.outputs.digest }}
+        run: |
+          echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      # WORKER IMAGE BUILD AND PUSH
+      - name: Define Worker image tags
+        id: worker-tagger
+        run: |
+          REPO=$(echo "${{ env.REGISTRY }}/${{ env.WORKER_IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+          SHORT_SHA=${GITHUB_SHA::7}
+          TAGS=""
+
+          if [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
+            TAGS="${REPO}:develop"
+          elif [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
+            TAGS="${REPO}:latest,${REPO}:${SHORT_SHA}"
+          elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION_TAG=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
+            TAGS="${REPO}:${VERSION_TAG},${REPO}:latest"
+          fi
+
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+
+      - name: Extract Worker Docker metadata
+        id: worker-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.WORKER_IMAGE_NAME }}
+
+      - name: Build and push Worker Docker image
+        id: worker-build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./src/Adapters/Driving/StackFood.Worker/Dockerfile
+          push: true
+          tags: ${{ steps.worker-tagger.outputs.tags }}
+          labels: ${{ steps.worker-meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha,scope=worker
+          cache-to: type=gha,scope=worker,mode=max
+
+      - name: Sign the Worker Docker image
+        env:
+          TAGS: ${{ steps.worker-tagger.outputs.tags }}
+          DIGEST: ${{ steps.worker-build-and-push.outputs.digest }}
         run: |
           echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}

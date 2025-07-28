@@ -2,7 +2,7 @@ name: .NET Tests and Lint
 on:
   pull_request:
     branches:
-      - main
+      - master
       - develop
   workflow_dispatch:
 

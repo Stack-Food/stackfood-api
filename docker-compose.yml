@@ -1,7 +1,7 @@
 services:
   stackfood.api:
     container_name: stackfood-api
-    image: stackfoodapi:${API_VERSION:-1.0.0}
+    image: ghcr.io/stack-food/stackfood-api/api:master
     build:
       context: .
       dockerfile: src/Adapters/Driving/StackFood.API/Dockerfile
@@ -83,7 +83,9 @@ services:
       com.stackfood.description: "PostgreSQL Database for StackFood"
       com.stackfood.service: "database"
 
-  stackfood-worker:
+  stackfood.worker:
+    container_name: stackfood-worker
+    image: ghcr.io/stack-food/stackfood-api/worker:master
     build:
       context: .
       dockerfile: src/Adapters/Driving/StackFood.Worker/Dockerfile

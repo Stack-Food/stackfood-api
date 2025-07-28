@@ -54,16 +54,15 @@ jobs:
         id: api-tagger
         run: |
           REPO=$(echo "${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
-          SHORT_SHA=${GITHUB_SHA::7}
-          TAGS=""
 
+          # Definição simples de tags com base na branch
           if [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
             TAGS="${REPO}:develop"
           elif [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
-            TAGS="${REPO}:latest,${REPO}:${SHORT_SHA}"
+            TAGS="${REPO}:master"
           elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
             VERSION_TAG=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
-            TAGS="${REPO}:${VERSION_TAG},${REPO}:latest"
+            TAGS="${REPO}:${VERSION_TAG}"
           fi
 
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
@@ -102,16 +101,15 @@ jobs:
         id: worker-tagger
         run: |
           REPO=$(echo "${{ env.REGISTRY }}/${{ env.WORKER_IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
-          SHORT_SHA=${GITHUB_SHA::7}
-          TAGS=""
 
+          # Definição simples de tags com base na branch
           if [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
             TAGS="${REPO}:develop"
           elif [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
-            TAGS="${REPO}:latest,${REPO}:${SHORT_SHA}"
+            TAGS="${REPO}:master"
           elif [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
             VERSION_TAG=$(echo "${GITHUB_REF}" | sed 's|refs/tags/||')
-            TAGS="${REPO}:${VERSION_TAG},${REPO}:latest"
+            TAGS="${REPO}:${VERSION_TAG}"
           fi
 
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT

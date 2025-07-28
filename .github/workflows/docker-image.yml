@@ -22,7 +22,7 @@ jobs:
         run: docker build . --file ./src/Adapters/Driving/StackFood.API/Dockerfile --tag my-image-name:$(date +%s)
 
   build_worker_docker_image:
-    name: Build API Docker image (PR)
+    name: Build Worker Docker image (PR)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:

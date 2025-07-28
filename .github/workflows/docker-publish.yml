@@ -87,13 +87,16 @@ jobs:
           cache-from: type=gha,scope=api
           cache-to: type=gha,scope=api,mode=max
 
-      - name: Sign the API Docker image
+      - name: Sign the Docker image
         env:
-          TAGS: ${{ steps.api-tagger.outputs.tags }}
-          DIGEST: ${{ steps.api-build-and-push.outputs.digest }}
+          TAGS: ${{ steps.tagger.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: |
-          echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-
+          IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+          for TAG in "${TAG_ARRAY[@]}"; do
+            echo "Signing ${TAG}@${DIGEST}"
+            cosign sign --yes "${TAG}@${DIGEST}"
+          done
       # WORKER IMAGE BUILD AND PUSH
       - name: Define Worker image tags
         id: worker-tagger
@@ -137,4 +140,8 @@ jobs:
           TAGS: ${{ steps.worker-tagger.outputs.tags }}
           DIGEST: ${{ steps.worker-build-and-push.outputs.digest }}
         run: |
-          echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+          IFS=',' read -ra TAG_ARRAY <<< "${TAGS}"
+          for TAG in "${TAG_ARRAY[@]}"; do
+            echo "Signing ${TAG}@${DIGEST}"
+            cosign sign --yes "${TAG}@${DIGEST}"
+          done

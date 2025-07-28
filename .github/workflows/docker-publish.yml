@@ -101,7 +101,7 @@ jobs:
         id: worker-tagger
         run: |
           # Nome do repositório em minúsculas (sem github.repository na tag)
-          REPO=$(echo "${{ env.REGISTRY }}/stackfood-worker" | tr '[:upper:]' '[:lower:]')
+          REPO=$(echo "${{ env.REGISTRY }}/"${{ env.WORKER_IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
 
           # Definição simples de tags com base na branch
           if [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then

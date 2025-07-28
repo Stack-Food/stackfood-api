@@ -89,7 +89,6 @@ services:
     build:
       context: .
       dockerfile: src/Adapters/Driving/StackFood.Worker/Dockerfile
-    container_name: stackfood-worker
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}

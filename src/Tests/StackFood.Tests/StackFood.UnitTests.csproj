@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Adapters\Driving\StackFood.API\StackFood.API.csproj" />
-    <ProjectReference Include="..\..\Core\StackFood.Application\StackFood.Application.csproj" />
-    <ProjectReference Include="..\..\Core\StackFood.Domain\StackFood.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\StackFood.API\StackFood.API.csproj" />
+    <ProjectReference Include="..\..\Application\StackFood.Application\StackFood.Application.csproj" />
+    <ProjectReference Include="..\..\Domain\StackFood.Domain\StackFood.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@ using StackFood.Application.Interfaces.ExternalsServices;
 using StackFood.Domain.Entities;
 using StackFood.Domain.Enums;
 
-namespace StackFood.ExternalService.MercadoPago.Service
+namespace StackFood.Infra.ExternalService.MercadoPago.Service
 {
     public class MercadoPagoApiService : IMercadoPagoApiService
     {

@@ -39,12 +39,12 @@
       "dockerBuild": {
         "tag": "stackfoodapi:dev",
         "target": "base",
-        "dockerfile": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/Dockerfile",
+        "dockerfile": "${workspaceFolder}/src/Services/StackFood.Worker/Dockerfile",
         "context": "${workspaceFolder}",
         "pull": true
       },
       "netCore": {
-        "appProject": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/StackFood.StackFood.Worker.csproj"
+        "appProject": "${workspaceFolder}/src/Services/StackFood.Worker/StackFood.StackFood.Worker.csproj"
       }
     },
     {
@@ -53,7 +53,7 @@
       "dependsOn": ["build"],
       "dockerBuild": {
         "tag": "stackfoodapi:latest",
-        "dockerfile": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/Dockerfile",
+        "dockerfile": "${workspaceFolder}/src/Services/StackFood.Worker/Dockerfile",
         "context": "${workspaceFolder}",
         "platform": {
           "os": "linux",
@@ -62,7 +62,7 @@
         "pull": true
       },
       "netCore": {
-        "appProject": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/StackFood.StackFood.Worker.csproj"
+        "appProject": "${workspaceFolder}/src/Services/StackFood.Worker/StackFood.StackFood.Worker.csproj"
       }
     },
     {
@@ -71,7 +71,7 @@
       "dependsOn": ["docker-build: debug"],
       "dockerRun": {},
       "netCore": {
-        "appProject": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/StackFood.StackFood.Worker.csproj",
+        "appProject": "${workspaceFolder}/src/Services/StackFood.Worker/StackFood.StackFood.Worker.csproj",
         "enableDebugging": true,
         "configureSsl": false
       }
@@ -82,7 +82,7 @@
       "dependsOn": ["docker-build: release"],
       "dockerRun": {},
       "netCore": {
-        "appProject": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/StackFood.StackFood.Worker.csproj"
+        "appProject": "${workspaceFolder}/src/Services/StackFood.Worker/StackFood.StackFood.Worker.csproj"
       }
     }
   ]

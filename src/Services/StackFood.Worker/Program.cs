@@ -1,8 +1,8 @@
 using MercadoPago.Config;
 using Microsoft.EntityFrameworkCore;
 using StackFood.Application;
-using StackFood.ExternalService.MercadoPago;
 using StackFood.Infra;
+using StackFood.Infra.ExternalService.MercadoPago;
 using StackFood.Infra.Persistence;
 
 MercadoPagoConfig.AccessToken = "TEST-3012794291586434-051711-8a400aab6fd7b21510de463589bbd8a1-709468526";

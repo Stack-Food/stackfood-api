@@ -4,10 +4,10 @@ WORKDIR /app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["src/Adapters/Driving/StackFood.Worker/StackFood.Worker.csproj", "src/Adapters/Driving/StackFood.Worker/"]
-RUN dotnet restore "src/Adapters/Driving/StackFood.Worker/StackFood.Worker.csproj"
+COPY ["src/Services/StackFood.Worker/StackFood.Worker.csproj", "src/Services/StackFood.Worker/"]
+RUN dotnet restore "src/Services/StackFood.Worker/StackFood.Worker.csproj"
 COPY . .
-WORKDIR "/src/src/Adapters/Driving/StackFood.Worker"
+WORKDIR "/src/src/Services/StackFood.Worker"
 RUN dotnet build "StackFood.Worker.csproj" -c $configuration -o /app/build
 
 FROM build AS publish

@@ -27,10 +27,10 @@ jobs:
 
       - name: Check if Dockerfiles exist
         run: |
-          if [ ! -f ./src/Adapters/Driving/StackFood.API/Dockerfile ]; then
+          if [ ! -f ./src/Services/StackFood.API/Dockerfile ]; then
             echo "❌ API Dockerfile not found!" && exit 1
           fi
-          if [ ! -f ./src/Adapters/Driving/StackFood.Worker/Dockerfile ]; then
+          if [ ! -f ./src/Services/StackFood.Worker/Dockerfile ]; then
             echo "❌ Worker Dockerfile not found!" && exit 1
           fi
 
@@ -78,7 +78,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./src/Adapters/Driving/StackFood.API/Dockerfile
+          file: ./src/Services/StackFood.API/Dockerfile
           push: true
           tags: ${{ steps.api-tagger.outputs.tags }}
           labels: ${{ steps.api-meta.outputs.labels }}
@@ -125,7 +125,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./src/Adapters/Driving/StackFood.Worker/Dockerfile
+          file: ./src/Services/StackFood.Worker/Dockerfile
           push: true
           tags: ${{ steps.worker-tagger.outputs.tags }}
           labels: ${{ steps.worker-meta.outputs.labels }}

@@ -20,8 +20,8 @@ ARG CERT_PASSWORD_ARG
 WORKDIR /src
 
 # Copiar csproj e restaurar dependências
-COPY ["src/Adapters/Driving/StackFood.API/StackFood.API.csproj", "src/Adapters/Driving/StackFood.API/"]
-RUN dotnet restore "src/Adapters/Driving/StackFood.API/StackFood.API.csproj"
+COPY ["src/Services/StackFood.API/StackFood.API.csproj", "src/Services/StackFood.API/"]
+RUN dotnet restore "src/Services/StackFood.API/StackFood.API.csproj"
 
 # Copiar todo o código fonte
 COPY . .
@@ -31,7 +31,7 @@ RUN mkdir -p /https_build \
     && dotnet dev-certs https -ep /https_build/aspnetapp.pfx -p "${CERT_PASSWORD_ARG}"
 
 # Build da aplicação
-WORKDIR "/src/src/Adapters/Driving/StackFood.API"
+WORKDIR "/src/src/Services/StackFood.API"
 RUN dotnet build "StackFood.API.csproj" -c $configuration -o /app/build
 
 # --- Publish image ---

@@ -1,7 +1,7 @@
 using MercadoPago.Config;
 using Microsoft.EntityFrameworkCore;
 using StackFood.Application;
-using StackFood.ExternalService.MercadoPago;
+using StackFood.Infra.ExternalService.MercadoPago;
 using StackFood.Infra;
 using StackFood.Infra.Persistence;
 using StackFood.Infra.Persistence.Repositories;

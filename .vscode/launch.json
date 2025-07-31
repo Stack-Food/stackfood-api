@@ -6,9 +6,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Debug/net8.0/StackFood.API.dll",
+      "program": "${workspaceFolder}/src/Services/StackFood.API/bin/Debug/net8.0/StackFood.API.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.API",
+      "cwd": "${workspaceFolder}/src/Services/StackFood.API",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -17,7 +17,7 @@
         "args": "swagger",
         "windows": {
           "command": "cmd.exe",
-          "args": "/C start https://localhost:7189/swagger"
+          "args": "/C start https://localhost:5000/swagger"
         }
       },
       "stopAtEntry": false
@@ -27,9 +27,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.API/bin/Release/net8.0/StackFood.API.dll",
+      "program": "${workspaceFolder}/src/Services/StackFood.API/bin/Release/net8.0/StackFood.API.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.API",
+      "cwd": "${workspaceFolder}/src/Services/StackFood.API",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
@@ -38,7 +38,7 @@
         "args": "swagger",
         "windows": {
           "command": "cmd.exe",
-          "args": "/C start https://localhost:7189/swagger"
+          "args": "/C start https://localhost:5000/swagger"
         }
       },
       "stopAtEntry": false
@@ -48,9 +48,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Debug/net8.0/StackFood.Worker.dll",
+      "program": "${workspaceFolder}/src/Services/StackFood.Worker/bin/Debug/net8.0/StackFood.Worker.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
+      "cwd": "${workspaceFolder}/src/Services/StackFood.Worker",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -61,13 +61,22 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker/bin/Release/net8.0/StackFood.Worker.dll",
+      "program": "${workspaceFolder}/src/Services/StackFood.Worker/bin/Release/net8.0/StackFood.Worker.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Adapters/Driving/StackFood.Worker",
+      "cwd": "${workspaceFolder}/src/Services/StackFood.Worker",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "stopAtEntry": false
+    }
+  ],
+  "compounds": [
+    {
+      "name": "API + Worker",
+      "configurations": [
+        "API - Development",
+        "Worker - Development"
+      ]
     }
   ]
 }

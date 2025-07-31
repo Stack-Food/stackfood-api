@@ -51,7 +51,7 @@ O **StackFood API** resolve o problema de desorganização no atendimento de uma
 
 - **Linguagem:** C# (.NET 8)
 - **Banco de Dados:** PostgreSQL 15.3
-- **Arquitetura:** Hexagonal (Ports & Adapters)
+- **Arquitetura:** Clean Arquitecture
 - **ORM:** Entity Framework Core
 - **Integração de Pagamento:** Mercado Pago SDK
 - **Documentação de API:** Swagger / OpenAPI
@@ -64,20 +64,18 @@ O **StackFood API** resolve o problema de desorganização no atendimento de uma
 
 ```
 src/
-├── Adapters/
-│   ├── Driven/
-│   │   ├── StackFood.Infra/                # Infraestrutura: banco, repositórios, serviços
-│   │   └── StackFood.ExternalService.MercadoPago/ # Integração Mercado Pago
-│   └── Driving/
-│       ├── StackFood.API/                  # API REST (entrada principal)
-│       └── StackFood.Worker/               # Worker (consulta status de pagamento)
-├── Core/
-│   ├── StackFood.Domain/                   # Entidades e regras de negócio
-│   └── StackFood.Application/              # Casos de uso e interfaces (ports)
+├── Services/
+│   ├── StackFood.API/                          # API REST (entrada principal)
+│   └── StackFood.Worker/                       # Worker (consulta status de pagamento)
+├── Domain/
+│   ├── StackFood.Domain/                       # Entidades e regras de negócio
+├── Application/
+│   └── StackFood.Application/                  # Casos de uso e interfaces
 ├── Infrastructure/
-│   └── PostgresConnectionFactory.cs        # Fábrica de conexão com o banco
+│   └── StackFood.Infra/                        # Infraestrutura: banco, repositórios, serviços
+|   └── StackFood.ExternalService.MercadoPago/  # Integração Mercado Pago
 ├── Tests/
-│   └── StackFood.Tests/                    # Testes automatizados
+│   └── StackFood.Tests/                        # Testes automatizados
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
@@ -85,15 +83,14 @@ src/
 
 ---
 
-## 🏛️ Arquitetura Hexagonal (Ports & Adapters)
+## 🏛️ Clean Arquitecture
 
-O projeto segue a arquitetura hexagonal, separando regras de negócio (core) das implementações técnicas (infraestrutura e integrações externas).
+O projeto segue a Clean Arquitecture, separando regras de negócio (Domain) das implementações técnicas (infraestrutura e integrações externas).
 
 - **Domain:** Entidades e regras de negócio puras (ex: Pedido, Cliente, Produto).
 - **Application:** Casos de uso (ex: Criar Pedido, Gerar Pagamento) e interfaces (ports).
 - **Infra:** Implementações técnicas (banco, repositórios, serviços externos).
-- **Adapters Driving:** Pontos de entrada (API REST, Worker).
-- **Adapters Driven:** Pontos de saída (banco, Mercado Pago).
+- **Services:** Pontos de entrada (API REST, Worker).
 
 **Vantagens:**
 

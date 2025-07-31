@@ -4,7 +4,7 @@ services:
     image: ghcr.io/stack-food/stackfood-api/api:master
     build:
       context: .
-      dockerfile: src/Adapters/Driving/StackFood.API/Dockerfile
+      dockerfile: src/Services/StackFood.API/Dockerfile
       args:
         - BUILD_CONFIGURATION=${BUILD_CONFIGURATION:-Release}
         - configuration=Debug
@@ -88,8 +88,7 @@ services:
     image: ghcr.io/stack-food/stackfood-api/worker:master
     build:
       context: .
-      dockerfile: src/Adapters/Driving/StackFood.Worker/Dockerfile
-    container_name: stackfood-worker
+      dockerfile: src/Services/StackFood.Worker/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-stackfood};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-password}

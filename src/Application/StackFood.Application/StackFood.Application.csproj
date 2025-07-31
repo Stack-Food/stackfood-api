@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StackFood.Domain\StackFood.Domain.csproj" />
+    <ProjectReference Include="..\..\Domain\StackFood.Domain\StackFood.Domain.csproj" />
   </ItemGroup>
 
 

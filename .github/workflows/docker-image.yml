@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the Docker image
-        run: docker build . --file ./src/Adapters/Driving/StackFood.API/Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file ./src/Services/StackFood.API/Dockerfile --tag my-image-name:$(date +%s)
 
   build_worker_docker_image:
     name: Build Worker Docker image (PR)
@@ -28,4 +28,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the Docker image
-        run: docker build . --file ./src/Adapters/Driving/StackFood.Worker/Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file ./src/Services/StackFood.Worker/Dockerfile --tag my-image-name:$(date +%s)

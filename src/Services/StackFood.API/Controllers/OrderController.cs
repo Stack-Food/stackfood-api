@@ -114,7 +114,8 @@ namespace StackFood.API.Controllers
                 return BadRequest(new { error = result.Error });
             }
 
-            return NoContent();
+            // Aqui result.Data é do tipo GeneratePaymentOutput, contendo o QR Code
+            return Ok(result);
         }
         
         [HttpPut("{id}/change-status")]

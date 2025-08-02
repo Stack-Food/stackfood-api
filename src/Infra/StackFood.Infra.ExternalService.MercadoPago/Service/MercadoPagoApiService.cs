@@ -1,4 +1,5 @@
 ﻿using MercadoPago.Client.Payment;
+using MercadoPago.Config;
 using StackFood.Application.Interfaces.ExternalsServices;
 using StackFood.Domain.Entities;
 using StackFood.Domain.Enums;
@@ -52,12 +53,11 @@ namespace StackFood.Infra.ExternalService.MercadoPago.Service
             if (order.Customer.Name.Contains("CANCELADO"))
                 return PaymentStatus.Cancelled;
 
-            return PaymentStatus.Pending;
-
             if (order.Payment == null)
                 throw new Exception("Order.Payment is null. Cannot retrieve ExternalPaymentId.");
 
             var client = new PaymentClient();
+
             var payment = await client.GetAsync(order.Payment.PaymentExternalId);
 
             if (payment is null)

@@ -26,7 +26,7 @@ namespace StackFood.Application.UseCases.Orders.Payments.Check
             foreach (var order in pendingPaymentOrders)
             {
                 var paymentStatus = await _mercadoPagoApiService.GetPaymentStatusAsync(order);
-
+                    
                 if (paymentStatus == PaymentStatus.Paid)
                 {
                     order.Paid();

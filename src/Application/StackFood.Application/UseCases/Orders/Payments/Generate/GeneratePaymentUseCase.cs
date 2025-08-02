@@ -3,6 +3,7 @@ using StackFood.Application.UseCases.Orders.Payments.Generate.Inputs;
 using StackFood.Application.Interfaces.ExternalsServices;
 using StackFood.Application.Common;
 using StackFood.Domain.Entities;
+using StackFood.Application.UseCases.Orders.Base.Outputs;
 
 namespace StackFood.Application.UseCases.Orders.Payments.Generate
 {
@@ -22,20 +23,20 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
             _mercadoPagoApiService = mercadoPagoApiService;
         }
 
-        public async Task<Result> GeneratePaymentAsync(GeneratePaymentInput input)
+        public async Task<Result<GeneratePaymentOutput>> GeneratePaymentAsync(GeneratePaymentInput input)
         {
             var order = await _orderRepository.GetByIdAsync(input.OrderId);
 
             if (order == null)
             {
-                 return Result.Failure("Pedido não encontrado.");
+                 return Result<GeneratePaymentOutput>.Failure("Pedido não encontrado.");
             }
 
             var customer = order.Customer;
 
             if (order.Payment is not null)
             {
-                 return Result.Failure("Pagamento já foi gerado para este pedido.");
+                 return Result<GeneratePaymentOutput>.Failure("Pagamento já foi gerado para este pedido.");
             }
 
             if (customer != null)
@@ -49,19 +50,25 @@ namespace StackFood.Application.UseCases.Orders.Payments.Generate
                 customer);
             if (paymentExternalId is null)
             {
-                 return Result.Failure("Falha ao criar pagamento.");
+                 return Result < GeneratePaymentOutput >.Failure("Falha ao criar pagamento.");
             }
 
             if (order.Payment != null)
             {
-                return Result.Failure("Pagamento já realizado.");
+                return Result<GeneratePaymentOutput>.Failure("Pagamento já realizado.");
             }
 
             order.GeneratePayment(input.Type, paymentExternalId.Value, qrCode);
 
             await _orderRepository.AddPaymentAsync(order.Payment);
             await _orderRepository.SaveAsync();
-            return Result.Success();
+
+            var output = new GeneratePaymentOutput
+            {
+                QrCode = qrCode
+            };
+
+            return Result<GeneratePaymentOutput>.Success(output);
         }
     }
 }

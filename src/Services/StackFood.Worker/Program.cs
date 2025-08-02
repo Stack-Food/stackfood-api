@@ -5,8 +5,7 @@ using StackFood.Infra;
 using StackFood.Infra.ExternalService.MercadoPago;
 using StackFood.Infra.Persistence;
 
-MercadoPagoConfig.AccessToken = "TEST-3012794291586434-051711-8a400aab6fd7b21510de463589bbd8a1-709468526";
-
+MercadoPagoConfig.AccessToken = "APP_USR-3012794291586434-051711-5fe595076a0027ab8a6be1bde5cd28f7-709468526";
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>

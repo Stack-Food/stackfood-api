@@ -296,4 +296,3 @@ O vídeo mostra a arquitetura da aplicação, como subir os containers via Docke
 - O projeto foi desenvolvido com foco em boas práticas de arquitetura, separação de responsabilidades e facilidade de manutenção.
 - A arquitetura hexagonal permite fácil evolução e integração com novos serviços ou tecnologias.
 - O uso de Docker e Docker Compose garante portabilidade e facilidade de setup para novos desenvolvedores.
-

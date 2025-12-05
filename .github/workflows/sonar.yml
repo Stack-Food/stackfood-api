@@ -56,6 +56,34 @@ jobs:
             - name: Restore dependencies
               run: dotnet restore
 
+            - name: Validate SonarQube configuration
+              shell: powershell
+              env:
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+                  SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+                  SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+              run: |
+                  Write-Host "Validating SonarQube configuration..."
+
+                  if ([string]::IsNullOrWhiteSpace($env:SONAR_HOST_URL)) {
+                    Write-Error "SONAR_HOST_URL is not set or is empty. Please configure it in repository variables."
+                    exit 1
+                  }
+
+                  if ([string]::IsNullOrWhiteSpace($env:SONAR_PROJECT_KEY)) {
+                    Write-Error "SONAR_PROJECT_KEY is not set or is empty. Please configure it in repository variables."
+                    exit 1
+                  }
+
+                  if ([string]::IsNullOrWhiteSpace($env:SONAR_TOKEN)) {
+                    Write-Error "SONAR_TOKEN is not set or is empty. Please configure it in repository secrets."
+                    exit 1
+                  }
+
+                  Write-Host "✓ SONAR_HOST_URL: $env:SONAR_HOST_URL"
+                  Write-Host "✓ SONAR_PROJECT_KEY: $env:SONAR_PROJECT_KEY"
+                  Write-Host "✓ SONAR_TOKEN: ***"
+
             - name: Build and analyze
               shell: powershell
               env:

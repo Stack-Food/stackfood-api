@@ -46,6 +46,6 @@ jobs:
             - name: Build and analyze
               shell: powershell
               run: |
-                  ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"Stack-Food_stackfood-api_ec115f0f-ac27-47ef-9539-56040a187482" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+                  ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"${{ vars.SONAR_PROJECT_KEY }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ vars.SONAR_HOST_URL }}"
                   dotnet build
                   ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

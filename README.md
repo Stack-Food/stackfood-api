@@ -2,8 +2,7 @@
 
 Sistema Backend para gerenciamento de pedidos e produtos em uma lanchonete com autoatendimento, desenvolvido como parte do **Tech Challenge** da formação em Arquitetura de Software.
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Stack-Food_stackfood-api&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Stack-Food_stackfood-api)
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Stack-Food_stackfood-api)](https://sonarcloud.io/summary/new_code?id=Stack-Food_stackfood-api)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Stack-Food_stackfood-api&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Stack-Food_stackfood-api) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Stack-Food_stackfood-api)](https://sonarcloud.io/summary/new_code?id=Stack-Food_stackfood-api)
 
 ---
 

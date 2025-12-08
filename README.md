@@ -2,6 +2,9 @@
 
 Sistema Backend para gerenciamento de pedidos e produtos em uma lanchonete com autoatendimento, desenvolvido como parte do **Tech Challenge** da formação em Arquitetura de Software.
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Stack-Food_stackfood-api&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Stack-Food_stackfood-api)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Stack-Food_stackfood-api)](https://sonarcloud.io/summary/new_code?id=Stack-Food_stackfood-api)
+
 ---
 
 ## 📋 Descrição do Projeto
@@ -29,16 +32,16 @@ O **StackFood API** resolve o problema de desorganização no atendimento de uma
 - **Monitoramento de Pagamento**
   - Worker consulta status do pagamento e libera pedido para cozinha
 
-
 ## 🚨 Importante FAKE CHECKOUT
-  Para fins de fake checkout fizemos com que o nome do cliente identifique o status do pagamento ao criar o usuario colocar no nome PAGO/CANCELADO ou se não informar nada o pagamento ficará PENDENTE
+
+Para fins de fake checkout fizemos com que o nome do cliente identifique o status do pagamento ao criar o usuario colocar no nome PAGO/CANCELADO ou se não informar nada o pagamento ficará PENDENTE
 
 - Exemplo de pagamento que com status pago:
- 
+
 ![image](https://github.com/user-attachments/assets/c3bf7f61-91d4-4520-9841-f099472a2a62)
 
 - Exemplo de pagamento que com status cancelado:
- 
+
 ![image](https://github.com/user-attachments/assets/f092dda6-6903-426c-ba38-18af107b9989)
 
 - Exemplo de pagamento que com status pendente:
@@ -282,13 +285,14 @@ O vídeo mostra a arquitetura da aplicação, como subir os containers via Docke
 
 ## 👥 Participantes
 
-| Nome                                      | RM       | E-mail                      | Discord         |
-| ----------------------------------------- | -------- | --------------------------- | --------------- |
-| Leonardo Duarte                          | RM364564 | leo.duarte.dev@gmail.com    | _leonardoduarte |
-| Luiz Felipe Maia                         | RM361928 | luiz.felipeam@hotmail.com   | luiz_08         |
-| Leonardo Luiz Lemos                      | RM364201 | leoo_lemos@outlook.com      | leoo_lemos      |
-| Rodrigo Rodriguez Figueiredo de Oliveira Silva | RM362272 | rodrigorfig1@gmail.com      | lilroz          |
-| Vinicius Targa Gonçalves                 | RM364425 | viniciustarga@gmail.com     | targa1765       |
+| Nome                                           | RM       | E-mail                    | Discord          |
+| ---------------------------------------------- | -------- | ------------------------- | ---------------- |
+| Leonardo Duarte                                | RM364564 | leo.duarte.dev@gmail.com  | \_leonardoduarte |
+| Luiz Felipe Maia                               | RM361928 | luiz.felipeam@hotmail.com | luiz_08          |
+| Leonardo Luiz Lemos                            | RM364201 | leoo_lemos@outlook.com    | leoo_lemos       |
+| Rodrigo Rodriguez Figueiredo de Oliveira Silva | RM362272 | rodrigorfig1@gmail.com    | lilroz           |
+| Vinicius Targa Gonçalves                       | RM364425 | viniciustarga@gmail.com   | targa1765        |
+
 ---
 
 ## 💡 Observações Finais
@@ -296,4 +300,3 @@ O vídeo mostra a arquitetura da aplicação, como subir os containers via Docke
 - O projeto foi desenvolvido com foco em boas práticas de arquitetura, separação de responsabilidades e facilidade de manutenção.
 - A arquitetura hexagonal permite fácil evolução e integração com novos serviços ou tecnologias.
 - O uso de Docker e Docker Compose garante portabilidade e facilidade de setup para novos desenvolvedores.
-
